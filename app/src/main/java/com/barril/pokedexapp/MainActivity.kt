@@ -34,6 +34,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.OutlinedCard
@@ -45,12 +47,20 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.graphics.StrokeJoin
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.barril.pokedexapp.ui.theme.PokeDexAppTheme
@@ -85,7 +95,7 @@ enum class AppDestinations(
     @StringRes val contentDescription: Int
 ) {
     HOME(R.string.home_destination, Icons.Rounded.Home, R.string.home_description),
-    FAVORITES(R.string.favorites_destination, Icons.Rounded.Favorite, R.string.favorites_description),
+    FAVORITES(R.string.favorites_destination, Icons.Default.Star, R.string.favorites_description),
     SETTINGS(R.string.settings_destination, Icons.Rounded.Settings, R.string.settings_description),
 }
 
@@ -94,73 +104,127 @@ fun MainApp(modifier: Modifier = Modifier) {
     Scaffold(
         modifier = modifier,
         topBar = {
-            Row {
-                SearchBar()
-                Button(onClick = { /*TODO*/ }) {
-                    Icon(Icons.Default.MoreVert, contentDescription = "Filtros")
-                }
-            }
+            TopBar()
         },
         bottomBar = {
-            NavigationRail(
-                modifier = modifier.padding(start = 8.dp, end = 8.dp),
-                containerColor = MaterialTheme.colorScheme.background
-            ) {
-                Row(
-                    modifier = modifier.fillMaxHeight(),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    NavigationRailItem(
-                        icon = {
-                            Icon(AppDestinations.HOME.icon, contentDescription = stringResource(AppDestinations.HOME.contentDescription))
-                        },
-                        label = {
-                            Text(stringResource(AppDestinations.HOME.label))
-                        },
-                        selected = false,
-                        onClick = { /* TODO */ }
-                    )
-                    NavigationRailItem(
-                        icon = {
-                            Icon(AppDestinations.FAVORITES.icon, contentDescription = stringResource(AppDestinations.FAVORITES.contentDescription))
-                        },
-                        label = {
-                            Text(stringResource(AppDestinations.FAVORITES.label))
-                        },
-                        selected = false,
-                        onClick = { /* TODO */ }
-                    )
-                    NavigationRailItem(
-                        icon = {
-                            Icon(AppDestinations.SETTINGS.icon, contentDescription = stringResource(AppDestinations.SETTINGS.contentDescription))
-                        },
-                        label = {
-                            Text(stringResource(AppDestinations.SETTINGS.label))
-                        },
-                        selected = false,
-                        onClick = { /* TODO */ }
-                    )
-                }
-            }
+            BottomBar()
         },
         ) { innerPadding ->
-            LazyColumn(
-                modifier = modifier.padding(innerPadding)
-            ) {
-                item {
-                    val types = PokemonType.values()
-                    for(i in 1..2) {
-                        val random = (0..types.size).random()
+            PokemonColumnList(Modifier.padding(innerPadding))
+        }
+}
 
-                        PokemonCard(
-                            pokemonName = "Bulbasaur",
-                            pokemonType = EnumSet.of(types[random]),
-                        )
-                    }
-                }
+@Composable
+fun PokemonColumnList(modifier: Modifier = Modifier) {
+    LazyColumn(
+        modifier = modifier
+    ) {
+        item {
+            val types = PokemonType.entries
+            for(i in 1..2) {
+                val random = (0..types.size).random()
+
+                PokemonCard(
+                    pokemonName = "Bulbasaur",
+                    pokemonType = EnumSet.of(PokemonType.GRASS),
+                )
             }
         }
+    }
+}
+
+@Composable
+fun TopBar(modifier: Modifier = Modifier) {
+    Row() {
+        SearchBar()
+        Button(onClick = { /*TODO*/ }) {
+            Icon(painterResource(id = R.drawable.filter_icon), contentDescription = "Filtros")
+        }
+    }
+}
+
+@Composable
+fun OutlinedText(
+    text: String,
+    color: Color = MaterialTheme.colorScheme.surface,
+    fontWeight: FontWeight = FontWeight.Bold,
+    fontFamily: FontFamily? = null,
+    outlineColor: Color = Color(0xFF9CB2D0),
+    outlineMiter: Float = 10f,
+    outlineWidth: Float = 10f,
+    fontSize: TextUnit = 86.sp,
+    modifier: Modifier = Modifier
+) {
+    val superLargeStyle = TextStyle(
+        fontFamily = fontFamily,
+        fontWeight = fontWeight,
+        fontSize = fontSize,
+        letterSpacing = fontSize/10,
+        lineHeight = 20.sp,
+        textAlign = TextAlign.Center,
+        color = color
+    )
+    val superLargeStyleOutline = superLargeStyle.copy(
+        color = outlineColor,
+        drawStyle = Stroke(
+            miter = outlineMiter,
+            width = outlineWidth,
+            join = StrokeJoin.Miter
+        ),
+    )
+
+    Text(
+        text = text,
+        style = superLargeStyleOutline,
+        modifier = modifier
+    )
+
+    Text(
+        text = text,
+        style = superLargeStyle,
+        modifier = modifier
+    )
+}
+
+
+@Preview
+@Composable
+fun BottomBar(modifier: Modifier = Modifier) {
+    NavigationBar(
+        modifier = modifier,
+        containerColor = MaterialTheme.colorScheme.background
+    ) {
+        NavigationBarItem(
+            icon = {
+                Icon(AppDestinations.HOME.icon, contentDescription = stringResource(AppDestinations.HOME.contentDescription))
+            },
+            label = {
+                Text(stringResource(AppDestinations.HOME.label))
+            },
+            selected = false,
+            onClick = { /* TODO */ }
+        )
+        NavigationBarItem(
+            icon = {
+                Icon(AppDestinations.FAVORITES.icon, contentDescription = stringResource(AppDestinations.FAVORITES.contentDescription))
+            },
+            label = {
+                Text(stringResource(AppDestinations.FAVORITES.label))
+            },
+            selected = false,
+            onClick = { /* TODO */ }
+        )
+        NavigationBarItem(
+            icon = {
+                Icon(AppDestinations.SETTINGS.icon, contentDescription = stringResource(AppDestinations.SETTINGS.contentDescription))
+            },
+            label = {
+                Text(stringResource(AppDestinations.SETTINGS.label))
+            },
+            selected = false,
+            onClick = { /* TODO */ }
+        )
+    }
 }
 
 enum class PokemonType {
@@ -181,7 +245,7 @@ fun PokemonCardPreview() {
 fun PokemonCard(pokemonName: String, pokemonType: EnumSet<PokemonType>, modifier: Modifier = Modifier) {
     Card(
         shape = MaterialTheme.shapes.medium,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -191,7 +255,9 @@ fun PokemonCard(pokemonName: String, pokemonType: EnumSet<PokemonType>, modifier
                 contentDescription = null,
             ) // aqui vai ter a imagem do pokemon
             Column {
-                Text(text = pokemonName)
+                Text(
+                    text = pokemonName,
+                )
                 when {
                     pokemonType.contains(PokemonType.FIRE) -> {
                         Icon(Icons.Default.Clear, "")
@@ -236,6 +302,7 @@ fun PokemonTypeCard(
 ) {
     val borderSize = 1.5.dp
 
+    // TODO: refatorar essa parte como: MultiOutlinedCard
     // primeira borda
     OutlinedCard(
         shape = MaterialTheme.shapes.medium,
@@ -258,18 +325,21 @@ fun PokemonTypeCard(
                 contentAlignment = Alignment.Center,
             ) {
                 // TODO: arrumar uma maneira de por um outline preto na letra
-                Text(
+                OutlinedText(
                     text = typeName,
-                    color = Color.Black,
-//                    color = Color.White,
+                    color = Color.White,
+                    outlineColor = Color.Black,
+                    outlineWidth = 3f,
+                    outlineMiter = 3f,
                     fontWeight = FontWeight.W800,
-                    modifier = modifier.padding(5.dp),
+                    modifier = modifier.padding(4.dp),
                     fontSize = 5.sp
                 )
             }
         }
     }
 }
+
 
 @Composable
 fun SearchBar(modifier: Modifier = Modifier) {
