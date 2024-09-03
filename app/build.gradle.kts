@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+
+    // ksp FIXME
+//    id("com.google.devtools.ksp") version "2.0.20-1.0.24"
 }
 
 android {
@@ -67,11 +70,35 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    //  images
+    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+
     // paging
-    implementation(libs.androidx.paging.runtime)
-    // optional - Jetpack Compose integration
-    implementation(libs.androidx.paging.compose)
+    val paging_version = "3.3.2"
+
+    implementation("androidx.paging:paging-runtime:$paging_version")
+    ////  optional - Jetpack Compose integration
+    implementation("androidx.paging:paging-compose:$paging_version")
 
     // api
-    implementation(libs.retrofit)
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation(libs.gson)
+
+    // persistance
+    val room_version = "2.6.1"
+
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+    //// To use Kotlin Symbol Processing (KSP) FIXME
+//    ksp("androidx.room:room-compiler:$room_version")
+
+    //// optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:$room_version")
+
+    //// optional - Test helpers
+    testImplementation("androidx.room:room-testing:$room_version")
+
+    //// optional - Paging 3 Integration
+    implementation("androidx.room:room-paging:$room_version")
+
 }
