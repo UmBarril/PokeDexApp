@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">PokeDexApp</string>
+    <string name="home_destination">Principal</string>
+    <string name="favorites_destination">Favoritos</string>
+    <string name="settings_destination">Configurações</string>
+    <string name="settings_description">Configurações</string>
+    <string name="favorites_description">Favoritos</string>
+    <string name="home_description">Principal</string>
 </resources>
