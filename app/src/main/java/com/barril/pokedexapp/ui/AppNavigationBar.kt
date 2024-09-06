@@ -8,12 +8,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.barril.pokedexapp.AppDestinations
 
-@Preview
 @Composable
-fun AppNavigationBar(modifier: Modifier = Modifier) {
+fun AppNavigationBar(
+    onDestinationClicked: (AppDestinations) -> Unit,
+    selectedDestination: AppDestinations,
+    modifier: Modifier = Modifier
+) {
     NavigationBar(
         modifier = modifier,
         containerColor = MaterialTheme.colorScheme.background
@@ -25,8 +27,8 @@ fun AppNavigationBar(modifier: Modifier = Modifier) {
             label = {
                 Text(stringResource(AppDestinations.HOME.label))
             },
-            selected = false,
-            onClick = { /* TODO */ }
+            selected = selectedDestination == AppDestinations.HOME,
+            onClick = { onDestinationClicked(AppDestinations.HOME) }
         )
         NavigationBarItem(
             icon = {
@@ -38,8 +40,8 @@ fun AppNavigationBar(modifier: Modifier = Modifier) {
             label = {
                 Text(stringResource(AppDestinations.FAVORITES.label))
             },
-            selected = false,
-            onClick = { /* TODO */ }
+            selected = selectedDestination == AppDestinations.FAVORITES,
+            onClick = { onDestinationClicked(AppDestinations.FAVORITES) }
         )
         NavigationBarItem(
             icon = {
@@ -51,8 +53,8 @@ fun AppNavigationBar(modifier: Modifier = Modifier) {
             label = {
                 Text(stringResource(AppDestinations.SETTINGS.label))
             },
-            selected = false,
-            onClick = { /* TODO */ }
+            selected = selectedDestination == AppDestinations.SETTINGS,
+            onClick = { onDestinationClicked(AppDestinations.SETTINGS) }
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.barril.pokedexapp.ui
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.Row
@@ -9,28 +10,24 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.barril.pokedexapp.PokemonType
 import com.barril.pokedexapp.R
+import com.barril.pokedexapp.ui.theme.PokeDexAppTheme
 import java.util.EnumSet
+
 
 @Composable
 fun HomeView(modifier: Modifier = Modifier) {
-    Scaffold(
-        modifier = modifier,
-        topBar = {
-            PokemonSearchBar()
-        },
-        bottomBar = {
-            AppNavigationBar()
-        },
-    ) { innerPadding ->
-        PokemonColumnList(Modifier.padding(innerPadding))
+    Column {
+        PokemonSearchBar(modifier)
+        PokemonColumnList(modifier)
     }
 }
 
 @Composable
 fun PokemonSearchBar(modifier: Modifier = Modifier) {
-    Row {
+    Row() {
         SearchBar()
         Button(onClick = { /*TODO*/ }) {
             Icon(painterResource(id = R.drawable.filter_icon), contentDescription = "Filtros")
@@ -54,5 +51,13 @@ fun PokemonColumnList(modifier: Modifier = Modifier) {
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun HomePreview(modifier: Modifier = Modifier) {
+    PokeDexAppTheme {
+        HomeView(modifier)
     }
 }
