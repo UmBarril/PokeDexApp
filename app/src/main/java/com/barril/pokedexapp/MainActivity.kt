@@ -5,8 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -51,10 +53,15 @@ fun MainApp(modifier: Modifier = Modifier) {
             )
         },
     ) { innerPadding ->
-        when (currentDestination) {
-            AppDestinations.HOME -> HomeView(modifier.padding(innerPadding))
-            AppDestinations.FAVORITES -> TODO()
-            AppDestinations.SETTINGS -> TODO()
+        AnimatedContent(
+            targetState = currentDestination,
+            /* transitinSpec = TODO */
+        ) { targetState ->
+            when (targetState) {
+                AppDestinations.HOME -> HomeView(modifier.padding(innerPadding))
+                AppDestinations.FAVORITES -> Text("TODO")
+                AppDestinations.SETTINGS -> Text("TODO")
+            }
         }
     }
 }
