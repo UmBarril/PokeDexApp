@@ -18,7 +18,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.barril.pokedexapp.ui.AppNavigationBar
+import com.barril.pokedexapp.ui.FavoritesView
 import com.barril.pokedexapp.ui.HomeView
+import com.barril.pokedexapp.ui.SettingsView
 import com.barril.pokedexapp.ui.theme.PokeDexAppTheme
 import com.barril.pokedexapp.viewmodels.DummyViewModel
 
@@ -59,8 +61,8 @@ fun MainApp(modifier: Modifier = Modifier) {
         ) { targetState ->
             when (targetState) {
                 AppDestinations.HOME -> HomeView(modifier.padding(innerPadding))
-                AppDestinations.FAVORITES -> Text("TODO")
-                AppDestinations.SETTINGS -> Text("TODO")
+                AppDestinations.FAVORITES -> FavoritesView()
+                AppDestinations.SETTINGS -> SettingsView()
             }
         }
     }
