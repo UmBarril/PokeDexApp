@@ -1,4 +1,4 @@
-package com.barril.pokedexapp
+package com.barril.pokedexapp.viewmodels
 
 import androidx.lifecycle.ViewModel
 
