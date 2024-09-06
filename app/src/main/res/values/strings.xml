@@ -6,7 +6,8 @@
     <string name="settings_description">Configurações</string>
     <string name="favorites_description">Favoritos</string>
     <string name="home_description">Principal</string>
-    <string name="search">Pesquisar</string>
-    <string name="pokemon_list_filters">Filtros</string>
+    <string name="search_icon_description">Pesquisar</string>
+    <string name="filter_icon_description">Filtros</string>
     <string name="favorites_button_description">Favoritos</string>
+    <string name="more_options_icon_description">Mais opções</string>
 </resources>
