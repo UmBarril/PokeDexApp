@@ -1,5 +1,6 @@
 package com.barril.pokedexapp.ui
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.getValue
@@ -25,6 +27,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,9 +43,7 @@ import java.util.EnumSet
 fun HomeView(modifier: Modifier = Modifier) {
     Column {
         PokemonSearchBar(modifier)
-        Surface {
-            PokemonColumnList(modifier.weight(1f))
-        }
+        PokemonColumnList(modifier.weight(1f))
     }
 }
 
@@ -53,8 +55,8 @@ fun PokemonSearchBar(modifier: Modifier = Modifier) {
             horizontalArrangement = Arrangement.End,
             modifier = modifier
                 .fillMaxWidth()
-//                .height(80.dp)
         ) {
+            // TODO: adicionar transição
             if (isSearchingNow) {
                 TextButton(onClick = { isSearchingNow = false }) {
                     Icon(
@@ -99,18 +101,19 @@ fun PokemonSearchBar(modifier: Modifier = Modifier) {
 @Composable
 fun PokemonColumnList(modifier: Modifier = Modifier) {
     LazyColumn(
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.background)
     ) {
-        item {
-            val types = PokemonType.entries
-            for(i in 1..2) {
-                val random = (0..types.size).random()
+        item(3) {
 
-                PokemonCard(
-                    pokemonName = "Bulbasaur",
-                    pokemonType = EnumSet.of(PokemonType.GRASS),
-                )
-            }
+            PokemonCard(
+                pokemonName = "Bulbasaur",
+                pokemonType = EnumSet.of(PokemonType.GRASS),
+                pokemonArt = ImageBitmap.imageResource(R.drawable.balbasaur),
+                isFavorite = false,
+                onFavoriteButtonPressed = { /* TODO */ }
+            )
         }
     }
 }
