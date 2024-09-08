@@ -1,4 +1,4 @@
-package com.barril.pokedexapp.ui
+package com.barril.pokedexapp.ui.components
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text

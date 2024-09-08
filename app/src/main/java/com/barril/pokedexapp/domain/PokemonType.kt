@@ -1,4 +1,4 @@
-package com.barril.pokedexapp
+package com.barril.pokedexapp.domain
 
 enum class PokemonType {
     FIRE,

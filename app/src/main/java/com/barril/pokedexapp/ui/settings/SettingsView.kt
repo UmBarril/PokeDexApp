@@ -1,4 +1,4 @@
-package com.barril.pokedexapp.ui
+package com.barril.pokedexapp.ui.settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

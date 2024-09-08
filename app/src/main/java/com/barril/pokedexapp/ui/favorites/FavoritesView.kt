@@ -1,4 +1,4 @@
-package com.barril.pokedexapp.ui
+package com.barril.pokedexapp.ui.favorites
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

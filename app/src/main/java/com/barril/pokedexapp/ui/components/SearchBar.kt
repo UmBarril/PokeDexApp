@@ -1,4 +1,4 @@
-package com.barril.pokedexapp.ui
+package com.barril.pokedexapp.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
