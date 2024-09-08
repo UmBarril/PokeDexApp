@@ -7,6 +7,9 @@ plugins {
 
     // ksp
     id("com.google.devtools.ksp")
+
+    // compose compiler
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
