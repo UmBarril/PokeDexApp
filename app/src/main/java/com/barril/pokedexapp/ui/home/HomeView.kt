@@ -1,13 +1,6 @@
 package com.barril.pokedexapp.ui.home
 
-import android.graphics.Bitmap
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,11 +11,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -50,29 +43,49 @@ import java.util.EnumSet
 
 @Composable
 fun HomeView(modifier: Modifier = Modifier) {
-    Column {
-        PokemonTopBar()
-//        PokemonSearchBar(modifier)
+    Column(modifier) {
+        var isSearchExpanded by remember { mutableStateOf(false) }
+        var isMoreExpanded by remember { mutableStateOf(false) }
+        PokemonTopBar(
+            isSearchExpanded = isSearchExpanded,
+            isMoreExpanded = isMoreExpanded,
+            onSearchCloseButtonClick = { isSearchExpanded = false },
+            onSearchButtonClick = { isSearchExpanded = true },
+            onFilterButtonClick = { /* TODO: empurrar isso para um snackhost */ },
+            onMoreButtonClick = { isMoreExpanded = !isMoreExpanded },
+            onSearchValueChange = { /* TODO */ },
+            onDismissMoreDropMenu = { isMoreExpanded = false }
+        )
+
         PokemonColumnList()
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PokemonTopBar() {
-    var isSearchingNow by remember { mutableStateOf(false) }
+fun PokemonTopBar(
+    isSearchExpanded: Boolean = false,
+    // isMoreExpanded: Boolean, // nada implementado para usar isso ainda
+    isMoreExpanded: Boolean = false,
+    onSearchButtonClick: () -> Unit = {},
+    onSearchCloseButtonClick: () -> Unit = {},
+    onFilterButtonClick: () -> Unit = {},
+    onMoreButtonClick: () -> Unit = {},
+    onSearchValueChange: (String) -> Unit = {},
+    onDismissMoreDropMenu: () -> Unit = {},
+) {
     TopAppBar(
         title = {
-            if(isSearchingNow) {
+            if(isSearchExpanded) {
                 Row {
-                    IconButton(onClick = { isSearchingNow = false }) {
+                    IconButton(onClick = onSearchCloseButtonClick) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = ""
                         )
                     }
                     SearchBar(
-                        onValueChange = { /* TODO */ },
+                        onValueChange = onSearchValueChange,
                     )
                 }
             } else {
@@ -80,9 +93,9 @@ fun PokemonTopBar() {
             }
         },
         actions = {
-            if(!isSearchingNow) {
+            if(!isSearchExpanded) {
                 TextButton(
-                    onClick = { isSearchingNow = true },
+                    onClick = onSearchButtonClick,
                 ) {
                     Icon(
                         Icons.Default.Search,
@@ -91,7 +104,7 @@ fun PokemonTopBar() {
                 }
             }
             TextButton(
-                onClick = { /*TODO*/ },
+                onClick = onFilterButtonClick,
             ) {
                 Icon(
                     painterResource(id = R.drawable.filter_icon),
@@ -99,12 +112,19 @@ fun PokemonTopBar() {
                 )
             }
             TextButton(
-                onClick = { /*TODO*/ },
+                onClick = onMoreButtonClick,
             ) {
                 Icon(
                     Icons.Default.MoreVert,
                     contentDescription = stringResource(R.string.more_options_icon_description)
                 )
+                DropdownMenu(
+                    isMoreExpanded,
+                    onDismissRequest = onDismissMoreDropMenu
+                ) {
+                    Text("teste")
+                    /* TODO: por funções aqui */
+                }
             }
         }
     )
