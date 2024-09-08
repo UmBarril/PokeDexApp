@@ -73,50 +73,43 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation("androidx.compose.foundation:foundation:1.7.0")
+    implementation(libs.androidx.foundation)
 
-    // navigation (futuro)
-    val nav_version = "2.8.0"
-
+    // navigation
     // Jetpack Compose integration
-    implementation("androidx.navigation:navigation-compose:$nav_version")
+    implementation(libs.androidx.navigation.compose)
     // Testing Navigation
-    androidTestImplementation("androidx.navigation:navigation-testing:$nav_version")
+    androidTestImplementation(libs.androidx.navigation.testing)
 
     // layout
 //    implementation(libs.androidx.constraintlayout)
-//    //// to use constraintlyout in compose
+//    //// to use constraintlayout in compose
 //    implementation("androidx.constraintlayout:constraintlayout-compose:1.1.0-beta01")
 
     //  images
-    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+    implementation(libs.compose)
 
     // paging
-    val paging_version = "3.3.2"
-
-    implementation("androidx.paging:paging-runtime:$paging_version")
+    implementation(libs.androidx.paging.runtime.ktx)
     ////  optional - Jetpack Compose integration
-    implementation("androidx.paging:paging-compose:$paging_version")
+    implementation(libs.paging.compose)
 
     // api
-    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation(libs.retrofit2.retrofit)
     implementation(libs.gson)
 
-    // persistance
-    val room_version = "2.6.1"
-
-    implementation("androidx.room:room-runtime:$room_version")
-    annotationProcessor("androidx.room:room-compiler:$room_version")
+    // persistence
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.compiler)
     //// To use Kotlin Symbol Processing (KSP)
-    ksp("androidx.room:room-compiler:$room_version")
+    ksp(libs.androidx.room.compiler)
 
     //// optional - Kotlin Extensions and Coroutines support for Room
-    implementation("androidx.room:room-ktx:$room_version")
+    implementation(libs.androidx.room.ktx)
 
     //// optional - Test helpers
-    testImplementation("androidx.room:room-testing:$room_version")
+    testImplementation(libs.androidx.room.testing)
 
     //// optional - Paging 3 Integration
-    implementation("androidx.room:room-paging:$room_version")
-
+    implementation(libs.androidx.room.paging)
 }
