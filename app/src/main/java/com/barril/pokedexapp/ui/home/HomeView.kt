@@ -3,6 +3,7 @@ package com.barril.pokedexapp.ui.home
 import android.graphics.Bitmap
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.Row
@@ -42,8 +43,10 @@ import java.util.EnumSet
 
 @Composable
 fun HomeView(modifier: Modifier = Modifier) {
-    PokemonSearchBar(modifier)
-    PokemonColumnList()
+    Column {
+        PokemonSearchBar(modifier)
+        PokemonColumnList()
+    }
 }
 
 @Composable
@@ -124,15 +127,6 @@ fun PokemonColumnList(modifier: Modifier = Modifier) {
                 },
                 onFavoriteButtonPressed = { /* TODO */ }
             )
-        }
-        items(2) {
-//            PokemonCard(
-//                pokemonName = "Test",
-//                pokemonType = EnumSet.of(PokemonTypeIcon.GRASS),
-//                pokemonArt = ImageBitmap.imageResource(R.drawable.big_pokemon),
-//                isFavorite = false,
-//                onFavoriteButtonPressed = { /* TODO */ }
-//            )
         }
     }
 }
