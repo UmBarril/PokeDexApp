@@ -1,7 +1,3 @@
-val nav_version = "2.8.0"
-val room_version = "2.6.1"
-val paging_version = "3.3.2"
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -9,8 +5,8 @@ plugins {
     // navigation-compose
     id("androidx.navigation.safeargs.kotlin")
 
-    // ksp FIXME
-//    id("com.google.devtools.ksp") version "2.0.20-1.0.24"
+    // ksp
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -59,15 +55,6 @@ android {
     }
 }
 
-buildscript {
-    repositories {
-        google()
-    }
-    dependencies {
-        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version")
-    }
-}
-
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -89,6 +76,7 @@ dependencies {
     implementation("androidx.compose.foundation:foundation:1.7.0")
 
     // navigation (futuro)
+    val nav_version = "2.8.0"
 
     // Jetpack Compose integration
     implementation("androidx.navigation:navigation-compose:$nav_version")
@@ -104,6 +92,8 @@ dependencies {
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
 
     // paging
+    val paging_version = "3.3.2"
+
     implementation("androidx.paging:paging-runtime:$paging_version")
     ////  optional - Jetpack Compose integration
     implementation("androidx.paging:paging-compose:$paging_version")
@@ -113,10 +103,12 @@ dependencies {
     implementation(libs.gson)
 
     // persistance
+    val room_version = "2.6.1"
+
     implementation("androidx.room:room-runtime:$room_version")
     annotationProcessor("androidx.room:room-compiler:$room_version")
-    //// To use Kotlin Symbol Processing (KSP) FIXME
-//    ksp("androidx.room:room-compiler:$room_version")
+    //// To use Kotlin Symbol Processing (KSP)
+    ksp("androidx.room:room-compiler:$room_version")
 
     //// optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
