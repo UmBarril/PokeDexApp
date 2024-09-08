@@ -1,6 +1,11 @@
 package com.barril.pokedexapp.ui.home
 
 import android.graphics.Bitmap
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,17 +18,19 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asAndroidBitmap
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.imageResource
@@ -44,33 +51,36 @@ import java.util.EnumSet
 @Composable
 fun HomeView(modifier: Modifier = Modifier) {
     Column {
-        PokemonSearchBar(modifier)
+        PokemonTopBar()
+//        PokemonSearchBar(modifier)
         PokemonColumnList()
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PokemonSearchBar(modifier: Modifier = Modifier) {
+fun PokemonTopBar() {
     var isSearchingNow by remember { mutableStateOf(false) }
-    Surface {
-        Row(
-            horizontalArrangement = Arrangement.End,
-            modifier = modifier
-                .fillMaxWidth()
-        ) {
-            // TODO: adicionar transição
-            if (isSearchingNow) {
-                TextButton(onClick = { isSearchingNow = false }) {
-                    Icon(
-                        Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = ""
+    TopAppBar(
+        title = {
+            if(isSearchingNow) {
+                Row {
+                    IconButton(onClick = { isSearchingNow = false }) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = ""
+                        )
+                    }
+                    SearchBar(
+                        onValueChange = { /* TODO */ },
                     )
                 }
-                SearchBar(
-                    onValueChange = { /* TODO */ },
-                    modifier = Modifier.weight(1f)
-                )
             } else {
+                Text("Principal")
+            }
+        },
+        actions = {
+            if(!isSearchingNow) {
                 TextButton(
                     onClick = { isSearchingNow = true },
                 ) {
@@ -97,7 +107,7 @@ fun PokemonSearchBar(modifier: Modifier = Modifier) {
                 )
             }
         }
-    }
+    )
 }
 
 @Composable

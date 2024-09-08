@@ -30,7 +30,5 @@ fun SearchBar(
             Text(stringResource(R.string.search_icon_description))
         },
         modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = 56.dp)
     )
 }
