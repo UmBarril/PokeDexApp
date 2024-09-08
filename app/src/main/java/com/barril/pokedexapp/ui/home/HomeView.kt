@@ -1,23 +1,17 @@
-package com.barril.pokedexapp.ui
+package com.barril.pokedexapp.ui.home
 
-import androidx.compose.animation.AnimatedContent
+import android.graphics.Bitmap
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -26,25 +20,30 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.barril.pokedexapp.PokemonType
 import com.barril.pokedexapp.R
+import com.barril.pokedexapp.domain.PokemonType
+import com.barril.pokedexapp.ui.components.ImageWithShadow
+import com.barril.pokedexapp.ui.components.PokemonCard
+import com.barril.pokedexapp.ui.components.SearchBar
+import com.barril.pokedexapp.ui.components.scaleImageBitMap
 import com.barril.pokedexapp.ui.theme.PokeDexAppTheme
 import java.util.EnumSet
 
 
 @Composable
 fun HomeView(modifier: Modifier = Modifier) {
-    Column {
-        PokemonSearchBar(modifier)
-        PokemonColumnList(modifier.weight(1f))
-    }
+    PokemonSearchBar(modifier)
+    PokemonColumnList()
 }
 
 @Composable
@@ -101,19 +100,39 @@ fun PokemonSearchBar(modifier: Modifier = Modifier) {
 @Composable
 fun PokemonColumnList(modifier: Modifier = Modifier) {
     LazyColumn(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        item(3) {
-
+        item {
             PokemonCard(
                 pokemonName = "Bulbasaur",
-                pokemonType = EnumSet.of(PokemonType.GRASS),
-                pokemonArt = ImageBitmap.imageResource(R.drawable.balbasaur),
-                isFavorite = false,
+                pokemonType = EnumSet.of(PokemonType.GRASS, PokemonType.ELECTRIC),
+                pokemonArt = {
+                    val img = ImageBitmap.imageResource(R.drawable.balbasaur)
+                    val targetWidth = with(LocalDensity.current) {
+                        100.dp.toPx().toInt()
+                    }
+                    val targetHeight = with(LocalDensity.current) {
+                        100.dp.toPx().toInt()
+                    }
+                    ImageWithShadow(
+                        bitmap = scaleImageBitMap(img, targetWidth, targetHeight),
+                        contentDescription = null,
+                        contentScale = ContentScale.None
+                    )
+                },
                 onFavoriteButtonPressed = { /* TODO */ }
             )
+        }
+        items(2) {
+//            PokemonCard(
+//                pokemonName = "Test",
+//                pokemonType = EnumSet.of(PokemonTypeIcon.GRASS),
+//                pokemonArt = ImageBitmap.imageResource(R.drawable.big_pokemon),
+//                isFavorite = false,
+//                onFavoriteButtonPressed = { /* TODO */ }
+//            )
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.barril.pokedexapp.ui
+package com.barril.pokedexapp.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Surface
@@ -18,11 +18,28 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.barril.pokedexapp.PokemonType
+import com.barril.pokedexapp.domain.PokemonType
+import com.barril.pokedexapp.ui.components.PokemonTypeIcons.BugTypeIcon
+import com.barril.pokedexapp.ui.components.PokemonTypeIcons.DarkTypeIcon
+import com.barril.pokedexapp.ui.components.PokemonTypeIcons.DragonTypeIcon
+import com.barril.pokedexapp.ui.components.PokemonTypeIcons.ElectricTypeIcon
+import com.barril.pokedexapp.ui.components.PokemonTypeIcons.FairyTypeIcon
+import com.barril.pokedexapp.ui.components.PokemonTypeIcons.FightingTypeIcon
+import com.barril.pokedexapp.ui.components.PokemonTypeIcons.FireTypeIcon
+import com.barril.pokedexapp.ui.components.PokemonTypeIcons.FlyingTypeIcon
+import com.barril.pokedexapp.ui.components.PokemonTypeIcons.GhostTypeIcon
+import com.barril.pokedexapp.ui.components.PokemonTypeIcons.GrassTypeIcon
+import com.barril.pokedexapp.ui.components.PokemonTypeIcons.GroundTypeIcon
+import com.barril.pokedexapp.ui.components.PokemonTypeIcons.IceTypeIcon
+import com.barril.pokedexapp.ui.components.PokemonTypeIcons.NormalTypeIcon
+import com.barril.pokedexapp.ui.components.PokemonTypeIcons.PoisonTypeIcon
+import com.barril.pokedexapp.ui.components.PokemonTypeIcons.PsychicTypeIcon
+import com.barril.pokedexapp.ui.components.PokemonTypeIcons.RockTypeIcon
+import com.barril.pokedexapp.ui.components.PokemonTypeIcons.SteelTypeIcon
+import com.barril.pokedexapp.ui.components.PokemonTypeIcons.WaterTypeIcon
 
 @Composable
 fun PokemonTypeIcon(
@@ -31,6 +48,8 @@ fun PokemonTypeIcon(
     fontSize: TextUnit = 5.sp,
     modifier: Modifier = Modifier
 ) {
+    val textPadding = 4.dp
+
 //    val borderSize = 1.5.dp
     val borderSize = with(LocalDensity.current) {
         fontSize.toDp() / 4
@@ -46,7 +65,9 @@ fun PokemonTypeIcon(
     OutlinedCard(
         shape = MaterialTheme.shapes.medium,
         border = BorderStroke(borderSize / 3, Color.Black),
-        modifier = modifier
+        modifier = modifier.requiredHeightIn(with(LocalDensity.current) {
+            fontSize.toDp() + (borderSize * 2) + textPadding
+        })
     ) {
         // segunda borda
         Surface(
@@ -67,11 +88,35 @@ fun PokemonTypeIcon(
                     outlineWidth = outlineWidth,
                     outlineMiter = 20f,
                     fontWeight = FontWeight.W800,
-                    modifier = modifier.padding(4.dp),
+                    modifier = modifier.padding(textPadding),
                     fontSize = fontSize
                 )
             }
         }
+    }
+}
+
+@Composable
+fun PokemonTypeIcon(type: PokemonType, fontSize: TextUnit) {
+    when(type) {
+        PokemonType.GRASS -> GrassTypeIcon(fontSize)
+        PokemonType.FIRE -> FireTypeIcon(fontSize)
+        PokemonType.WATER -> WaterTypeIcon(fontSize)
+        PokemonType.ELECTRIC -> ElectricTypeIcon(fontSize)
+        PokemonType.ICE -> IceTypeIcon(fontSize)
+        PokemonType.FIGHTING -> FightingTypeIcon(fontSize)
+        PokemonType.POISON -> PoisonTypeIcon(fontSize)
+        PokemonType.GROUND -> GroundTypeIcon(fontSize)
+        PokemonType.FLYING -> FlyingTypeIcon(fontSize)
+        PokemonType.PSYCHIC -> PsychicTypeIcon(fontSize)
+        PokemonType.BUG -> BugTypeIcon(fontSize)
+        PokemonType.ROCK -> RockTypeIcon(fontSize)
+        PokemonType.GHOST -> GhostTypeIcon(fontSize)
+        PokemonType.DRAGON -> DragonTypeIcon(fontSize)
+        PokemonType.DARK -> DarkTypeIcon(fontSize)
+        PokemonType.STEEL -> SteelTypeIcon(fontSize)
+        PokemonType.FAIRY -> FairyTypeIcon(fontSize)
+        PokemonType.NORMAL -> NormalTypeIcon(fontSize)
     }
 }
 
@@ -239,30 +284,6 @@ object PokemonTypeIcons {
         )
     }
 
-    @Composable
-    fun fromPokemonType(type: PokemonType, fontSize: TextUnit) {
-        when(type) {
-            PokemonType.GRASS -> GrassTypeIcon(fontSize)
-            PokemonType.FIRE -> FireTypeIcon(fontSize)
-            PokemonType.WATER -> WaterTypeIcon(fontSize)
-            PokemonType.ELECTRIC -> ElectricTypeIcon(fontSize)
-            PokemonType.ICE -> IceTypeIcon(fontSize)
-            PokemonType.FIGHTING -> FightingTypeIcon(fontSize)
-            PokemonType.POISON -> PoisonTypeIcon(fontSize)
-            PokemonType.GROUND -> GroundTypeIcon(fontSize)
-            PokemonType.FLYING -> FlyingTypeIcon(fontSize)
-            PokemonType.PSYCHIC -> PsychicTypeIcon(fontSize)
-            PokemonType.BUG -> BugTypeIcon(fontSize)
-            PokemonType.ROCK -> RockTypeIcon(fontSize)
-            PokemonType.GHOST -> GhostTypeIcon(fontSize)
-            PokemonType.DRAGON -> DragonTypeIcon(fontSize)
-            PokemonType.DARK -> DarkTypeIcon(fontSize)
-            PokemonType.STEEL -> SteelTypeIcon(fontSize)
-            PokemonType.FAIRY -> FairyTypeIcon(fontSize)
-            PokemonType.NORMAL -> NormalTypeIcon(fontSize)
-            PokemonType.FIRE -> FireTypeIcon(fontSize)
-        }
-    }
 }
 
 @Preview

@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
 
+    //futuro
+    //     id("androidx.navigation.safeargs.kotlin")
     // ksp FIXME
 //    id("com.google.devtools.ksp") version "2.0.20-1.0.24"
 }
@@ -52,6 +54,17 @@ android {
     }
 }
 
+// futuro
+//buildscript {
+//    repositories {
+//        google()
+//    }
+//    dependencies {
+//        val nav_version = "2.8.0"
+//        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version")
+//    }
+//}
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -69,6 +82,21 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation("androidx.compose.foundation:foundation:1.7.0")
+
+    // navigation (futuro)
+//    val nav_version = "2.8.0"
+//
+//    // Jetpack Compose integration
+//    implementation("androidx.navigation:navigation-compose:$nav_version")
+//    // Testing Navigation
+//    androidTestImplementation("androidx.navigation:navigation-testing:$nav_version")
+
+    // layout
+//    implementation(libs.androidx.constraintlayout)
+//    //// to use constraintlyout in compose
+//    implementation("androidx.constraintlayout:constraintlayout-compose:1.1.0-beta01")
 
     //  images
     implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
