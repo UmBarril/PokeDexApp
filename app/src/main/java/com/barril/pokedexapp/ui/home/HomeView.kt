@@ -21,15 +21,20 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SecondaryTabRow
+import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
@@ -38,13 +43,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.barril.pokedexapp.R
 import com.barril.pokedexapp.domain.PokemonType
 import com.barril.pokedexapp.ui.components.ImageWithShadow
 import com.barril.pokedexapp.ui.components.PokemonCard
+import com.barril.pokedexapp.ui.components.PokemonTypeIcon
 import com.barril.pokedexapp.ui.components.SearchBar
 import com.barril.pokedexapp.ui.components.scaleImageBitMap
 import com.barril.pokedexapp.ui.theme.PokeDexAppTheme
+import kotlinx.coroutines.launch
 import java.util.EnumSet
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -180,12 +188,14 @@ fun PokemonColumnList(modifier: Modifier = Modifier) {
                         100.dp.toPx().toInt()
                     }
                     ImageWithShadow(
-                        bitmap = scaleImageBitMap(img, targetWidth, targetHeight),
+                        bitmap = img.scaleImageBitMap(targetWidth, targetHeight),
                         contentDescription = null,
                         contentScale = ContentScale.None
                     )
                 },
-                onFavoriteButtonPressed = { /* TODO */ }
+                isFavorite = isFavorite,
+                onFavoriteButtonPressed = { isFavorite = !isFavorite },
+                onCardClick = { /* TODO */ }
             )
         }
     }

@@ -97,7 +97,7 @@ fun PokemonTypeIcon(
 }
 
 @Composable
-fun PokemonTypeIcon(type: PokemonType, fontSize: TextUnit) {
+fun PokemonTypeIcon(type: PokemonType, fontSize: TextUnit = 12.sp) {
     when(type) {
         PokemonType.GRASS -> GrassTypeIcon(fontSize)
         PokemonType.FIRE -> FireTypeIcon(fontSize)

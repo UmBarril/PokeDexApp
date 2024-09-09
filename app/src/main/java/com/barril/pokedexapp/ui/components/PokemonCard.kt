@@ -86,11 +86,12 @@ fun PokemonCard(
     pokemonName: String,
     pokemonType: EnumSet<PokemonType>,
     pokemonArt: @Composable () -> Unit,
-    modifier: Modifier = Modifier,
+    onCardClick: () -> Unit,
     onFavoriteButtonPressed: () -> Unit,
-    isFavorite: Boolean = false
+    isFavorite: Boolean,
+    modifier: Modifier = Modifier,
 ) {
-    Box {
+    Box(modifier.clickable { onCardClick() }) {
         Card(
             shape = MaterialTheme.shapes.large,
             modifier = Modifier
@@ -126,7 +127,14 @@ fun PokemonCard(
                     )
 
                     // TODO: fazer isso clicavel para trocar a aparencia do pokemon
-                    FemaleIcon(null)
+                    var isMale by remember { mutableStateOf(false) }
+                    Box(Modifier.clickable { isMale = !isMale }) {
+                        if(isMale) {
+                            MaleIcon(null)
+                        } else {
+                            FemaleIcon(null)
+                        }
+                    }
                     // MaleIcon
                 }
 
@@ -137,44 +145,6 @@ fun PokemonCard(
                         PokemonTypeIcon(type, 12.sp)
                     }
                 }
-
-//                // https://developer.android.com/develop/ui/compose/layouts/flow
-//                var maxLines by remember { mutableIntStateOf(1) }
-//
-//                val moreOrCollapseIndicator = @Composable { scope: ContextualFlowRowOverflowScope ->
-//                    val remainingItems = pokemonType.size - scope.shownItemCount
-//
-//                    TextButton(onClick = {
-//                        if (remainingItems == 0) {
-//                            maxLines = 1
-//                        } else {
-//                            maxLines += 4
-//                        }
-//                    }) {
-//                        Text(if (remainingItems == 0) "Less" else "+$remainingItems",)
-//                    }
-//                }
-//                ContextualFlowRow(
-//                    modifier = Modifier
-//                        .safeDrawingPadding()
-//                        .fillMaxWidth(1f)
-////                        .padding(16.dp)
-//                        .wrapContentHeight(align = Alignment.Top)
-//                        .verticalScroll(rememberScrollState()),
-//                    verticalArrangement = Arrangement.spacedBy(4.dp),
-//                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-////                    maxLines = maxLines,
-//                    overflow = ContextualFlowRowOverflow.expandOrCollapseIndicator(
-//                        minRowsToShowCollapse = 2,
-//                        expandIndicator = moreOrCollapseIndicator,
-//                        collapseIndicator = moreOrCollapseIndicator
-//                    ),
-//                    itemCount = pokemonType.size
-//                ) { index ->
-//                    for (type in pokemonType) {
-//                        PokemonTypeIcon(type, 12.sp)
-//                    }
-//                }
             }
 
             Spacer(Modifier.weight(1f))
@@ -245,12 +215,11 @@ fun ImageWithShadow(
     }
 }
 
-fun scaleImageBitMap(
-    img: ImageBitmap,
+fun ImageBitmap.scaleImageBitMap(
     targetWidth: Int,
     targetHeight: Int
 ): ImageBitmap {
-    return Bitmap.createScaledBitmap(img.asAndroidBitmap(), targetWidth, targetHeight, false).asImageBitmap()
+    return Bitmap.createScaledBitmap(this.asAndroidBitmap(), targetWidth, targetHeight, false).asImageBitmap()
 }
 
 @Preview
@@ -269,13 +238,14 @@ fun BigPokemonCardPreview() {
                 100.dp.toPx().toInt()
             }
             ImageWithShadow(
-                bitmap = scaleImageBitMap(img, targetWidth, targetHeight),
+                bitmap = img.scaleImageBitMap(targetWidth, targetHeight),
                 contentDescription = null,
                 contentScale = ContentScale.None
             )
         },
         isFavorite = pressed,
-        onFavoriteButtonPressed = { pressed = !pressed }
+        onFavoriteButtonPressed = { pressed = !pressed },
+        onCardClick = {}
     )
 }
 
@@ -297,10 +267,11 @@ fun SmallPokemonCardPreview() {
                 100.dp.toPx().toInt()
             }
             ImageWithShadow(
-                bitmap = scaleImageBitMap(img, targetWidth, targetHeight),
+                bitmap = img.scaleImageBitMap(targetWidth, targetHeight),
                 contentDescription = null,
                 contentScale = ContentScale.None
             )
-        }
+        },
+        onCardClick = {}
     )
 }
