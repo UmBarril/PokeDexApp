@@ -6,11 +6,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -51,15 +55,22 @@ fun HomeView(modifier: Modifier = Modifier) {
         var isMoreExpanded by remember { mutableStateOf(false) }
 
         val sheetState = rememberModalBottomSheetState()
-        val scope = rememberCoroutineScope()
         var isFilterExpanded by remember { mutableStateOf(false) }
+
+        val scope = rememberCoroutineScope()
 
         PokemonTopBar(
             isSearchExpanded = isSearchExpanded,
             isMoreExpanded = isMoreExpanded,
             onSearchCloseButtonClick = { isSearchExpanded = false },
             onSearchButtonClick = { isSearchExpanded = true },
-            onFilterButtonClick = { isFilterExpanded = true },
+            onFilterButtonClick = {
+                scope.launch { sheetState.expand() }.invokeOnCompletion {
+                    if (sheetState.isVisible) {
+                        isFilterExpanded = true
+                    }
+                }
+            },
             onMoreButtonClick = { isMoreExpanded = !isMoreExpanded },
             onSearchValueChange = { /* TODO */ },
             onDismissMoreDropMenu = { isMoreExpanded = false }
@@ -68,25 +79,14 @@ fun HomeView(modifier: Modifier = Modifier) {
         PokemonColumnList()
 
         if (isFilterExpanded) {
-            ModalBottomSheet(
+            FilterBottomSheet(
                 onDismissRequest = { isFilterExpanded = false },
                 sheetState = sheetState
-            ) {
-                Text("Test")
-                // Sheet content
-//                Button(onClick = {
-//                    scope.launch { sheetState.hide() }.invokeOnCompletion {
-//                        if (!sheetState.isVisible) {
-//                            showBottomSheet = false
-//                        }
-//                    }
-//                }) {
-//                    Text("Hide bottom sheet")
-//                }
-            }
+            )
         }
     }
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -159,6 +159,9 @@ fun PokemonTopBar(
 
 @Composable
 fun PokemonColumnList(modifier: Modifier = Modifier) {
+    var loading by remember { mutableStateOf(false) }
+    var isFavorite by remember { mutableStateOf(false) }
+
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -186,6 +189,14 @@ fun PokemonColumnList(modifier: Modifier = Modifier) {
             )
         }
     }
+
+    if (!loading) return
+
+    CircularProgressIndicator(
+        modifier = Modifier.width(64.dp),
+        color = MaterialTheme.colorScheme.secondary,
+        trackColor = MaterialTheme.colorScheme.surfaceVariant,
+    )
 }
 
 @Preview
