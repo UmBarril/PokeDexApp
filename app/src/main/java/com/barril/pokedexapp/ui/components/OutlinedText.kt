@@ -17,14 +17,14 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun OutlinedText(
     text: String,
+    modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.surface,
     fontWeight: FontWeight = FontWeight.Bold,
     fontFamily: FontFamily? = null,
-    outlineColor: Color = Color(0xFF9CB2D0),
+    outlineColor: Color = Color.Black,
     outlineMiter: Float = 10f,
     outlineWidth: Float = 10f,
     fontSize: TextUnit = 86.sp,
-    modifier: Modifier = Modifier
 ) {
     val superLargeStyle = TextStyle(
         fontFamily = fontFamily,

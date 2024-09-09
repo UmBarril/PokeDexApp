@@ -3,9 +3,7 @@ package com.barril.pokedexapp.ui.home
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -18,7 +16,6 @@ import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -83,7 +80,7 @@ fun PokemonOrderingTab(modifier: Modifier = Modifier) {
     val defaultIsDescending = false
 
     // TODO: por no res
-    var orderingTypes = listOf("Ordenar por numeração", "Ordenar por geração", "Ordenar por Tipo", "Ordenar por nome")
+    val orderingTypes = listOf("Ordenar por numeração", "Ordenar por geração", "Ordenar por Tipo", "Ordenar por nome")
     var isDescending by remember { mutableStateOf(defaultIsDescending) }
 
     var selected by remember { mutableIntStateOf(0) }
@@ -134,13 +131,13 @@ fun PokemonTypeFilterTab(modifier: Modifier = Modifier) {
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = modifier.padding(10.dp, 5.dp)
+            modifier = modifier.padding(10.dp, 0.dp)
         ) {
             Checkbox(
                 checked = checkBoxes[i],
                 onCheckedChange = { checkBoxes[i] = it }
             )
-            PokemonTypeIcon(pokemonTypes[i], 12.sp)
+            PokemonTypeIcon(pokemonTypes[i], fontSize = 12.sp)
         }
     }
 }

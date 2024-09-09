@@ -2,8 +2,6 @@ package com.barril.pokedexapp.ui.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
@@ -12,29 +10,23 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.BottomSheetDefaults
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.SecondaryTabRow
-import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
@@ -43,12 +35,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.barril.pokedexapp.R
 import com.barril.pokedexapp.domain.PokemonType
 import com.barril.pokedexapp.ui.components.ImageWithShadow
 import com.barril.pokedexapp.ui.components.PokemonCard
-import com.barril.pokedexapp.ui.components.PokemonTypeIcon
 import com.barril.pokedexapp.ui.components.SearchBar
 import com.barril.pokedexapp.ui.components.scaleImageBitMap
 import com.barril.pokedexapp.ui.theme.PokeDexAppTheme
@@ -111,7 +101,7 @@ fun PokemonTopBar(
 ) {
     TopAppBar(
         title = {
-            if(isSearchExpanded) {
+            if (isSearchExpanded) {
                 Row {
                     IconButton(onClick = onSearchCloseButtonClick) {
                         Icon(
@@ -128,7 +118,7 @@ fun PokemonTopBar(
             }
         },
         actions = {
-            if(!isSearchExpanded) {
+            if (!isSearchExpanded) {
                 TextButton(
                     onClick = onSearchButtonClick,
                 ) {
@@ -167,7 +157,9 @@ fun PokemonTopBar(
 
 @Composable
 fun PokemonColumnList(modifier: Modifier = Modifier) {
+    // TODO: adicionar função
     var loading by remember { mutableStateOf(false) }
+
     var isFavorite by remember { mutableStateOf(false) }
 
     LazyColumn(

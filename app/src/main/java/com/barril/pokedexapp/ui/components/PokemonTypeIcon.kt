@@ -45,8 +45,8 @@ import com.barril.pokedexapp.ui.components.PokemonTypeIcons.WaterTypeIcon
 fun PokemonTypeIcon(
     typeName: String,
     backgroundColor: Color,
-    fontSize: TextUnit = 5.sp,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    fontSize: TextUnit = 5.sp
 ) {
     val textPadding = 4.dp
 
@@ -74,7 +74,7 @@ fun PokemonTypeIcon(
             border = BorderStroke(borderSize, Color.White),
             shape = MaterialTheme.shapes.medium,
             color = backgroundColor,
-            modifier = modifier
+            modifier = Modifier
                 .width(IntrinsicSize.Max)
                 .height(IntrinsicSize.Max)
         ) {
@@ -88,7 +88,7 @@ fun PokemonTypeIcon(
                     outlineWidth = outlineWidth,
                     outlineMiter = 20f,
                     fontWeight = FontWeight.W800,
-                    modifier = modifier.padding(textPadding),
+                    modifier = Modifier.padding(textPadding),
                     fontSize = fontSize
                 )
             }
@@ -97,190 +97,212 @@ fun PokemonTypeIcon(
 }
 
 @Composable
-fun PokemonTypeIcon(type: PokemonType, fontSize: TextUnit = 12.sp) {
+fun PokemonTypeIcon(
+    type: PokemonType,
+    modifier: Modifier = Modifier,
+    fontSize: TextUnit = 12.sp
+) {
     when(type) {
-        PokemonType.GRASS -> GrassTypeIcon(fontSize)
-        PokemonType.FIRE -> FireTypeIcon(fontSize)
-        PokemonType.WATER -> WaterTypeIcon(fontSize)
-        PokemonType.ELECTRIC -> ElectricTypeIcon(fontSize)
-        PokemonType.ICE -> IceTypeIcon(fontSize)
-        PokemonType.FIGHTING -> FightingTypeIcon(fontSize)
-        PokemonType.POISON -> PoisonTypeIcon(fontSize)
-        PokemonType.GROUND -> GroundTypeIcon(fontSize)
-        PokemonType.FLYING -> FlyingTypeIcon(fontSize)
-        PokemonType.PSYCHIC -> PsychicTypeIcon(fontSize)
-        PokemonType.BUG -> BugTypeIcon(fontSize)
-        PokemonType.ROCK -> RockTypeIcon(fontSize)
-        PokemonType.GHOST -> GhostTypeIcon(fontSize)
-        PokemonType.DRAGON -> DragonTypeIcon(fontSize)
-        PokemonType.DARK -> DarkTypeIcon(fontSize)
-        PokemonType.STEEL -> SteelTypeIcon(fontSize)
-        PokemonType.FAIRY -> FairyTypeIcon(fontSize)
-        PokemonType.NORMAL -> NormalTypeIcon(fontSize)
+        PokemonType.GRASS -> GrassTypeIcon(fontSize, modifier)
+        PokemonType.FIRE -> FireTypeIcon(fontSize, modifier)
+        PokemonType.WATER -> WaterTypeIcon(fontSize, modifier)
+        PokemonType.ELECTRIC -> ElectricTypeIcon(fontSize, modifier)
+        PokemonType.ICE -> IceTypeIcon(fontSize, modifier)
+        PokemonType.FIGHTING -> FightingTypeIcon(fontSize, modifier)
+        PokemonType.POISON -> PoisonTypeIcon(fontSize, modifier)
+        PokemonType.GROUND -> GroundTypeIcon(fontSize, modifier)
+        PokemonType.FLYING -> FlyingTypeIcon(fontSize, modifier)
+        PokemonType.PSYCHIC -> PsychicTypeIcon(fontSize, modifier)
+        PokemonType.BUG -> BugTypeIcon(fontSize, modifier)
+        PokemonType.ROCK -> RockTypeIcon(fontSize, modifier)
+        PokemonType.GHOST -> GhostTypeIcon(fontSize, modifier)
+        PokemonType.DRAGON -> DragonTypeIcon(fontSize, modifier)
+        PokemonType.DARK -> DarkTypeIcon(fontSize, modifier)
+        PokemonType.STEEL -> SteelTypeIcon(fontSize, modifier)
+        PokemonType.FAIRY -> FairyTypeIcon(fontSize, modifier)
+        PokemonType.NORMAL -> NormalTypeIcon(fontSize, modifier)
     }
 }
 
 object PokemonTypeIcons {
 
     @Composable
-    fun GrassTypeIcon(fontSize: TextUnit) {
+    fun GrassTypeIcon(fontSize: TextUnit, modifier: Modifier = Modifier) {
         PokemonTypeIcon(
             typeName = "GRASS",
             fontSize = fontSize,
-            backgroundColor = Color(0xFF7ED956)
+            backgroundColor = Color(0xFF7ED956),
+            modifier = modifier
         )
     }
 
     @Composable
-    fun FireTypeIcon(fontSize: TextUnit) {
+    fun FireTypeIcon(fontSize: TextUnit, modifier: Modifier = Modifier) {
         PokemonTypeIcon(
             typeName = "FIRE",
             fontSize = fontSize,
-            backgroundColor = Color(0xFFF08030)
+            backgroundColor = Color(0xFFF08030),
+            modifier = modifier
         )
     }
 
     @Composable
-    fun WaterTypeIcon(fontSize: TextUnit) {
+    fun WaterTypeIcon(fontSize: TextUnit, modifier: Modifier = Modifier) {
         PokemonTypeIcon(
             typeName = "WATER",
             fontSize = fontSize,
-            backgroundColor = Color(0xFF6890F0)
+            backgroundColor = Color(0xFF6890F0),
+            modifier = modifier
         )
     }
 
     @Composable
-    fun ElectricTypeIcon(fontSize: TextUnit) {
+    fun ElectricTypeIcon(fontSize: TextUnit, modifier: Modifier = Modifier) {
         PokemonTypeIcon(
             typeName = "ELECTRIC",
             fontSize = fontSize,
-            backgroundColor = Color(0xFFF8D030)
+            backgroundColor = Color(0xFFF8D030),
+            modifier = modifier
         )
     }
 
     @Composable
-    fun IceTypeIcon(fontSize: TextUnit) {
+    fun IceTypeIcon(fontSize: TextUnit, modifier: Modifier = Modifier) {
         PokemonTypeIcon(
             typeName = "ICE",
             fontSize = fontSize,
-            backgroundColor = Color(0xFF98D8D8)
+            backgroundColor = Color(0xFF98D8D8),
+            modifier = modifier
         )
     }
 
     @Composable
-    fun FightingTypeIcon(fontSize: TextUnit) {
+    fun FightingTypeIcon(fontSize: TextUnit, modifier: Modifier = Modifier) {
         PokemonTypeIcon(
             typeName = "FIGHTING",
             fontSize = fontSize,
-            backgroundColor = Color(0xFFC03028)
+            backgroundColor = Color(0xFFC03028),
+            modifier = modifier
         )
     }
 
     @Composable
-    fun PoisonTypeIcon(fontSize: TextUnit) {
+    fun PoisonTypeIcon(fontSize: TextUnit, modifier: Modifier = Modifier) {
         PokemonTypeIcon(
             typeName = "POISON",
             fontSize = fontSize,
-            backgroundColor = Color(0xFFA040A0)
+            backgroundColor = Color(0xFFA040A0),
+            modifier = modifier
         )
     }
 
     @Composable
-    fun GroundTypeIcon(fontSize: TextUnit) {
+    fun GroundTypeIcon(fontSize: TextUnit, modifier: Modifier = Modifier) {
         PokemonTypeIcon(
             typeName = "GROUND",
             fontSize = fontSize,
-            backgroundColor = Color(0xFFE0C068)
+            backgroundColor = Color(0xFFE0C068),
+            modifier = modifier
         )
     }
 
     @Composable
-    fun FlyingTypeIcon(fontSize: TextUnit) {
+    fun FlyingTypeIcon(fontSize: TextUnit, modifier: Modifier = Modifier) {
         PokemonTypeIcon(
             typeName = "FLYING",
             fontSize = fontSize,
-            backgroundColor = Color(0xFFA890F0)
+            backgroundColor = Color(0xFFA890F0),
+            modifier = modifier
         )
     }
 
     @Composable
-    fun PsychicTypeIcon(fontSize: TextUnit) {
+    fun PsychicTypeIcon(fontSize: TextUnit, modifier: Modifier = Modifier) {
         PokemonTypeIcon(
             typeName = "PSYCHIC",
             fontSize = fontSize,
-            backgroundColor = Color(0xFFF85888)
+            backgroundColor = Color(0xFFF85888),
+            modifier = modifier
         )
     }
 
     @Composable
-    fun BugTypeIcon(fontSize: TextUnit) {
+    fun BugTypeIcon(fontSize: TextUnit, modifier: Modifier = Modifier) {
         PokemonTypeIcon(
             typeName = "BUG",
             fontSize = fontSize,
-            backgroundColor = Color(0xFFA8B820)
+            backgroundColor = Color(0xFFA8B820),
+            modifier = modifier
         )
     }
 
     @Composable
-    fun RockTypeIcon(fontSize: TextUnit) {
+    fun RockTypeIcon(fontSize: TextUnit, modifier: Modifier = Modifier) {
         PokemonTypeIcon(
             typeName = "ROCK",
             fontSize = fontSize,
-            backgroundColor = Color(0xFFB8A038)
+            backgroundColor = Color(0xFFB8A038),
+            modifier = modifier
         )
     }
 
     @Composable
-    fun GhostTypeIcon(fontSize: TextUnit) {
+    fun GhostTypeIcon(fontSize: TextUnit, modifier: Modifier = Modifier) {
         PokemonTypeIcon(
             typeName = "GHOST",
             fontSize = fontSize,
-            backgroundColor = Color(0xFF705898)
+            backgroundColor = Color(0xFF705898),
+            modifier = modifier
         )
     }
 
     @Composable
-    fun DragonTypeIcon(fontSize: TextUnit) {
+    fun DragonTypeIcon(fontSize: TextUnit, modifier: Modifier = Modifier) {
         PokemonTypeIcon(
             typeName = "DRAGON",
             fontSize = fontSize,
-            backgroundColor = Color(0xFF7038F8)
+            backgroundColor = Color(0xFF7038F8),
+            modifier = modifier
         )
     }
 
     @Composable
-    fun DarkTypeIcon(fontSize: TextUnit) {
+    fun DarkTypeIcon(fontSize: TextUnit, modifier: Modifier = Modifier) {
         PokemonTypeIcon(
             typeName = "DARK",
             fontSize = fontSize,
-            backgroundColor = Color(0xFF705848)
+            backgroundColor = Color(0xFF705848),
+            modifier = modifier
         )
     }
 
     @Composable
-    fun SteelTypeIcon(fontSize: TextUnit) {
+    fun SteelTypeIcon(fontSize: TextUnit, modifier: Modifier = Modifier) {
         PokemonTypeIcon(
             typeName = "STEEL",
             fontSize = fontSize,
-            backgroundColor = Color (0xFFB8B8D0)
+            backgroundColor = Color (0xFFB8B8D0),
+            modifier = modifier
         )
     }
 
     @Composable
-    fun FairyTypeIcon(fontSize: TextUnit) {
+    fun FairyTypeIcon(fontSize: TextUnit, modifier: Modifier = Modifier) {
         PokemonTypeIcon(
            typeName = "FAIRY",
            fontSize = fontSize,
-           backgroundColor = Color (0xFFF0B6BC)
+           backgroundColor = Color (0xFFF0B6BC),
+           modifier = modifier
         )
     }
 
     @Composable
-    fun NormalTypeIcon(fontSize: TextUnit) {
+    fun NormalTypeIcon(fontSize: TextUnit, modifier: Modifier = Modifier) {
         PokemonTypeIcon(
             typeName = "NORMAL",
             fontSize = fontSize,
-            backgroundColor = Color(0xFFA8A878)
+            backgroundColor = Color(0xFFA8A878),
+            modifier = modifier
         )
     }
 
@@ -291,23 +313,23 @@ object PokemonTypeIcons {
 fun TypesPreview() {
     val fontSize = 10.sp
     Column {
-        PokemonTypeIcons.GrassTypeIcon(fontSize)
-        PokemonTypeIcons.FireTypeIcon(fontSize)
-        PokemonTypeIcons.WaterTypeIcon(fontSize)
-        PokemonTypeIcons.ElectricTypeIcon(fontSize)
-        PokemonTypeIcons.IceTypeIcon(fontSize)
-        PokemonTypeIcons.FightingTypeIcon(fontSize)
-        PokemonTypeIcons.PoisonTypeIcon(fontSize)
-        PokemonTypeIcons.GroundTypeIcon(fontSize)
-        PokemonTypeIcons.FlyingTypeIcon(fontSize)
-        PokemonTypeIcons.PsychicTypeIcon(fontSize)
-        PokemonTypeIcons.BugTypeIcon(fontSize)
-        PokemonTypeIcons.RockTypeIcon(fontSize)
-        PokemonTypeIcons.GhostTypeIcon(fontSize)
-        PokemonTypeIcons.DragonTypeIcon(fontSize)
-        PokemonTypeIcons.DarkTypeIcon(fontSize)
-        PokemonTypeIcons.SteelTypeIcon(fontSize)
-        PokemonTypeIcons.FairyTypeIcon(fontSize)
-        PokemonTypeIcons.NormalTypeIcon(fontSize)
+        GrassTypeIcon(fontSize)
+        FireTypeIcon(fontSize)
+        WaterTypeIcon(fontSize)
+        ElectricTypeIcon(fontSize)
+        IceTypeIcon(fontSize)
+        FightingTypeIcon(fontSize)
+        PoisonTypeIcon(fontSize)
+        GroundTypeIcon(fontSize)
+        FlyingTypeIcon(fontSize)
+        PsychicTypeIcon(fontSize)
+        BugTypeIcon(fontSize)
+        RockTypeIcon(fontSize)
+        GhostTypeIcon(fontSize)
+        DragonTypeIcon(fontSize)
+        DarkTypeIcon(fontSize)
+        SteelTypeIcon(fontSize)
+        FairyTypeIcon(fontSize)
+        NormalTypeIcon(fontSize)
     }
 }
