@@ -36,7 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.barril.pokedexapp.R
-import com.barril.pokedexapp.domain.PokemonType
+import com.barril.pokedexapp.data.PokemonType
 import com.barril.pokedexapp.ui.components.ImageWithShadow
 import com.barril.pokedexapp.ui.components.PokemonCard
 import com.barril.pokedexapp.ui.components.SearchBar

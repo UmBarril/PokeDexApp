@@ -1,6 +1,6 @@
-package com.barril.pokedexapp.data.model
+package com.barril.pokedexapp.data.api
 
-data class PokemonResponse(
+data class PokemonDto(
     val id: Int,
     val name: String,
     val baseExperience: Int,
@@ -8,101 +8,101 @@ data class PokemonResponse(
     val isDefault: Boolean,
     val order: Int,
     val weight: Int,
-    val abilities: List<AbilityResponse>,
-    val forms: List<FormResponse>,
-    val gameIndices: List<GameIndexResponse>,
-    val heldItems: List<HeldItemResponse>,
+    val abilities: List<AbilityDto>,
+    val forms: List<FormDto>,
+    val gameIndices: List<GameIndexDto>,
+    val heldItems: List<HeldItemDto>,
     val locationAreaEncounters: String,
-    val moves: List<MoveResponse>,
-    val species: Species,
-    val sprites: Sprites,
-    val cries: List<CriesResponse>,
-    val stats: List<StatResponse>,
-    val types: List<Type>
+    val moves: List<MoveDto>,
+    val species: SpeciesDto,
+    val sprites: SpritesDto,
+    val cries: List<CriesDto>,
+    val stats: List<StatDto>,
+    val types: List<TypeDto>
 )
 
-data class AbilityResponse(
+data class AbilityDto(
     val isHidden: Boolean,
     val slot: Int,
-    val ability: AbilityDetails
+    val ability: AbilityDetailsDto
 )
 
-data class AbilityDetails(
+data class AbilityDetailsDto(
     val name: String,
     val url: String
 )
 
-data class FormResponse(
+data class FormDto(
     val name: String,
     val url: String
 )
 
-data class GameIndexResponse(
+data class GameIndexDto(
     val gameIndex: Int,
-    val version: Version
+    val version: VersionDto
 )
 
-data class Version(
+data class VersionDto(
     val name: String,
     val url: String
 )
 
-data class HeldItemResponse(
-    val item: Item
+data class HeldItemDto(
+    val item: ItemDto
 )
 
-data class Item(
+data class ItemDto(
     val name: String,
     val url: String
 )
 
-data class MoveResponse(
-    val move: MoveDetails
+data class MoveDto(
+    val move: MoveDetailsDto
 )
 
-data class MoveDetails(
+data class MoveDetailsDto(
     val name: String,
     val url: String
 )
 
-data class Species(
+data class SpeciesDto(
     val name: String,
     val url: String
 )
 
-data class CriesResponse(
+data class CriesDto(
     val latest: String,
     val legacy: String
 )
 
-data class StatResponse(
+data class StatDto(
     val baseStat: Int,
     val effort: Int,
-    val stat: StatDetails
+    val stat: StatDetailsDto
 )
 
-data class StatDetails(
+data class StatDetailsDto(
     val name: String,
     val url: String
 )
 
-data class Type(
+data class TypeDto(
     val slot: Int,
-    val type: TypeDetails
+    val type: TypeDetailsDto
 )
 
-data class TypeDetails(
+data class TypeDetailsDto(
     val name: String,
     val url: String
 )
 
-data class Generation(
+data class GenerationDto(
     val name: String,
     val url: String
 )
 
 // sempre vem de: https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/*
-data class Sprites (
+data class SpritesDto (
     val back_default: String,
     val back_female: String,
     val back_shiny: String,

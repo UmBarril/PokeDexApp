@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
+import com.barril.pokedexapp.data.PokemonRepository
 import com.barril.pokedexapp.ui.AppNavigationBar
 import com.barril.pokedexapp.ui.favorites.FavoritesView
 import com.barril.pokedexapp.ui.home.HomeView
@@ -44,6 +45,8 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
+
+//            PokemonRepository().get
             PokeDexAppTheme {
                 MainApp(/*viewModel = viewModel*/)
             }

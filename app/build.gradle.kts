@@ -99,6 +99,7 @@ dependencies {
 
     // api
     implementation(libs.retrofit2.retrofit)
+    implementation(libs.retrofit2.converter.gson)
     implementation(libs.gson)
 
     // persistence
