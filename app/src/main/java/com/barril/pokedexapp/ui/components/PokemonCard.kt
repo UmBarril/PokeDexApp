@@ -220,11 +220,11 @@ fun IconButtonSample() {
 
 
 @Composable
-fun MaleIcon(contentDescription: String?, modifier: Modifier = Modifier) {
+fun MaleIcon(contentDescription: String?, modifier: Modifier = Modifier, tint: Color = Color.Cyan) {
     Icon(
         painter = painterResource(id = R.drawable.male_24px),
         contentDescription = contentDescription,
-        tint = Color.Cyan, // TODO: por isso no xml
+        tint = tint, // TODO: por isso no xml
         modifier = modifier
     )
 }

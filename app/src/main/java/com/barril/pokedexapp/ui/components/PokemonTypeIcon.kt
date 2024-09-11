@@ -124,6 +124,25 @@ fun PokemonTypeIcon(
     }
 }
 
+val grassColor = Color(0xFF7ED956)
+private val fireColor = Color(0xFFF08030)
+private val waterColor = Color(0xFF6890F0)
+private val electricColor = Color(0xFFF8D030)
+private val iceColor = Color(0xFF98D8D8)
+private val fightingColor = Color(0xFFC03028)
+private val poisonColor = Color(0xFFA040A0)
+private val groundColor = Color(0xFFE0C068)
+private val flyingColor = Color(0xFFA890F0)
+private val psychicColor = Color(0xFFF85888)
+private val bugColor = Color(0xFFA8B820)
+private val rockColor = Color(0xFFB8A038)
+private val ghostColor = Color(0xFF705898)
+private val dragonColor = Color(0xFF7038F8)
+private val darkColor = Color(0xFF705848)
+private val steelColor = Color(0xFFB8B8D0)
+private val fairyColor = Color(0xFFF0B6BC)
+private val normalColor = Color(0xFFA8A878)
+
 object PokemonTypeIcons {
 
     @Composable
@@ -131,7 +150,8 @@ object PokemonTypeIcons {
         PokemonTypeIcon(
             typeName = "GRASS",
             fontSize = fontSize,
-            backgroundColor = Color(0xFF7ED956),
+            // TODO: por essas cores em sua propria classe ou no res
+            backgroundColor = grassColor,
             modifier = modifier
         )
     }
@@ -141,7 +161,7 @@ object PokemonTypeIcons {
         PokemonTypeIcon(
             typeName = "FIRE",
             fontSize = fontSize,
-            backgroundColor = Color(0xFFF08030),
+            backgroundColor = fireColor,
             modifier = modifier
         )
     }
@@ -151,7 +171,7 @@ object PokemonTypeIcons {
         PokemonTypeIcon(
             typeName = "WATER",
             fontSize = fontSize,
-            backgroundColor = Color(0xFF6890F0),
+            backgroundColor = waterColor,
             modifier = modifier
         )
     }
@@ -161,7 +181,7 @@ object PokemonTypeIcons {
         PokemonTypeIcon(
             typeName = "ELECTRIC",
             fontSize = fontSize,
-            backgroundColor = Color(0xFFF8D030),
+            backgroundColor = electricColor,
             modifier = modifier
         )
     }
@@ -171,7 +191,7 @@ object PokemonTypeIcons {
         PokemonTypeIcon(
             typeName = "ICE",
             fontSize = fontSize,
-            backgroundColor = Color(0xFF98D8D8),
+            backgroundColor = iceColor,
             modifier = modifier
         )
     }
@@ -181,7 +201,7 @@ object PokemonTypeIcons {
         PokemonTypeIcon(
             typeName = "FIGHTING",
             fontSize = fontSize,
-            backgroundColor = Color(0xFFC03028),
+            backgroundColor = fightingColor,
             modifier = modifier
         )
     }
@@ -191,7 +211,7 @@ object PokemonTypeIcons {
         PokemonTypeIcon(
             typeName = "POISON",
             fontSize = fontSize,
-            backgroundColor = Color(0xFFA040A0),
+            backgroundColor = poisonColor,
             modifier = modifier
         )
     }
@@ -201,7 +221,7 @@ object PokemonTypeIcons {
         PokemonTypeIcon(
             typeName = "GROUND",
             fontSize = fontSize,
-            backgroundColor = Color(0xFFE0C068),
+            backgroundColor = groundColor,
             modifier = modifier
         )
     }
@@ -211,7 +231,7 @@ object PokemonTypeIcons {
         PokemonTypeIcon(
             typeName = "FLYING",
             fontSize = fontSize,
-            backgroundColor = Color(0xFFA890F0),
+            backgroundColor = flyingColor,
             modifier = modifier
         )
     }
@@ -221,7 +241,7 @@ object PokemonTypeIcons {
         PokemonTypeIcon(
             typeName = "PSYCHIC",
             fontSize = fontSize,
-            backgroundColor = Color(0xFFF85888),
+            backgroundColor = psychicColor,
             modifier = modifier
         )
     }
@@ -231,7 +251,7 @@ object PokemonTypeIcons {
         PokemonTypeIcon(
             typeName = "BUG",
             fontSize = fontSize,
-            backgroundColor = Color(0xFFA8B820),
+            backgroundColor = bugColor,
             modifier = modifier
         )
     }
@@ -241,7 +261,7 @@ object PokemonTypeIcons {
         PokemonTypeIcon(
             typeName = "ROCK",
             fontSize = fontSize,
-            backgroundColor = Color(0xFFB8A038),
+            backgroundColor = rockColor,
             modifier = modifier
         )
     }
@@ -251,7 +271,7 @@ object PokemonTypeIcons {
         PokemonTypeIcon(
             typeName = "GHOST",
             fontSize = fontSize,
-            backgroundColor = Color(0xFF705898),
+            backgroundColor = ghostColor,
             modifier = modifier
         )
     }
@@ -261,7 +281,7 @@ object PokemonTypeIcons {
         PokemonTypeIcon(
             typeName = "DRAGON",
             fontSize = fontSize,
-            backgroundColor = Color(0xFF7038F8),
+            backgroundColor = dragonColor,
             modifier = modifier
         )
     }
@@ -271,7 +291,7 @@ object PokemonTypeIcons {
         PokemonTypeIcon(
             typeName = "DARK",
             fontSize = fontSize,
-            backgroundColor = Color(0xFF705848),
+            backgroundColor = darkColor,
             modifier = modifier
         )
     }
@@ -281,7 +301,7 @@ object PokemonTypeIcons {
         PokemonTypeIcon(
             typeName = "STEEL",
             fontSize = fontSize,
-            backgroundColor = Color (0xFFB8B8D0),
+            backgroundColor = steelColor,
             modifier = modifier
         )
     }
@@ -291,7 +311,7 @@ object PokemonTypeIcons {
         PokemonTypeIcon(
            typeName = "FAIRY",
            fontSize = fontSize,
-           backgroundColor = Color (0xFFF0B6BC),
+           backgroundColor = fairyColor,
            modifier = modifier
         )
     }
@@ -301,7 +321,7 @@ object PokemonTypeIcons {
         PokemonTypeIcon(
             typeName = "NORMAL",
             fontSize = fontSize,
-            backgroundColor = Color(0xFFA8A878),
+            backgroundColor = normalColor,
             modifier = modifier
         )
     }
