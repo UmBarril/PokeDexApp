@@ -55,7 +55,9 @@ fun SettingsView(modifier: Modifier = Modifier) {
             )
         }
         HorizontalDivider()
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
             SettingsRowItem(
                 heading = "Mudar tema",
                 subHeading = null,
@@ -133,6 +135,7 @@ fun SettingsRowItem(
     ) {
         Row(
             horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                     .padding(horizontal = 10.dp, vertical = 15.dp)
                     .fillMaxWidth()
