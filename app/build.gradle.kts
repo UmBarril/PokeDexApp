@@ -2,8 +2,14 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
 
-    // ksp FIXME
-//    id("com.google.devtools.ksp") version "2.0.20-1.0.24"
+    // navigation-compose
+    id("androidx.navigation.safeargs.kotlin")
+
+    // ksp
+    id("com.google.devtools.ksp")
+
+    // compose compiler
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -70,35 +76,43 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    implementation(libs.androidx.foundation)
+
+    // navigation
+    // Jetpack Compose integration
+    implementation(libs.androidx.navigation.compose)
+    // Testing Navigation
+    androidTestImplementation(libs.androidx.navigation.testing)
+
+    // layout
+//    implementation(libs.androidx.constraintlayout)
+//    //// to use constraintlayout in compose
+//    implementation("androidx.constraintlayout:constraintlayout-compose:1.1.0-beta01")
+
     //  images
-    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+    implementation(libs.compose)
 
     // paging
-    val paging_version = "3.3.2"
-
-    implementation("androidx.paging:paging-runtime:$paging_version")
+    implementation(libs.androidx.paging.runtime.ktx)
     ////  optional - Jetpack Compose integration
-    implementation("androidx.paging:paging-compose:$paging_version")
+    implementation(libs.paging.compose)
 
     // api
-    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation(libs.retrofit2.retrofit)
     implementation(libs.gson)
 
-    // persistance
-    val room_version = "2.6.1"
-
-    implementation("androidx.room:room-runtime:$room_version")
-    annotationProcessor("androidx.room:room-compiler:$room_version")
-    //// To use Kotlin Symbol Processing (KSP) FIXME
-//    ksp("androidx.room:room-compiler:$room_version")
+    // persistence
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.compiler)
+    //// To use Kotlin Symbol Processing (KSP)
+    ksp(libs.androidx.room.compiler)
 
     //// optional - Kotlin Extensions and Coroutines support for Room
-    implementation("androidx.room:room-ktx:$room_version")
+    implementation(libs.androidx.room.ktx)
 
     //// optional - Test helpers
-    testImplementation("androidx.room:room-testing:$room_version")
+    testImplementation(libs.androidx.room.testing)
 
     //// optional - Paging 3 Integration
-    implementation("androidx.room:room-paging:$room_version")
-
+    implementation(libs.androidx.room.paging)
 }
