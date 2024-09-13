@@ -78,6 +78,10 @@ dependencies {
 
     implementation(libs.androidx.foundation)
 
+    // coroutines
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+
     // navigation
     // Jetpack Compose integration
     implementation(libs.androidx.navigation.compose)
