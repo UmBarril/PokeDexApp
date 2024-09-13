@@ -1,21 +1,22 @@
 package com.barril.pokedexapp.data
 
-import com.barril.pokedexapp.data.api.AbilityDto
-import com.barril.pokedexapp.data.api.CriesDto
-import com.barril.pokedexapp.data.api.HeldItemDto
-import com.barril.pokedexapp.data.api.MoveDto
+import com.barril.pokedexapp.data.api.PokemonAbilityDto
+import com.barril.pokedexapp.data.api.PokemonCriesDto
+import com.barril.pokedexapp.data.api.PokemonHeldItemDto
+import com.barril.pokedexapp.data.api.PokemonMoveDto
 import com.barril.pokedexapp.data.api.PokemonDto
-import com.barril.pokedexapp.data.api.SpritesDto
-import com.barril.pokedexapp.data.api.StatDto
-import com.barril.pokedexapp.data.api.TypeDto
+import com.barril.pokedexapp.data.api.PokemonSpritesDto
+import com.barril.pokedexapp.data.api.PokemonStatDto
+import com.barril.pokedexapp.data.api.PokemonTypeDto
+import java.util.EnumSet
 
-private fun List<AbilityDto>.toAbilityList(): List<Ability> {
-    val listOfAbility = mutableListOf<Ability>()
+private fun List<PokemonAbilityDto>.toAbilityList(): List<PokemonAbility> {
+    val listOfAbility = mutableListOf<PokemonAbility>()
     this.forEach {
         listOfAbility.add(
-            Ability(
+            PokemonAbility(
                it.ability.name,
-               it.isHidden,
+               it.is_hidden,
                it.ability.url,
                it.slot
             )
@@ -24,11 +25,11 @@ private fun List<AbilityDto>.toAbilityList(): List<Ability> {
     return listOfAbility
 }
 
-private fun List<HeldItemDto>.toHeldItemsList(): List<HeldItem> {
-    val listOfHeldItem = mutableListOf<HeldItem>()
+private fun List<PokemonHeldItemDto>.toHeldItemsList(): List<PokemonHeldItemResource> {
+    val listOfHeldItem = mutableListOf<PokemonHeldItemResource>()
     this.forEach {
         listOfHeldItem.add(
-            HeldItem(
+            PokemonHeldItemResource(
                 it.item.name,
                 it.item.url
             )
@@ -37,11 +38,11 @@ private fun List<HeldItemDto>.toHeldItemsList(): List<HeldItem> {
     return listOfHeldItem
 }
 
-private fun List<MoveDto>.toMoveList(): List<Move> {
-    val listOfMove = mutableListOf<Move>()
+private fun List<PokemonMoveDto>.toMoveList(): List<PokemonMoveResource> {
+    val listOfMove = mutableListOf<PokemonMoveResource>()
     this.forEach {
         listOfMove.add(
-            Move(
+            PokemonMoveResource(
                 it.move.name,
                 it.move.url
             )
@@ -50,8 +51,8 @@ private fun List<MoveDto>.toMoveList(): List<Move> {
     return listOfMove
 }
 
-private fun SpritesDto.toSprites(): Sprites {
-    return Sprites(
+private fun PokemonSpritesDto.toSprites(): PokemonSpritesResource {
+    return PokemonSpritesResource(
         backDefaultUrl = this.back_default,
         backFemaleUrl = this.back_female,
         backShinyUrl = this.back_shiny,
@@ -63,26 +64,13 @@ private fun SpritesDto.toSprites(): Sprites {
     )
 }
 
-private fun List<CriesDto>.toCryList(): List<Cry> {
-    val listOfCries = mutableListOf<Cry>()
-    this.forEach {
-        listOfCries.add(
-            Cry(
-                it.latest,
-                it.legacy,
-            )
-        )
-    }
-    return listOfCries
-}
-
-private fun List<StatDto>.toStatList(): List<Stat> {
-    val listOfStat = mutableListOf<Stat>()
+private fun List<PokemonStatDto>.toStatList(): List<PokemonStat> {
+    val listOfStat = mutableListOf<PokemonStat>()
     this.forEach {
         listOfStat.add(
-            Stat(
+            PokemonStat(
                 it.stat.name,
-                it.baseStat,
+                it.base_stat,
                 it.effort,
                 it.stat.url
             )
@@ -91,12 +79,12 @@ private fun List<StatDto>.toStatList(): List<Stat> {
     return listOfStat
 }
 
-private fun List<TypeDto>.toPokemonTypeList(): List<PokemonType> {
-    val listOfPokemonType = mutableListOf<PokemonType>()
+private fun List<PokemonTypeDto>.toPokemonTypeSet(): EnumSet<PokemonType> {
+    val typeSet = EnumSet.noneOf(PokemonType::class.java)
     this.forEach {
-        listOfPokemonType.add(PokemonType.fromString(it.type.name))
+        typeSet.add(PokemonType.fromString(it.type.name))
     }
-    return listOfPokemonType
+    return typeSet
 }
 
 fun PokemonDto.toPokemon(): Pokemon {
@@ -107,11 +95,11 @@ fun PokemonDto.toPokemon(): Pokemon {
         order = this.order,
         weight = this.weight,
         abilities = this.abilities.toAbilityList(),
-        heldItems = this.heldItems.toHeldItemsList(),
+        heldItems = this.held_items.toHeldItemsList(),
         moves = this.moves.toMoveList(),
         sprites = this.sprites.toSprites(),
-        cries = this.cries.toCryList(),
+        cries = this.cries.let { PokemonCriesResource(it.latest, it.legacy) },
         stats = this.stats.toStatList(),
-        types = this.types.toPokemonTypeList()
+        types = this.types.toPokemonTypeSet()
     )
 }

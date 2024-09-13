@@ -1,114 +1,101 @@
 package com.barril.pokedexapp.data.api
 
 data class PokemonDto(
-    val id: Int,
-    val name: String,
-    val baseExperience: Int,
+    val abilities: List<PokemonAbilityDto>,
+    val base_experience: Int,
+    val cries: PokemonCriesDto,
+    val forms: List<NamedApiResourceDto>,
+    val game_indices: List<VersionGameIndexDto>,
     val height: Int,
-    val isDefault: Boolean,
+    val held_items: List<PokemonHeldItemDto>,
+    val id: Int,
+    val is_default: Boolean,
+    val location_area_encounters: String,
+    val moves: List<PokemonMoveDto>,
+    val name: String,
     val order: Int,
-    val weight: Int,
-    val abilities: List<AbilityDto>,
-    val forms: List<FormDto>,
-    val gameIndices: List<GameIndexDto>,
-    val heldItems: List<HeldItemDto>,
-    val locationAreaEncounters: String,
-    val moves: List<MoveDto>,
-    val species: SpeciesDto,
-    val sprites: SpritesDto,
-    val cries: List<CriesDto>,
-    val stats: List<StatDto>,
-    val types: List<TypeDto>
+
+    @Transient
+    val past_abilities: List<Any?>,
+
+    val past_types: List<PokemonTypePastDto>,
+    val species: NamedApiResourceDto,
+    val sprites: PokemonSpritesDto,
+    val stats: List<PokemonStatDto>,
+    val types: List<PokemonTypeDto>,
+    val weight: Int
 )
 
-data class AbilityDto(
-    val isHidden: Boolean,
-    val slot: Int,
-    val ability: AbilityDetailsDto
+data class PokemonAbilityDto(
+    val ability: NamedApiResourceDto,
+    val is_hidden: Boolean,
+    val slot: Int
 )
 
-data class AbilityDetailsDto(
-    val name: String,
-    val url: String
-)
-
-data class FormDto(
-    val name: String,
-    val url: String
-)
-
-data class GameIndexDto(
-    val gameIndex: Int,
-    val version: VersionDto
-)
-
-data class VersionDto(
-    val name: String,
-    val url: String
-)
-
-data class HeldItemDto(
-    val item: ItemDto
-)
-
-data class ItemDto(
-    val name: String,
-    val url: String
-)
-
-data class MoveDto(
-    val move: MoveDetailsDto
-)
-
-data class MoveDetailsDto(
-    val name: String,
-    val url: String
-)
-
-data class SpeciesDto(
-    val name: String,
-    val url: String
-)
-
-data class CriesDto(
+data class PokemonCriesDto(
     val latest: String,
     val legacy: String
 )
 
-data class StatDto(
-    val baseStat: Int,
+data class VersionGameIndexDto(
+    val game_index: Int,
+    val version: NamedApiResourceDto
+)
+
+data class PokemonHeldItemDto(
+    val item: NamedApiResourceDto,
+    val version_details: List<VersionDetailDto>
+)
+
+data class PokemonMoveDto(
+    val move: NamedApiResourceDto,
+    val version_group_details: List<VersionGroupDetailDto>
+)
+
+data class PokemonTypePastDto(
+    val generation: NamedApiResourceDto,
+    val types: List<PokemonTypeDto>
+)
+
+data class PokemonSpritesDto(
+    val back_default: String?,
+    val back_female: String?,
+    val back_shiny: String?,
+    val back_shiny_female: String?,
+    val front_default: String?,
+    val front_female: String?,
+    val front_shiny: String?,
+    val front_shiny_female: String?,
+
+    @Transient
+    val other: List<PokemonSpritesDto>,
+    @Transient
+    val versions: Any?
+)
+
+data class PokemonStatDto(
+    val base_stat: Int,
     val effort: Int,
-    val stat: StatDetailsDto
+    val stat: NamedApiResourceDto
 )
 
-data class StatDetailsDto(
-    val name: String,
-    val url: String
-)
-
-data class TypeDto(
+data class PokemonTypeDto(
     val slot: Int,
-    val type: TypeDetailsDto
+    val type: NamedApiResourceDto
 )
 
-data class TypeDetailsDto(
+data class VersionDetailDto(
+    val rarity: Int,
+    val version: NamedApiResourceDto
+)
+
+data class VersionGroupDetailDto(
+    val level_learned_at: Int,
+    val move_learn_method: NamedApiResourceDto,
+    val version_group: NamedApiResourceDto
+)
+
+data class NamedApiResourceDto(
     val name: String,
     val url: String
-)
-
-data class GenerationDto(
-    val name: String,
-    val url: String
-)
-
-// sempre vem de: https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/*
-data class SpritesDto (
-    val back_default: String,
-    val back_female: String,
-    val back_shiny: String,
-    val back_shiny_female: String,
-    val front_default: String,
-    val front_female: String,
-    val front_shiny: String,
-    val front_shiny_female: String,
 )
