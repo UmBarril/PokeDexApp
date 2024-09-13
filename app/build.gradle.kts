@@ -81,6 +81,7 @@ dependencies {
     // coroutines
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
 
     // navigation
     // Jetpack Compose integration
@@ -94,12 +95,14 @@ dependencies {
 //    implementation("androidx.constraintlayout:constraintlayout-compose:1.1.0-beta01")
 
     //  images
-    implementation(libs.compose)
+    implementation(libs.glide.compose)
 
     // paging
+    implementation(libs.androidx.paging.runtime)
     implementation(libs.androidx.paging.runtime.ktx)
+
     ////  optional - Jetpack Compose integration
-    implementation(libs.paging.compose)
+    implementation(libs.androidx.paging.compose)
 
     // api
     implementation(libs.retrofit2.retrofit)
