@@ -1,4 +1,4 @@
-package com.barril.pokedexapp.data.api
+package com.barril.pokedexapp.data.remote
 
 data class PokemonDto(
     val abilities: List<PokemonAbilityDto>,
@@ -15,8 +15,7 @@ data class PokemonDto(
     val name: String,
     val order: Int,
 
-    @Transient
-    val past_abilities: List<Any?>,
+//    val past_abilities: List<Any?>,
 
     val past_types: List<PokemonTypePastDto>,
     val species: NamedApiResourceDto,
@@ -62,10 +61,10 @@ data class PokemonSpritesDto(
     val back_female: String?,
     val back_shiny: String?,
     val back_shiny_female: String?,
-    val front_default: String?,
-    val front_female: String?,
-    val front_shiny: String?,
-    val front_shiny_female: String?,
+    val front_default: String? = null,
+    val front_female: String? = null,
+    val front_shiny: String? = null,
+    val front_shiny_female: String? = null,
 
     @Transient
     val other: List<PokemonSpritesDto>,
