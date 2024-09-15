@@ -49,7 +49,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.barril.pokedexapp.R
-import com.barril.pokedexapp.data.PokemonType
+import com.barril.pokedexapp.domain.PokemonType
 import java.util.EnumSet
 
 /**
