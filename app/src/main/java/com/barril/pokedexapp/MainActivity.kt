@@ -4,14 +4,18 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,12 +24,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import com.barril.pokedexapp.data.PokemonRepository
 import com.barril.pokedexapp.ui.AppNavigationBar
+import com.barril.pokedexapp.ui.components.PokemonCard
 import com.barril.pokedexapp.ui.favorites.FavoritesView
 import com.barril.pokedexapp.ui.home.HomeView
 import com.barril.pokedexapp.ui.settings.SettingsView
 import com.barril.pokedexapp.ui.theme.PokeDexAppTheme
+import com.barril.pokedexapp.viewmodels.MainViewModel
+import com.barril.pokedexapp.viewmodels.viewModelFactory
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 
 enum class AppDestinations(
     @StringRes val label: Int,
@@ -38,24 +46,29 @@ enum class AppDestinations(
 }
 
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalGlideComposeApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        val viewModel by viewModels<DummyViewModel>()
+        val viewModel by viewModels<MainViewModel>(
+            factoryProducer = {
+                viewModelFactory {
+                    MainViewModel(PokeDexApplication.appModule.pokemonPager)
+                }
+            }
+        )
 
         enableEdgeToEdge()
         setContent {
-
-//            PokemonRepository().get
             PokeDexAppTheme {
-                MainApp(/*viewModel = viewModel*/)
+                MainApp(viewModel = viewModel)
             }
         }
     }
 }
 
 @Composable
-fun MainApp(modifier: Modifier = Modifier) {
+fun MainApp(viewModel: MainViewModel, modifier: Modifier = Modifier) {
     var currentDestination by remember { mutableStateOf(AppDestinations.HOME) }
 
     Scaffold(
@@ -84,10 +97,10 @@ fun MainApp(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview
-@Composable
-fun MainAppPreview() {
-    PokeDexAppTheme {
-        MainApp()
-    }
-}
+//@Preview
+//@Composable
+//fun MainAppPreview() {
+//    PokeDexAppTheme {
+//        MainApp()
+//    }
+//}
