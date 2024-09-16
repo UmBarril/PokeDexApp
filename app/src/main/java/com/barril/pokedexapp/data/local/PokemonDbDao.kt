@@ -4,6 +4,7 @@ import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import androidx.room.Upsert
 import com.barril.pokedexapp.data.local.entities.DatabaseMetadataEntity
 import com.barril.pokedexapp.data.local.entities.NamedResourceEntity
@@ -12,6 +13,7 @@ import com.barril.pokedexapp.data.local.entities.PokemonEntity
 import com.barril.pokedexapp.data.local.entities.insert.PokemonInsertData
 import com.barril.pokedexapp.data.local.entities.PokemonStatEntity
 import com.barril.pokedexapp.data.local.entities.PokemonTypeEntity
+import com.barril.pokedexapp.data.local.entities.partial_entities.PokemonEntityUpdateFavorite
 import com.barril.pokedexapp.data.local.entities.relations.PokemonWithHelditemCrossRef
 import com.barril.pokedexapp.data.local.entities.relations.PokemonWithMovesCrossRef
 import com.barril.pokedexapp.data.local.entities.relations.PokemonWithRelations
@@ -19,6 +21,13 @@ import com.barril.pokedexapp.data.local.entities.relations.PokemonWithTypeCrossR
 
 @Dao
 interface PokemonDbDao {
+
+    /**
+     * ATUALIZAÇÕES:
+     */
+
+    @Update(PokemonEntity::class)
+    fun updatePokemonFavoriteStatus(pokemonUpdate: PokemonEntityUpdateFavorite)
 
     /**
      * CONSULTAS:
@@ -32,7 +41,7 @@ interface PokemonDbDao {
 
     @Transaction
     @Query("SELECT * FROM pokemonentity " +
-            "ORDER BY pokemonId DESC")
+            "ORDER BY pokemonId ASC")
     fun allPokemons(): PagingSource<Int, PokemonWithRelations>
 
     @Transaction
@@ -44,6 +53,7 @@ interface PokemonDbDao {
 //    @Query("DELETE FROM pokemonentity")
 //    suspend fun clearAllPokemons()
 
+    // TODO: por botao para ativar isso
     @Query("DELETE FROM pokemonentity WHERE isFavorite = NULL OR isFavorite = 0")
     suspend fun clearAllPokemonsExceptFavorites()
 

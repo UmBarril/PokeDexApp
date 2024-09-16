@@ -2,8 +2,8 @@ package com.barril.pokedexapp.data
 
 import com.barril.pokedexapp.data.local.entities.PokemonAbilityEntity
 import com.barril.pokedexapp.data.local.entities.embeded.PokemonCriesResourceEmbeded
-import com.barril.pokedexapp.data.local.entities.PokemonEntity
 import com.barril.pokedexapp.data.local.entities.NamedResourceEntity
+import com.barril.pokedexapp.data.local.entities.PokemonEntity
 import com.barril.pokedexapp.data.local.entities.insert.PokemonInsertData
 import com.barril.pokedexapp.data.local.entities.embeded.PokemonSpritesResourceEmbeded
 import com.barril.pokedexapp.data.local.entities.PokemonStatEntity

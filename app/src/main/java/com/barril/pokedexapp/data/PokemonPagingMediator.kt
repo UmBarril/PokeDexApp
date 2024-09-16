@@ -7,13 +7,6 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.barril.pokedexapp.data.remote.PokemonApiDao
 import com.barril.pokedexapp.data.local.PokemonDatabase
-import com.barril.pokedexapp.data.local.entities.NamedResourceEntity
-import com.barril.pokedexapp.data.local.entities.PokemonAbilityEntity
-import com.barril.pokedexapp.data.local.entities.PokemonEntity
-import com.barril.pokedexapp.data.local.entities.PokemonStatEntity
-import com.barril.pokedexapp.data.local.entities.PokemonTypeEntity
-import com.barril.pokedexapp.data.local.entities.embeded.PokemonCriesResourceEmbeded
-import com.barril.pokedexapp.data.local.entities.embeded.PokemonSpritesResourceEmbeded
 import com.barril.pokedexapp.data.local.entities.relations.PokemonWithRelations
 import retrofit2.HttpException
 import java.io.IOException
@@ -43,8 +36,10 @@ class PokemonPagingMediator(
 
                     lastItem.pokemonEntity.pokemonId
                 }
-            } ?: state.config.initialLoadSize
-            val response = api.getPokemonPage(state.config.pageSize, offset)
+            } ?: 0
+
+            val pageSize = state.config.pageSize
+            val response = api.getPokemonPage(pageSize, offset)
 
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {

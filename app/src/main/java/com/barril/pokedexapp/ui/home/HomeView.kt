@@ -6,12 +6,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
@@ -22,9 +21,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBarDefaults
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -38,33 +34,25 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
-import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.barril.pokedexapp.R
+import com.barril.pokedexapp.data.toPokemon
 import com.barril.pokedexapp.domain.Pokemon
-import com.barril.pokedexapp.domain.PokemonType
-import com.barril.pokedexapp.ui.components.ImageWithShadow
+import com.barril.pokedexapp.domain.PokemonGender
 import com.barril.pokedexapp.ui.components.PokemonCard
 import com.barril.pokedexapp.ui.components.SearchBar
-import com.barril.pokedexapp.ui.components.scaleImageBitMap
-import com.barril.pokedexapp.ui.theme.PokeDexAppTheme
-import kotlinx.coroutines.flow.Flow
+import com.barril.pokedexapp.viewmodels.MainViewModel
 import kotlinx.coroutines.launch
-import java.util.EnumSet
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeView(lazyPagingData: LazyPagingItems<Pokemon>, modifier: Modifier = Modifier) {
+fun HomeView(viewModel: MainViewModel, modifier: Modifier = Modifier) {
     var isSearchExpanded by remember { mutableStateOf(false) }
     var isMoreExpanded by remember { mutableStateOf(false) }
 
@@ -75,6 +63,7 @@ fun HomeView(lazyPagingData: LazyPagingItems<Pokemon>, modifier: Modifier = Modi
 
     Column {
         PokemonTopBar(
+            viewModel = viewModel,
             isSearchExpanded = isSearchExpanded,
             isMoreExpanded = isMoreExpanded,
             onSearchCloseButtonClick = { isSearchExpanded = false },
@@ -90,7 +79,7 @@ fun HomeView(lazyPagingData: LazyPagingItems<Pokemon>, modifier: Modifier = Modi
             onSearchValueChange = { /* TODO */ },
             onDismissMoreDropMenu = { isMoreExpanded = false }
         )
-        PokemonColumnList(lazyPagingData)
+        PokemonColumnList(viewModel)
 
         if (isFilterExpanded) {
             FilterBottomSheet(
@@ -105,6 +94,7 @@ fun HomeView(lazyPagingData: LazyPagingItems<Pokemon>, modifier: Modifier = Modi
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PokemonTopBar(
+    viewModel: MainViewModel,
     isSearchExpanded: Boolean = false,
     // isMoreExpanded: Boolean, // nada implementado para usar isso ainda
     isMoreExpanded: Boolean = false,
@@ -163,8 +153,13 @@ fun PokemonTopBar(
                     isMoreExpanded,
                     onDismissRequest = onDismissMoreDropMenu
                 ) {
-                    Text("teste")
-                    /* TODO: por funções aqui */
+                   Row {
+                       TextButton(onClick = {
+                           viewModel.reloadCache()
+                       }) {
+                           Text("Limpar cache.")
+                       }
+                   }
                 }
             }
         }
@@ -172,7 +167,8 @@ fun PokemonTopBar(
 }
 
 @Composable
-fun PokemonColumnList(pokemons: LazyPagingItems<Pokemon>, modifier: Modifier = Modifier) {
+fun PokemonColumnList(viewModel: MainViewModel, modifier: Modifier = Modifier) {
+    val pokemons = viewModel.pokemonPager.flow.collectAsLazyPagingItems()
     val context = LocalContext.current
     LaunchedEffect(key1 = pokemons.loadState) {
         if(pokemons.loadState.refresh is LoadState.Error) {
@@ -199,12 +195,19 @@ fun PokemonColumnList(pokemons: LazyPagingItems<Pokemon>, modifier: Modifier = M
                 )
             ) {
                 items(count = pokemons.itemCount) { index ->
-                    val pokemon = pokemons[index]
+                    val pokemon = pokemons[index]?.toPokemon()
                     if (pokemon != null) {
                         PokemonCard(
                             pokemon = pokemon,
-                            onFavoriteButtonPressed = { },
-                            onCardClick = { }
+                            onFavoriteButtonPressed = {
+                                viewModel.updatePokemonAsFavorite(
+                                    pokemon = pokemon,
+                                    favorite = pokemon.isFavorite
+                                )
+                            },
+                            onCardClick = {
+                                // TODO
+                            },
                         )
                     }
                 }

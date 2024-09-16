@@ -9,6 +9,7 @@ data class Pokemon(
     val order: Int,
     val weight: Int,
     val isFavorite: Boolean,
+    val selectedGender: PokemonGender = PokemonGender.FEMALE,
     val abilities: List<PokemonAbility>,
     val heldItems: List<NamedResource>,
     val moves: List<NamedResource>,

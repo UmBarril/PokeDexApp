@@ -6,12 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.rounded.Home
@@ -20,7 +14,6 @@ import androidx.compose.material3.Badge
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults
@@ -28,7 +21,6 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.asIntState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -43,7 +35,6 @@ import com.barril.pokedexapp.ui.settings.SettingsView
 import com.barril.pokedexapp.ui.theme.PokeDexAppTheme
 import com.barril.pokedexapp.viewmodels.MainViewModel
 import com.barril.pokedexapp.viewmodels.viewModelFactory
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import kotlinx.serialization.Serializable
 
 enum class AppDestinations(
@@ -89,7 +80,7 @@ class MainActivity : ComponentActivity() {
         val viewModel by viewModels<MainViewModel>(
             factoryProducer = {
                 viewModelFactory {
-                    MainViewModel(PokeDexApplication.appModule.pokemonPager)
+                    MainViewModel(PokeDexApplication.appModule.pokemonRepository)
                 }
             }
         )
@@ -123,8 +114,6 @@ fun MainApp(viewModel: MainViewModel, modifier: Modifier = Modifier) {
         }
     }
 
-    val newFavorites =
-
     NavigationSuiteScaffold(
         navigationSuiteItems = {
             AppDestinations.entries.forEach {
@@ -157,7 +146,7 @@ fun MainApp(viewModel: MainViewModel, modifier: Modifier = Modifier) {
             startDestination = AppDestinations.HOME.destination,
         ) {
             composable<AppDestinations.HomeDestination> {
-                HomeView(viewModel.pokemonPagingFlow.collectAsLazyPagingItems(), modifier)
+                HomeView(viewModel, modifier)
             }
             composable<AppDestinations.FavoritesDestination> {
                 FavoritesView()
