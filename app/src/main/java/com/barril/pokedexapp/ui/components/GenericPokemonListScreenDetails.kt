@@ -1,16 +1,16 @@
-package com.barril.pokedexapp.ui.home
+package com.barril.pokedexapp.ui.components
 
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
@@ -40,19 +40,25 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
 import com.barril.pokedexapp.R
-import com.barril.pokedexapp.data.toPokemon
 import com.barril.pokedexapp.domain.Pokemon
-import com.barril.pokedexapp.domain.PokemonGender
-import com.barril.pokedexapp.ui.components.PokemonCard
-import com.barril.pokedexapp.ui.components.SearchBar
-import com.barril.pokedexapp.viewmodels.MainViewModel
 import kotlinx.coroutines.launch
+
+data class GenericPokemonListScreenDetails (
+    val topBarTitle: @Composable () -> Unit,
+    val topBarMoreButtonDropDown: @Composable ColumnScope.() -> Unit,
+    val onTopBarSearchValueChange: (String) -> Unit,
+    val pokemonColumnPagingItems: @Composable () -> LazyPagingItems<Pokemon>,
+    val onPokemonColumnCardClick: (Pokemon) -> Unit,
+    val onPokemonCardFavoriteButtonClick: (Pokemon) -> Unit,
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeView(viewModel: MainViewModel, modifier: Modifier = Modifier) {
+fun GenericPokemonListScreen(
+    details: GenericPokemonListScreenDetails,
+    modifier: Modifier = Modifier
+) {
     var isSearchExpanded by remember { mutableStateOf(false) }
     var isMoreExpanded by remember { mutableStateOf(false) }
 
@@ -61,25 +67,35 @@ fun HomeView(viewModel: MainViewModel, modifier: Modifier = Modifier) {
 
     val scope = rememberCoroutineScope()
 
-    Column {
+    Column(modifier = modifier) {
         PokemonTopBar(
-            viewModel = viewModel,
-            isSearchExpanded = isSearchExpanded,
-            isMoreExpanded = isMoreExpanded,
-            onSearchCloseButtonClick = { isSearchExpanded = false },
-            onSearchButtonClick = { isSearchExpanded = true },
-            onFilterButtonClick = {
-                scope.launch { sheetState.expand() }.invokeOnCompletion {
-                    if (sheetState.isVisible) {
-                        isFilterExpanded = true
+            PokemonTopBarDetails (
+                title = { Text("Principal") },
+                isSearchExpanded = isSearchExpanded,
+                isMoreExpanded = isMoreExpanded,
+                onSearchCloseButtonClick = { isSearchExpanded = false },
+                onSearchButtonClick = { isSearchExpanded = true },
+                onFilterButtonClick = {
+                    scope.launch { sheetState.expand() }.invokeOnCompletion {
+                        if (sheetState.isVisible) {
+                            isFilterExpanded = true
+                        }
                     }
-                }
-            },
-            onMoreButtonClick = { isMoreExpanded = !isMoreExpanded },
-            onSearchValueChange = { /* TODO */ },
-            onDismissMoreDropMenu = { isMoreExpanded = false }
+                },
+                onMoreButtonClick = { isMoreExpanded = !isMoreExpanded },
+                onSearchValueChange = details.onTopBarSearchValueChange,
+                onDismissMoreDropMenu = { isMoreExpanded = false },
+                dropdownMenuScope = details.topBarMoreButtonDropDown
+            )
         )
-        PokemonColumnList(viewModel)
+
+        PokemonColumnList(
+            PokemonColumnListDetails(
+                pokemonPagingItems = details.pokemonColumnPagingItems,
+                onCardClick = details.onPokemonColumnCardClick,
+                onFavoriteCardButtonClick = details.onPokemonCardFavoriteButtonClick,
+            )
+        )
 
         if (isFilterExpanded) {
             FilterBottomSheet(
@@ -90,43 +106,48 @@ fun HomeView(viewModel: MainViewModel, modifier: Modifier = Modifier) {
     }
 }
 
+data class PokemonTopBarDetails (
+    val title: @Composable () -> Unit,
+    val isSearchExpanded: Boolean = false,
+    val isMoreExpanded: Boolean = false,
+    val onSearchButtonClick: () -> Unit = {},
+    val onSearchCloseButtonClick: () -> Unit = {},
+    val onFilterButtonClick: () -> Unit = {},
+    val onMoreButtonClick: () -> Unit = {},
+    val onSearchValueChange: (String) -> Unit = {},
+    val onDismissMoreDropMenu: () -> Unit = {},
+    val dropdownMenuScope: @Composable ColumnScope.() -> Unit
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PokemonTopBar(
-    viewModel: MainViewModel,
-    isSearchExpanded: Boolean = false,
-    // isMoreExpanded: Boolean, // nada implementado para usar isso ainda
-    isMoreExpanded: Boolean = false,
-    onSearchButtonClick: () -> Unit = {},
-    onSearchCloseButtonClick: () -> Unit = {},
-    onFilterButtonClick: () -> Unit = {},
-    onMoreButtonClick: () -> Unit = {},
-    onSearchValueChange: (String) -> Unit = {},
-    onDismissMoreDropMenu: () -> Unit = {},
+    details: PokemonTopBarDetails,
+    modifier: Modifier = Modifier
 ) {
     TopAppBar(
+        modifier = modifier,
         title = {
-            if (isSearchExpanded) {
+            if (details.isSearchExpanded) {
                 Row {
-                    IconButton(onClick = onSearchCloseButtonClick) {
+                    IconButton(onClick = details.onSearchCloseButtonClick) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = ""
                         )
                     }
                     SearchBar(
-                        onValueChange = onSearchValueChange,
+                        onValueChange = details.onSearchValueChange,
                     )
                 }
             } else {
-                Text("Principal")
+                details.title()
             }
         },
         actions = {
-            if (!isSearchExpanded) {
+            if (!details.isSearchExpanded) {
                 TextButton(
-                    onClick = onSearchButtonClick,
+                    onClick = details.onSearchButtonClick,
                 ) {
                     Icon(
                         Icons.Default.Search,
@@ -135,7 +156,7 @@ fun PokemonTopBar(
                 }
             }
             TextButton(
-                onClick = onFilterButtonClick,
+                onClick = details.onFilterButtonClick,
             ) {
                 Icon(
                     painterResource(id = R.drawable.filter_icon),
@@ -143,32 +164,35 @@ fun PokemonTopBar(
                 )
             }
             TextButton(
-                onClick = onMoreButtonClick,
+                onClick = details.onMoreButtonClick,
             ) {
                 Icon(
                     Icons.Default.MoreVert,
                     contentDescription = stringResource(R.string.more_options_icon_description)
                 )
                 DropdownMenu(
-                    isMoreExpanded,
-                    onDismissRequest = onDismissMoreDropMenu
+                    details.isMoreExpanded,
+                    onDismissRequest = details.onDismissMoreDropMenu
                 ) {
-                   Row {
-                       TextButton(onClick = {
-                           viewModel.reloadCache()
-                       }) {
-                           Text("Limpar cache.")
-                       }
-                   }
+                    details.dropdownMenuScope
                 }
             }
         }
     )
 }
 
+data class PokemonColumnListDetails (
+    val pokemonPagingItems: @Composable () -> LazyPagingItems<Pokemon>,
+    val onCardClick: (Pokemon) -> Unit,
+    val onFavoriteCardButtonClick: (Pokemon) -> Unit
+)
+
 @Composable
-fun PokemonColumnList(viewModel: MainViewModel, modifier: Modifier = Modifier) {
-    val pokemons = viewModel.pokemonPager.flow.collectAsLazyPagingItems()
+fun PokemonColumnList(
+    details: PokemonColumnListDetails,
+    modifier: Modifier = Modifier
+) {
+    val pokemons = details.pokemonPagingItems()
     val context = LocalContext.current
     LaunchedEffect(key1 = pokemons.loadState) {
         if(pokemons.loadState.refresh is LoadState.Error) {
@@ -187,7 +211,7 @@ fun PokemonColumnList(viewModel: MainViewModel, modifier: Modifier = Modifier) {
             )
         } else {
             LazyColumn(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.background),
                 verticalArrangement = Arrangement.spacedBy(
@@ -195,26 +219,19 @@ fun PokemonColumnList(viewModel: MainViewModel, modifier: Modifier = Modifier) {
                 )
             ) {
                 items(count = pokemons.itemCount) { index ->
-                    val pokemon = pokemons[index]?.toPokemon()
+                    val pokemon = pokemons[index]
                     if (pokemon != null) {
                         PokemonCard(
                             pokemon = pokemon,
-                            onFavoriteButtonPressed = {
-                                viewModel.updatePokemonAsFavorite(
-                                    pokemon = pokemon,
-                                    favorite = pokemon.isFavorite
-                                )
-                            },
-                            onCardClick = {
-                                // TODO
-                            },
+                            onFavoriteButtonPressed = details.onFavoriteCardButtonClick,
+                            onCardClick = details.onCardClick
                         )
                     }
                 }
                 item {
                     if(pokemons.loadState.append is LoadState.Loading) {
                         CircularProgressIndicator(
-                            modifier = Modifier.width(64.dp),
+                            modifier = Modifier.width(64.dp).align(Alignment.Center),
                             color = MaterialTheme.colorScheme.secondary,
                             trackColor = MaterialTheme.colorScheme.surfaceVariant,
                         )
@@ -224,11 +241,3 @@ fun PokemonColumnList(viewModel: MainViewModel, modifier: Modifier = Modifier) {
         }
     }
 }
-
-//@Preview
-//@Composable
-//fun HomePreview(modifier: Modifier = Modifier) {
-//    PokeDexAppTheme {
-//        HomeView(modifier)
-//    }
-//}

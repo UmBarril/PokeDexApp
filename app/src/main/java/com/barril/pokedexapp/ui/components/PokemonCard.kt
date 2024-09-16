@@ -51,11 +51,16 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import java.util.EnumSet
 
+/**
+ * Cartão de exibição de um Pokémon.
+ * TODO: Colocar numeros mágicos em variáveis
+ * TODO: Fazer tamanho ser responsivo
+ */
 @Composable
 fun PokemonCard(
     pokemon: Pokemon,
-    onCardClick: () -> Unit,
-    onFavoriteButtonPressed: () -> Unit,
+    onCardClick: (Pokemon) -> Unit,
+    onFavoriteButtonPressed: (Pokemon) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var gender by remember { mutableStateOf(pokemon.selectedGender) }
@@ -85,20 +90,15 @@ fun PokemonCard(
                 PokemonGender.FEMALE
             }
         },
-        onFavoriteButtonPressed = onFavoriteButtonPressed,
-        onCardClick = onCardClick,
+        onFavoriteButtonPressed = { onFavoriteButtonPressed(pokemon) },
+        onCardClick = { onCardClick(pokemon) } ,
         isFavorite = pokemon.isFavorite,
         modifier = modifier
     )
 }
 
-/**
- * Cartão de exibição de um Pokémon.
- * TODO: Colocar numeros mágicos em variáveis
- * TODO: Fazer tamanho ser responsivo
- */
 @Composable
-fun PokemonCard(
+private fun PokemonCard(
     pokemonId: Int,
     pokemonName: String,
     pokemonType: EnumSet<PokemonType>,

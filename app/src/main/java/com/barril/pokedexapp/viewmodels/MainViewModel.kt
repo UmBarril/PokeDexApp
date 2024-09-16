@@ -26,9 +26,8 @@ class MainViewModel(
     private val api: PokemonApiDao
 ) : ViewModel() {
 
-
     @OptIn(ExperimentalPagingApi::class)
-    val pokemonPager: Pager<Int, PokemonWithRelations> by lazy {
+    private val pokemonPager: Pager<Int, PokemonWithRelations> by lazy {
         Pager(
             config = PagingConfig(pageSize = POKEAPI_PAGE_SIZE),
             remoteMediator = PokemonPagingMediator(

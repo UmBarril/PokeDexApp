@@ -1,4 +1,4 @@
-package com.barril.pokedexapp.ui.home
+package com.barril.pokedexapp.ui.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -29,7 +29,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.barril.pokedexapp.domain.PokemonType
-import com.barril.pokedexapp.ui.components.PokemonTypeIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
