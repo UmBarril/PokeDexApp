@@ -24,15 +24,18 @@ interface PokemonDbDao {
      * CONSULTAS:
      */
 
+    @Transaction
     @Query("SELECT * FROM pokemonentity WHERE " +
             "name LIKE :queryString " +
             "ORDER BY name DESC")
     fun pokemonsByName(queryString: String): PagingSource<Int, PokemonWithRelations>
 
+    @Transaction
     @Query("SELECT * FROM pokemonentity " +
             "ORDER BY pokemonId DESC")
     fun allPokemons(): PagingSource<Int, PokemonWithRelations>
 
+    @Transaction
     @Query("SELECT * FROM pokemonentity " +
 //            "WHERE isFavorite = 1 " +
             "ORDER BY pokemonId DESC")

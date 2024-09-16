@@ -4,6 +4,7 @@ import com.barril.pokedexapp.data.remote.dtos.PokemonDto
 import com.barril.pokedexapp.data.remote.dtos.NamedApiResourceList
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface PokemonApiDao {
 
@@ -12,17 +13,17 @@ interface PokemonApiDao {
         @Path("id") pokemonId: String
     ): PokemonDto
 
-    @GET("pokemon/?limit={limit}&offset={offset}")
+    @GET("pokemon")
     suspend fun getPokemonPage(
-        @Path("limit") limit: Int,
-        @Path("offset") offset: Int
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int
     ): NamedApiResourceList
 //    ): Response<PokemonPageDto>
 
-    @GET("type/?limit={limit}&offset={offset}")
+    @GET("type")
     suspend fun getPokemonTypes(
-        @Path("limit") limit: Int = 30,
-        @Path("offset") offset: Int = 0
+        @Query("limit") limit: Int = 30,
+        @Query("offset") offset: Int = 0
     ): NamedApiResourceList
 
 }
