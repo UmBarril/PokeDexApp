@@ -1,5 +1,9 @@
 package com.barril.pokedexapp.viewmodels
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -20,5 +24,8 @@ class MainViewModel(
             pagingData.map { it.toPokemon() }
         }
         .cachedIn(viewModelScope)
+
+    var newFavorites by mutableIntStateOf(0)
+        private set
 
 }

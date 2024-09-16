@@ -49,8 +49,35 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.barril.pokedexapp.R
+import com.barril.pokedexapp.domain.Pokemon
 import com.barril.pokedexapp.domain.PokemonType
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import java.util.EnumSet
+
+@OptIn(ExperimentalGlideComposeApi::class)
+@Composable
+fun PokemonCard(
+    pokemon: Pokemon,
+    onCardClick: () -> Unit,
+    onFavoriteButtonPressed: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    PokemonCard(
+        pokemonName = pokemon.name,
+        pokemonType = pokemon.types,
+        pokemonArt = {
+            GlideImage(
+                model = pokemon.sprites.frontDefaultUrl,
+                contentDescription = ""
+            )
+        },
+        onFavoriteButtonPressed = onFavoriteButtonPressed,
+        onCardClick = onCardClick,
+        isFavorite = pokemon.isFavorite,
+        modifier = modifier
+    )
+}
 
 /**
  * Cartão de exibição de um Pokémon.

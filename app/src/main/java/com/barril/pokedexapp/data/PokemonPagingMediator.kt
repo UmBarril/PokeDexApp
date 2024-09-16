@@ -24,6 +24,11 @@ class PokemonPagingMediator(
     private val api: PokemonApiDao
 ): RemoteMediator<Int, PokemonWithRelations>() {
 
+//    override suspend fun initialize(): InitializeAction {
+//        if (database.pokemonDbDao().)
+//        return super.initialize()
+//    }
+
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, PokemonWithRelations>
