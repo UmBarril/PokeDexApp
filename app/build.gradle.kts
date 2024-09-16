@@ -10,6 +10,8 @@ plugins {
 
     // compose compiler
     alias(libs.plugins.compose.compiler)
+    
+    kotlin("plugin.serialization") version "2.0.20"
 }
 
 android {
@@ -89,8 +91,11 @@ dependencies {
     // navigation
     // Jetpack Compose integration
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlinx.serialization.json) // type-safety
     // Testing Navigation
     androidTestImplementation(libs.androidx.navigation.testing)
+    // ui
+    implementation(libs.androidx.material3.adaptive.navigation.suite)
 
     // layout
 //    implementation(libs.androidx.constraintlayout)
