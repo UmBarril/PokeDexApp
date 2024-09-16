@@ -53,7 +53,7 @@ import java.util.EnumSet
 
 /**
  * Cartão de exibição de um Pokémon.
- * TODO: Colocar numeros mágicos em variáveis
+ * TODO: Colocar números mágicos em variáveis
  * TODO: Fazer tamanho ser responsivo
  */
 @Composable

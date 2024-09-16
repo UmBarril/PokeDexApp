@@ -23,7 +23,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.window.core.layout.WindowWidthSizeClass
 import com.barril.pokedexapp.ui.screens.FavoritesView
-import com.barril.pokedexapp.ui.screens.HomeView
+import com.barril.pokedexapp.ui.screens.HomeScreen
 import com.barril.pokedexapp.ui.settings.SettingsView
 import com.barril.pokedexapp.ui.theme.PokeDexAppTheme
 import com.barril.pokedexapp.viewmodels.MainViewModel
@@ -104,7 +104,7 @@ fun MainApp(viewModel: MainViewModel, modifier: Modifier = Modifier) {
             startDestination = AppDestinations.HOME.destination,
         ) {
             composable<AppDestinations.HomeDestination> {
-                HomeView(viewModel, modifier)
+                HomeScreen(viewModel, modifier)
             }
             composable<AppDestinations.FavoritesDestination> {
                 FavoritesView(viewModel, modifier)

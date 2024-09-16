@@ -18,6 +18,7 @@ import com.barril.pokedexapp.data.local.entities.relations.PokemonWithHelditemCr
 import com.barril.pokedexapp.data.local.entities.relations.PokemonWithMovesCrossRef
 import com.barril.pokedexapp.data.local.entities.relations.PokemonWithRelations
 import com.barril.pokedexapp.data.local.entities.relations.PokemonWithTypeCrossRef
+import com.barril.pokedexapp.data.local.entities.relations.PokemonWithTypes
 
 @Dao
 interface PokemonDbDao {
@@ -32,6 +33,30 @@ interface PokemonDbDao {
     /**
      * CONSULTAS:
      */
+
+    @Query("SELECT * FROM databasemetadataentity WHERE " +
+            "`key` = :key " +
+            "LIMIT 1")
+    suspend fun metadataByKey(key: String): DatabaseMetadataEntity?
+
+    @Transaction
+    @Query("SELECT * FROM pokemonentity WHERE " +
+            "pokemonId = :id " +
+            "ORDER BY name DESC")
+    fun pokemonById(id: Int): PagingSource<Int, PokemonWithRelations>
+
+    @Transaction
+    @Query("SELECT * FROM pokemonwithtypecrossref WHERE " +
+            "typeName LIKE :queryString " +
+            "ORDER BY typeName ASC")
+    fun pokemonsByType(queryString: String): PagingSource<Int, PokemonWithTypeCrossRef>
+
+    // TODO
+//    @Transaction
+//    @Query("SELECT * FROM pokemonentity WHERE " +
+//            " LIKE :queryString " +
+//            "ORDER BY typeName ASC")
+//    fun pokemonsByGen(queryString: String): PagingSource<Int, PokemonWithTypes>
 
     @Transaction
     @Query("SELECT * FROM pokemonentity WHERE " +
@@ -50,10 +75,6 @@ interface PokemonDbDao {
             "ORDER BY pokemonId DESC")
     fun allFavoritePokemons(): PagingSource<Int, PokemonWithRelations>
 
-//    @Query("DELETE FROM pokemonentity")
-//    suspend fun clearAllPokemons()
-
-    // TODO: por botao para ativar isso
     @Query("DELETE FROM pokemonentity WHERE isFavorite = NULL OR isFavorite = 0")
     suspend fun clearAllPokemonsExceptFavorites()
 
@@ -131,5 +152,4 @@ interface PokemonDbDao {
 
     @Upsert
     fun insertDatabaseMeta(meta: DatabaseMetadataEntity)
-
 }

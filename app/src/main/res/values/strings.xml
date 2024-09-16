@@ -10,4 +10,11 @@
     <string name="filter_icon_description">Filtros</string>
     <string name="favorites_button_description">Favoritos</string>
     <string name="more_options_icon_description">Mais opções</string>
+    <string name="order_by_ids">Ordenar por numeração</string>
+    <string name="order_by_gen">Ordenar por geração</string>
+    <string name="order_by_type">Ordenar por Tipo</string>
+    <string name="order_by_name">Ordenar por nome</string>
+    <string name="filter_by_gen">Filtrar por Gen</string>
+    <string name="filter_by_type">Filtrar por Tipo</string>
+    <string name="order">Ordenação</string>
 </resources>

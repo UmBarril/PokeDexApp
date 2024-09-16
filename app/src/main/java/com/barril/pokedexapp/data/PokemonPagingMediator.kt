@@ -17,11 +17,6 @@ class PokemonPagingMediator(
     private val api: PokemonApiDao
 ): RemoteMediator<Int, PokemonWithRelations>() {
 
-//    override suspend fun initialize(): InitializeAction {
-//        if (database.pokemonDbDao().)
-//        return super.initialize()
-//    }
-
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, PokemonWithRelations>
@@ -38,8 +33,7 @@ class PokemonPagingMediator(
                 }
             } ?: 0
 
-            val pageSize = state.config.pageSize
-            val response = api.getPokemonPage(pageSize, offset)
+            val response = api.getPokemonPage(state.config.pageSize, offset)
 
             database.withTransaction {
                 if (loadType == LoadType.REFRESH) {
