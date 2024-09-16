@@ -80,7 +80,10 @@ class MainActivity : ComponentActivity() {
         val viewModel by viewModels<MainViewModel>(
             factoryProducer = {
                 viewModelFactory {
-                    MainViewModel(PokeDexApplication.appModule.pokemonRepository)
+                    MainViewModel(
+                        PokeDexApplication.appModule.pokemonDatabase,
+                        PokeDexApplication.appModule.pokemonApi
+                    )
                 }
             }
         )
