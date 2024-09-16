@@ -7,7 +7,14 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.barril.pokedexapp.data.remote.PokemonApiDao
 import com.barril.pokedexapp.data.local.PokemonDatabase
-import com.barril.pokedexapp.data.local.PokemonEntity
+import com.barril.pokedexapp.data.local.entities.NamedResourceEntity
+import com.barril.pokedexapp.data.local.entities.PokemonAbilityEntity
+import com.barril.pokedexapp.data.local.entities.PokemonEntity
+import com.barril.pokedexapp.data.local.entities.PokemonStatEntity
+import com.barril.pokedexapp.data.local.entities.PokemonTypeEntity
+import com.barril.pokedexapp.data.local.entities.embeded.PokemonCriesResourceEmbeded
+import com.barril.pokedexapp.data.local.entities.embeded.PokemonSpritesResourceEmbeded
+import com.barril.pokedexapp.data.local.entities.relations.PokemonWithRelations
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -15,28 +22,23 @@ import java.io.IOException
 class PokemonPagingMediator(
     private val database: PokemonDatabase,
     private val api: PokemonApiDao
-): RemoteMediator<Int, PokemonEntity>() {
+): RemoteMediator<Int, PokemonWithRelations>() {
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, PokemonEntity>
+        state: PagingState<Int, PokemonWithRelations>
     ): MediatorResult {
         return try {
-            val loadKey = when (loadType) {
+            val offset = when (loadType) {
                 LoadType.REFRESH -> null
                 LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
                 LoadType.APPEND -> {
                     val lastItem = state.lastItemOrNull()
                         ?: return MediatorResult.Success(endOfPaginationReached = true)
 
-                    lastItem.id
+                    lastItem.pokemonEntity.pokemonId
                 }
-            }
-            val offset = if (loadKey != null) {
-                loadKey * state.config.pageSize
-            } else {
-                state.config.initialLoadSize
-            }
+            } ?: state.config.initialLoadSize
             val response = api.getPokemonPage(state.config.pageSize, offset)
 
             database.withTransaction {
@@ -47,10 +49,12 @@ class PokemonPagingMediator(
                 val pokemonDtos = response.results.map {
                     api.getPokemon(it.name)
                 }
-                val pokemonEntities = pokemonDtos.map {
-                    it.toPokemonEntity()
+
+                val pokemonInsertData = pokemonDtos.map {
+                    it.toPokemonInsertData()
                 }
-                database.pokemonDbDao().insertPokemons(pokemonEntities)
+
+                database.pokemonDbDao().insertPokemonData(pokemonInsertData)
             }
 
             MediatorResult.Success(endOfPaginationReached = response.results.isEmpty())

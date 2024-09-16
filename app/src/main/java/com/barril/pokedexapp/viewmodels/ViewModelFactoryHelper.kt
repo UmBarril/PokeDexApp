@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package com.barril.pokedexapp.viewmodels
 
 import androidx.lifecycle.ViewModel

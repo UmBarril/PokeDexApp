@@ -61,7 +61,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PokeDexAppTheme {
-                MainApp(viewModel = viewModel)
+//                MainApp(viewModel = viewModel)
             }
         }
     }
