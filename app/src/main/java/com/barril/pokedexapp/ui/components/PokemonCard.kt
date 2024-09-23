@@ -64,9 +64,7 @@ fun PokemonCard(
     modifier: Modifier = Modifier,
 ) {
     var gender by remember { mutableStateOf(pokemon.selectedGender) }
-    val targetSize = with(LocalDensity.current) {
-        (pokemon.height * 2).dp
-    }
+    val targetSize = /*(pokemon.height * 2).dp*/ 100.dp
     PokemonCard(
         pokemonId = pokemon.id,
         pokemonName = pokemon.name,
@@ -126,6 +124,7 @@ private fun PokemonCard(
         ) {
             Box(
                 Modifier
+                    .padding(start = 8.dp)
                     .size(80.dp)
                     .clip(RectangleShape)
                     .wrapContentSize(Alignment.Center)

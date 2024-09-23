@@ -18,8 +18,10 @@ import com.barril.pokedexapp.data.local.entities.relations.PokemonWithHelditemCr
 import com.barril.pokedexapp.data.local.entities.relations.PokemonWithMovesCrossRef
 import com.barril.pokedexapp.data.local.entities.relations.PokemonWithRelations
 import com.barril.pokedexapp.data.local.entities.relations.PokemonWithTypeCrossRef
-import com.barril.pokedexapp.data.local.entities.relations.PokemonWithTypes
 
+// TODO: ler https://developer.android.com/training/data-storage/room/async-queries
+
+//
 @Dao
 interface PokemonDbDao {
 
@@ -28,7 +30,7 @@ interface PokemonDbDao {
      */
 
     @Update(PokemonEntity::class)
-    fun updatePokemonFavoriteStatus(pokemonUpdate: PokemonEntityUpdateFavorite)
+    suspend fun updatePokemonFavoriteStatus(pokemonUpdate: PokemonEntityUpdateFavorite)
 
     /**
      * CONSULTAS:
@@ -37,19 +39,18 @@ interface PokemonDbDao {
     @Query("SELECT * FROM databasemetadataentity WHERE " +
             "`key` = :key " +
             "LIMIT 1")
-    suspend fun metadataByKey(key: String): DatabaseMetadataEntity?
+    suspend fun getMetadataByKey(key: String): DatabaseMetadataEntity?
 
     @Transaction
     @Query("SELECT * FROM pokemonentity WHERE " +
-            "pokemonId = :id " +
-            "ORDER BY name DESC")
-    fun pokemonById(id: Int): PagingSource<Int, PokemonWithRelations>
+            "pokemonId = :id")
+    fun getPokemonById(id: Int): PagingSource<Int, PokemonWithRelations>
 
     @Transaction
     @Query("SELECT * FROM pokemonwithtypecrossref WHERE " +
             "typeName LIKE :queryString " +
             "ORDER BY typeName ASC")
-    fun pokemonsByType(queryString: String): PagingSource<Int, PokemonWithTypeCrossRef>
+    fun getPokemonsByType(queryString: String): PagingSource<Int, PokemonWithTypeCrossRef>
 
     // TODO
 //    @Transaction
@@ -60,21 +61,30 @@ interface PokemonDbDao {
 
     @Transaction
     @Query("SELECT * FROM pokemonentity WHERE " +
-            "name LIKE :queryString " +
-            "ORDER BY name DESC")
-    fun pokemonsByName(queryString: String): PagingSource<Int, PokemonWithRelations>
+            "name LIKE :queryString AND " +
+            "isFavorite = 1 ")
+//            "LIMIT :limit OFFSET :offset")
+    fun favoritePokemonsByName(queryString: String/*, limit: Int, offset: Int*/): PagingSource<Int, PokemonWithRelations>
+
+    @Transaction
+    @Query("SELECT * FROM pokemonentity WHERE " +
+            "name LIKE :queryString ")
+//            "LIMIT :limit OFFSET :offset")
+    fun getPokemonsByName(queryString: String/*, limit: Int, offset: Int*/): PagingSource<Int, PokemonWithRelations>
+
+    @Transaction
+    @Query("SELECT * FROM pokemonentity ORDER BY " +
+            "CASE WHEN :isAsc = 1 THEN pokemonId END ASC," +
+            "CASE WHEN :isAsc = 0 THEN pokemonId END DESC")
+    fun getAllPokemons(isAsc: Boolean = true): PagingSource<Int, PokemonWithRelations>
 
     @Transaction
     @Query("SELECT * FROM pokemonentity " +
-            "ORDER BY pokemonId ASC")
-    fun allPokemons(): PagingSource<Int, PokemonWithRelations>
-
-    @Transaction
-    @Query("SELECT * FROM pokemonentity " +
-//            "WHERE isFavorite = 1 " +
+            "WHERE isFavorite = 1 " +
             "ORDER BY pokemonId DESC")
-    fun allFavoritePokemons(): PagingSource<Int, PokemonWithRelations>
+    fun getAllFavoritePokemons(): PagingSource<Int, PokemonWithRelations>
 
+    // FIXME: até o meu conhecimento isso aqui não faz muita coisa (falta limpar as outras tabelas e o cache de imagens do glide)
     @Query("DELETE FROM pokemonentity WHERE isFavorite = NULL OR isFavorite = 0")
     suspend fun clearAllPokemonsExceptFavorites()
 

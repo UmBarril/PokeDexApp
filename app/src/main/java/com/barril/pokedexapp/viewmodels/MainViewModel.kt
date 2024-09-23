@@ -1,48 +1,34 @@
 package com.barril.pokedexapp.viewmodels
 
-import androidx.annotation.StringRes
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
 import androidx.room.Index
-import com.barril.pokedexapp.R
-import com.barril.pokedexapp.data.PokemonPagingMediator
 import com.barril.pokedexapp.data.local.PokemonDatabase
 import com.barril.pokedexapp.data.local.entities.DatabaseMetadataEntity
 import com.barril.pokedexapp.data.local.entities.partial_entities.PokemonEntityUpdateFavorite
 import com.barril.pokedexapp.data.local.entities.relations.PokemonWithRelations
+import com.barril.pokedexapp.data.paging.PokemonPagingMediator
 import com.barril.pokedexapp.data.remote.PokemonApiDao
 import com.barril.pokedexapp.data.toPokemon
 import com.barril.pokedexapp.data.toPokemonInsertData
 import com.barril.pokedexapp.di.AppModuleImpl.Companion.POKEAPI_PAGE_SIZE
 import com.barril.pokedexapp.domain.Pokemon
 import com.barril.pokedexapp.domain.PokemonType
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import java.util.EnumSet
-
-enum class PokemonOrderingColumn(
-    val databaseName: String,
-    @StringRes val description: Int
-) {
-    POKEMON_ID("pokemonId", R.string.order_by_ids),
-//    GENERATION("", stringResource(R.string.order_by_gen)),
-    TYPE("typeName", R.string.order_by_type),
-    NAME("name", R.string.order_by_name)
-}
+import kotlinx.coroutines.runBlocking
 
 class MainViewModel(
     private val database: PokemonDatabase,
@@ -51,11 +37,12 @@ class MainViewModel(
 
     init {
         viewModelScope.launch {
-            val result = database.pokemonDbDao().metadataByKey("loadedAllPokemons")
+            val result = database.pokemonDbDao().getMetadataByKey("loadedAllPokemons")
             hasLoadedAllPokemons = result?.value == "true"
         }
     }
 
+    // TODO: transformar isso num MutableFlowState
     var orderingBy by mutableStateOf(PokemonOrderingColumn.POKEMON_ID)
     var currentPokemonOrderingDirection by mutableStateOf(Index.Order.ASC)
     val selectedFilterTypes = mutableStateListOf<PokemonType>()
@@ -69,21 +56,79 @@ class MainViewModel(
                 api = api
             ),
             pagingSourceFactory = {
-                database.pokemonDbDao().allPokemons()
+                runBlocking { // TODO: ver solução para não usar runBlocking
+                    database.pokemonDbDao().getAllPokemons()
+                }
             }
         )
     }
 
-    val pokemonPagingFlow = pokemonPager
-        .flow
-        .map { pagingData ->
-            pagingData.map { it.toPokemon() }
+    @OptIn(ExperimentalPagingApi::class)
+    private val favoritePokemonPager: Pager<Int, PokemonWithRelations> by lazy {
+        Pager(
+            config = PagingConfig(pageSize = POKEAPI_PAGE_SIZE),
+            remoteMediator = PokemonPagingMediator(
+                database = database,
+                api = api
+            ),
+            pagingSourceFactory = {
+                runBlocking { // TODO: ver solução para não usar runBlocking
+                    database.pokemonDbDao().getAllFavoritePokemons()
+                }
+            }
+        )
+    }
+
+    var searchResultFlow: Flow<PagingData<Pokemon>>? = null
+        private set
+
+    private var lastQuery = ""
+    private var searchPager: Pager<Int, PokemonWithRelations>? = null
+
+    private fun searchPokemonPager(query: String): Pager<Int, PokemonWithRelations>? {
+        if (query == lastQuery) {
+            return searchPager
         }
-        .cachedIn(viewModelScope)
+        lastQuery = query
+        return Pager(
+            config = PagingConfig(pageSize = POKEAPI_PAGE_SIZE),
+            pagingSourceFactory = {
+                runBlocking { // TODO: ver solução para não usar runblocking
+                    database.pokemonDbDao().getPokemonsByName(query)
+                }
+            }
+        )
+    }
+
+    fun updateSearchResultsFlow(query: String) {
+        searchResultFlow = searchPokemonPager(query)
+            ?.flow
+            ?.map { pagingData ->
+                pagingData.map { it.toPokemon() }
+            }
+            ?.cachedIn(viewModelScope)
+    }
+
+    val favoritePokemonPagingFlow by lazy {
+        favoritePokemonPager
+            .flow
+            .map { pagingData ->
+                pagingData.map { it.toPokemon() }
+            }
+            .cachedIn(viewModelScope)
+    }
+
+    val pokemonPagingFlow by lazy {
+        pokemonPager
+            .flow
+            .map { pagingData ->
+                pagingData.map { it.toPokemon() }
+            }
+            .cachedIn(viewModelScope)
+    }
 
     var newFavorites by mutableIntStateOf(0)
         private set
-
 
     var hasLoadedAllPokemons: Boolean = false
         private set
@@ -106,26 +151,25 @@ class MainViewModel(
         database.pokemonDbDao().insertDatabaseMeta(
             DatabaseMetadataEntity("loadedAllPokemons", "true")
         )
-        var hasLoadedAllPokemons = true
+        hasLoadedAllPokemons = true
     }
 
-//    fun searchPokemonByName(pokemonName: String): List<Pokemon> {
-////        database.pokemonDbDao().pokemonsByName(pokemonName)
-//    }
-
     fun updatePokemonAsFavorite(pokemon: Pokemon, favorite: Boolean) {
-        database.pokemonDbDao().updatePokemonFavoriteStatus(
-            PokemonEntityUpdateFavorite(
-                pokemonId = pokemon.id,
-                isFavorite = favorite
+        viewModelScope.launch {
+            database.pokemonDbDao().updatePokemonFavoriteStatus(
+                PokemonEntityUpdateFavorite(
+                    pokemonId = pokemon.id,
+                    isFavorite = favorite
+                )
             )
-        )
+        }
         if (favorite) {
             newFavorites++
         }
     }
 
-    fun reloadCache() {
+    // TODO: usar api para fazer reload arrastando para baixo
+    fun clearCache() {
         viewModelScope.launch {
             database.pokemonDbDao().clearAllPokemonsExceptFavorites()
         }

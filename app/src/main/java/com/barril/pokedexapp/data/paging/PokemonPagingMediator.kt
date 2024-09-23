@@ -1,4 +1,4 @@
-package com.barril.pokedexapp.data
+package com.barril.pokedexapp.data.paging
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
@@ -8,6 +8,7 @@ import androidx.room.withTransaction
 import com.barril.pokedexapp.data.remote.PokemonApiDao
 import com.barril.pokedexapp.data.local.PokemonDatabase
 import com.barril.pokedexapp.data.local.entities.relations.PokemonWithRelations
+import com.barril.pokedexapp.data.toPokemonInsertData
 import retrofit2.HttpException
 import java.io.IOException
 
