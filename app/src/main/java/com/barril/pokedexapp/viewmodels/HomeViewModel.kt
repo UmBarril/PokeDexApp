@@ -30,11 +30,10 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class MainViewModel(
+class HomeViewModel(
     private val database: PokemonDatabase,
     private val api: PokemonApiDao
 ) : ViewModel() {
-
     init {
         viewModelScope.launch {
             val result = database.pokemonDbDao().getMetadataByKey("loadedAllPokemons")
@@ -58,22 +57,6 @@ class MainViewModel(
             pagingSourceFactory = {
                 runBlocking { // TODO: ver solução para não usar runBlocking
                     database.pokemonDbDao().getAllPokemons()
-                }
-            }
-        )
-    }
-
-    @OptIn(ExperimentalPagingApi::class)
-    private val favoritePokemonPager: Pager<Int, PokemonWithRelations> by lazy {
-        Pager(
-            config = PagingConfig(pageSize = POKEAPI_PAGE_SIZE),
-            remoteMediator = PokemonPagingMediator(
-                database = database,
-                api = api
-            ),
-            pagingSourceFactory = {
-                runBlocking { // TODO: ver solução para não usar runBlocking
-                    database.pokemonDbDao().getAllFavoritePokemons()
                 }
             }
         )
@@ -109,15 +92,6 @@ class MainViewModel(
             ?.cachedIn(viewModelScope)
     }
 
-    val favoritePokemonPagingFlow by lazy {
-        favoritePokemonPager
-            .flow
-            .map { pagingData ->
-                pagingData.map { it.toPokemon() }
-            }
-            .cachedIn(viewModelScope)
-    }
-
     val pokemonPagingFlow by lazy {
         pokemonPager
             .flow
@@ -132,6 +106,10 @@ class MainViewModel(
 
     var hasLoadedAllPokemons: Boolean = false
         private set
+
+    fun flushNewFavorites() {
+        newFavorites = 0
+    }
 
     fun loadAllPokemons() {
         if (hasLoadedAllPokemons) {

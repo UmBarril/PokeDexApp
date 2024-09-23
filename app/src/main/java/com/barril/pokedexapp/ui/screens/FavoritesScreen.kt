@@ -16,10 +16,10 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.barril.pokedexapp.ui.components.FavoritesTopBar
 import com.barril.pokedexapp.ui.components.PokemonColumnList
 import com.barril.pokedexapp.ui.components.PokemonColumnListDetails
-import com.barril.pokedexapp.viewmodels.MainViewModel
+import com.barril.pokedexapp.viewmodels.HomeViewModel
 
 @Composable
-fun FavoritesScreen(viewModel: MainViewModel, modifier: Modifier = Modifier) {
+fun FavoritesScreen(viewModel: HomeViewModel, modifier: Modifier = Modifier) {
     var isSearchExpanded by remember { mutableStateOf(false) }
 
     Column(modifier = modifier) {

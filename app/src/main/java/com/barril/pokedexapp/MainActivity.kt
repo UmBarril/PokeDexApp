@@ -26,17 +26,17 @@ import com.barril.pokedexapp.ui.screens.FavoritesScreen
 import com.barril.pokedexapp.ui.screens.HomeScreen
 import com.barril.pokedexapp.ui.settings.SettingsView
 import com.barril.pokedexapp.ui.theme.PokeDexAppTheme
-import com.barril.pokedexapp.viewmodels.MainViewModel
+import com.barril.pokedexapp.viewmodels.HomeViewModel
 import com.barril.pokedexapp.viewmodels.viewModelFactory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val viewModel by viewModels<MainViewModel>(
+        val viewModel by viewModels<HomeViewModel>(
             factoryProducer = {
                 viewModelFactory {
-                    MainViewModel(
+                    HomeViewModel(
                         PokeDexApplication.appModule.pokemonDatabase,
                         PokeDexApplication.appModule.pokemonApi
                     )
@@ -54,7 +54,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainApp(viewModel: MainViewModel, modifier: Modifier = Modifier) {
+fun MainApp(viewModel: HomeViewModel, modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     val adaptiveInfo = currentWindowAdaptiveInfo()
 
