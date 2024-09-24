@@ -35,6 +35,8 @@ interface PokemonDbDao {
     /**
      * CONSULTAS:
      */
+    @Query("SELECT EXISTS(SELECT * FROM pokemonentity WHERE pokemonId = :pokemonId)")
+    suspend fun isPokemonFavorite(pokemonId: Int): Boolean
 
     @Query("SELECT * FROM databasemetadataentity WHERE " +
             "`key` = :key " +
@@ -84,7 +86,12 @@ interface PokemonDbDao {
             "ORDER BY pokemonId DESC")
     fun getAllFavoritePokemons(): PagingSource<Int, PokemonWithRelations>
 
+    /**
+     * REMOÇÕES:
+     */
+
     // FIXME: até o meu conhecimento isso aqui não faz muita coisa (falta limpar as outras tabelas e o cache de imagens do glide)
+    // aparentemente tem que colocar ForeignKey em tudo para isso funcionar
     @Query("DELETE FROM pokemonentity WHERE isFavorite = NULL OR isFavorite = 0")
     suspend fun clearAllPokemonsExceptFavorites()
 
@@ -94,7 +101,12 @@ interface PokemonDbDao {
 
     @Transaction
     suspend fun insertPokemonData(pokemonInsertData: List<PokemonInsertData>) {
-        pokemonInsertData.forEach { pokemon ->
+        for (pokemon in pokemonInsertData) {
+            // Se o pokemon é favorito e existe, não atualizar ele
+            // Caso não, pokémons favoritos podem ter o isFavorite sobescrito
+            if (isPokemonFavorite(pokemon.pokemonEntity.pokemonId)) {
+                continue
+            }
             insertPokemonEntity(pokemon.pokemonEntity)
             insertPokemonMoves(pokemon.moves)
             insertPokemonHeldItems(pokemon.heldItems)
