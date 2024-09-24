@@ -68,7 +68,7 @@ class FavoritesViewModel(
     var newFavorites by mutableStateOf(setOf<Int>())
         private set
 
-    fun flushNewFavorites() {
+    fun clearNewFavoritesList() {
         newFavorites = newFavorites.toMutableSet().apply { clear() }
     }
 

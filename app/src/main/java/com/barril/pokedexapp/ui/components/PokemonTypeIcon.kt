@@ -40,6 +40,24 @@ import com.barril.pokedexapp.ui.components.PokemonTypeIcons.PsychicTypeIcon
 import com.barril.pokedexapp.ui.components.PokemonTypeIcons.RockTypeIcon
 import com.barril.pokedexapp.ui.components.PokemonTypeIcons.SteelTypeIcon
 import com.barril.pokedexapp.ui.components.PokemonTypeIcons.WaterTypeIcon
+import com.barril.pokedexapp.ui.theme.bugColor
+import com.barril.pokedexapp.ui.theme.darkColor
+import com.barril.pokedexapp.ui.theme.dragonColor
+import com.barril.pokedexapp.ui.theme.electricColor
+import com.barril.pokedexapp.ui.theme.fairyColor
+import com.barril.pokedexapp.ui.theme.fightingColor
+import com.barril.pokedexapp.ui.theme.fireColor
+import com.barril.pokedexapp.ui.theme.flyingColor
+import com.barril.pokedexapp.ui.theme.ghostColor
+import com.barril.pokedexapp.ui.theme.grassColor
+import com.barril.pokedexapp.ui.theme.groundColor
+import com.barril.pokedexapp.ui.theme.iceColor
+import com.barril.pokedexapp.ui.theme.normalColor
+import com.barril.pokedexapp.ui.theme.poisonColor
+import com.barril.pokedexapp.ui.theme.psychicColor
+import com.barril.pokedexapp.ui.theme.rockColor
+import com.barril.pokedexapp.ui.theme.steelColor
+import com.barril.pokedexapp.ui.theme.waterColor
 
 @Composable
 fun PokemonTypeIcon(
@@ -124,24 +142,6 @@ fun PokemonTypeIcon(
     }
 }
 
-val grassColor = Color(0xFF7ED956)
-private val fireColor = Color(0xFFF08030)
-private val waterColor = Color(0xFF6890F0)
-private val electricColor = Color(0xFFF8D030)
-private val iceColor = Color(0xFF98D8D8)
-private val fightingColor = Color(0xFFC03028)
-private val poisonColor = Color(0xFFA040A0)
-private val groundColor = Color(0xFFE0C068)
-private val flyingColor = Color(0xFFA890F0)
-private val psychicColor = Color(0xFFF85888)
-private val bugColor = Color(0xFFA8B820)
-private val rockColor = Color(0xFFB8A038)
-private val ghostColor = Color(0xFF705898)
-private val dragonColor = Color(0xFF7038F8)
-private val darkColor = Color(0xFF705848)
-private val steelColor = Color(0xFFB8B8D0)
-private val fairyColor = Color(0xFFF0B6BC)
-private val normalColor = Color(0xFFA8A878)
 
 object PokemonTypeIcons {
 
