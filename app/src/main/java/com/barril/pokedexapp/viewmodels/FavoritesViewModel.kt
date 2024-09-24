@@ -20,7 +20,6 @@ import com.barril.pokedexapp.di.AppModuleImpl.Companion.POKEAPI_PAGE_SIZE
 import com.barril.pokedexapp.domain.Pokemon
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class FavoritesViewModel(
     private val database: PokemonDatabase,

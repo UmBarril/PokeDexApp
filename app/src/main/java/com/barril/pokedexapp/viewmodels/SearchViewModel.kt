@@ -14,7 +14,6 @@ import com.barril.pokedexapp.di.AppModuleImpl.Companion.POKEAPI_PAGE_SIZE
 import com.barril.pokedexapp.domain.Pokemon
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.runBlocking
 
 /**
  * SearchViewModel para ser usado na SearchScreen.

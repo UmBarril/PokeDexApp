@@ -1,19 +1,19 @@
 package com.barril.pokedexapp.data
 
-import com.barril.pokedexapp.data.local.entities.PokemonAbilityEntity
-import com.barril.pokedexapp.data.local.entities.embeded.PokemonCriesResourceEmbeded
 import com.barril.pokedexapp.data.local.entities.NamedResourceEntity
+import com.barril.pokedexapp.data.local.entities.PokemonAbilityEntity
 import com.barril.pokedexapp.data.local.entities.PokemonEntity
-import com.barril.pokedexapp.data.local.entities.insert.PokemonInsertData
-import com.barril.pokedexapp.data.local.entities.embeded.PokemonSpritesResourceEmbeded
 import com.barril.pokedexapp.data.local.entities.PokemonStatEntity
 import com.barril.pokedexapp.data.local.entities.PokemonTypeEntity
+import com.barril.pokedexapp.data.local.entities.embeded.PokemonCriesResourceEmbeded
+import com.barril.pokedexapp.data.local.entities.embeded.PokemonSpritesResourceEmbeded
+import com.barril.pokedexapp.data.local.entities.insert.PokemonInsertData
 import com.barril.pokedexapp.data.local.entities.relations.PokemonWithRelations
 import com.barril.pokedexapp.data.remote.dtos.PokemonDto
+import com.barril.pokedexapp.domain.NamedResource
 import com.barril.pokedexapp.domain.Pokemon
 import com.barril.pokedexapp.domain.PokemonAbility
 import com.barril.pokedexapp.domain.PokemonCriesResource
-import com.barril.pokedexapp.domain.NamedResource
 import com.barril.pokedexapp.domain.PokemonSpritesResource
 import com.barril.pokedexapp.domain.PokemonStat
 import com.barril.pokedexapp.domain.PokemonType
