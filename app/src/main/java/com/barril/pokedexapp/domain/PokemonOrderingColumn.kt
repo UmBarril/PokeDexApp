@@ -1,4 +1,4 @@
-package com.barril.pokedexapp.viewmodels
+package com.barril.pokedexapp.domain
 
 import androidx.annotation.StringRes
 import com.barril.pokedexapp.R

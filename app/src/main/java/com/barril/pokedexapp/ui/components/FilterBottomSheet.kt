@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.room.Index
 import com.barril.pokedexapp.R
 import com.barril.pokedexapp.domain.PokemonType
-import com.barril.pokedexapp.viewmodels.PokemonOrderingColumn
+import com.barril.pokedexapp.domain.PokemonOrderingColumn
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

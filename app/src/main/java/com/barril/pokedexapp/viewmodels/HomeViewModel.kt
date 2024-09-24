@@ -23,7 +23,7 @@ import com.barril.pokedexapp.data.remote.PokemonApiDao
 import com.barril.pokedexapp.data.toPokemon
 import com.barril.pokedexapp.data.toPokemonInsertData
 import com.barril.pokedexapp.di.AppModuleImpl.Companion.POKEAPI_PAGE_SIZE
-import com.barril.pokedexapp.domain.Pokemon
+import com.barril.pokedexapp.domain.PokemonOrderingColumn
 import com.barril.pokedexapp.domain.PokemonType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
