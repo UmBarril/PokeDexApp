@@ -20,4 +20,7 @@
     <string name="favorites_title">Favoritos</string>
     <string name="home_title">Principal</string>
     <string name="search_favorites_placeholder">Pesquisar favoritos</string>
+    <string name="pokemon_overview_weight_label">Peso</string>
+    <string name="pokemon_overview_sound_label">Som</string>
+    <string name="pokemon_overview_play_label">Tocar som do Pokémon</string>
 </resources>

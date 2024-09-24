@@ -3,11 +3,8 @@ package com.barril.pokedexapp.data.local.entities
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.Relation
 import com.barril.pokedexapp.data.local.entities.embeded.PokemonCriesResourceEmbeded
 import com.barril.pokedexapp.data.local.entities.embeded.PokemonSpritesResourceEmbeded
-import com.barril.pokedexapp.domain.PokemonType
-import java.util.EnumSet
 
 @Entity
 data class PokemonEntity(

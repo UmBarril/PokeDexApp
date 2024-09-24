@@ -45,6 +45,11 @@ interface PokemonDbDao {
     @Transaction
     @Query("SELECT * FROM pokemonentity WHERE " +
             "pokemonId = :id")
+    suspend fun getPokemonByIdRaw(id: Int): PokemonWithRelations
+
+    @Transaction
+    @Query("SELECT * FROM pokemonentity WHERE " +
+            "pokemonId = :id")
     fun getPokemonById(id: Int): PagingSource<Int, PokemonWithRelations>
 
     @Transaction

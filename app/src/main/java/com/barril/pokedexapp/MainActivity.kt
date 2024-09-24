@@ -30,6 +30,7 @@ import androidx.window.core.layout.WindowWidthSizeClass
 import com.barril.pokedexapp.domain.Pokemon
 import com.barril.pokedexapp.ui.screens.FavoritesScreen
 import com.barril.pokedexapp.ui.screens.HomeScreen
+import com.barril.pokedexapp.ui.screens.PokemonOverviewScreen
 import com.barril.pokedexapp.ui.screens.SearchScreen
 import com.barril.pokedexapp.ui.settings.SettingsView
 import com.barril.pokedexapp.ui.theme.PokeDexAppTheme
@@ -80,7 +81,7 @@ class MainActivity : ComponentActivity() {
                 MainApp(
                     favoritesViewModel = favoritesViewModel,
                     searchViewModel = searchViewModel,
-                    homeViewModel = homeViewModel
+                    homeViewModel = homeViewModel,
                 )
             }
         }
@@ -111,8 +112,12 @@ fun MainApp(
         }
     }
 
+    // gambiarra para evitar todo o processo de serialização que o navigation necessita para funcionar
+    var pokemonToOverView: Pokemon? = null
+
     val onPokemonCardClick = { pokemon: Pokemon ->
-        // TODO
+        pokemonToOverView = pokemon
+        navController.navigate(PokemonOverviewDestination)
     }
     val onFavoriteCardButtonClick = { pokemon: Pokemon ->
         favoritesViewModel.updatePokemonAsFavorite(
@@ -195,11 +200,19 @@ fun MainApp(
                     }
                 )
             }
+            composable<PokemonOverviewDestination> { /*navBackStackEntry ->*/
+//                val destination: PokemonOverviewDestination = navBackStackEntry.toRoute()
+                PokemonOverviewScreen(
+                    // por conta da gambiarra, ele reclama que pode ser nulável, mas nunca vai ser
+                    pokemon = pokemonToOverView!!,
+                    onFavoriteButtonPressed = onFavoriteCardButtonClick
+                )
+            }
             composable<FavoritesDestination> {
                 // ativa uma nova recomposição dos navitems para mostrar a atual posição
                 currentRoute = navController.currentBackStackEntry?.destination?.route
 
-                favoritesViewModel.flushNewFavorites()
+                favoritesViewModel.clearNewFavoritesList()
                 FavoritesScreen(
                     viewModel = favoritesViewModel,
                     onPokemonCardClick = onPokemonCardClick,

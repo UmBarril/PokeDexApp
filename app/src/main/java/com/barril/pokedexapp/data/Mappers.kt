@@ -17,7 +17,6 @@ import com.barril.pokedexapp.domain.PokemonCriesResource
 import com.barril.pokedexapp.domain.PokemonSpritesResource
 import com.barril.pokedexapp.domain.PokemonStat
 import com.barril.pokedexapp.domain.PokemonType
-import java.util.EnumSet
 
 fun PokemonDto.toPokemonInsertData(): PokemonInsertData {
     return PokemonInsertData(
@@ -120,7 +119,7 @@ fun PokemonWithRelations.toPokemon(): Pokemon {
                 url = it.url
             )
         },
-        types = this.types.mapTo(EnumSet.noneOf(PokemonType::class.java)) {
+        types = this.types.mapTo(HashSet<PokemonType>()) {
             PokemonType.fromString(it.typeName)
         },
         abilities = this.abilities.map {

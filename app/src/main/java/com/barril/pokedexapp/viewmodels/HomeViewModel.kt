@@ -45,7 +45,6 @@ class HomeViewModel(
         return _pokemonPager
     }
 
-
     fun getPokemonPagingFlow(): Flow<PagingData<Pokemon>> {
         if (::pokemonPagingFlow.isInitialized) {
             return pokemonPagingFlow

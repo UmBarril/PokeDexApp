@@ -9,6 +9,7 @@ import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.barril.pokedexapp.domain.Pokemon
 import kotlinx.serialization.Serializable
 
 enum class AppBarDestinations(
@@ -54,3 +55,7 @@ data class SearchDestination(val searchForFavorites: Boolean)
 
 @Serializable
 object SettingsDestination
+
+@Serializable
+//data class PokemonOverviewDestination(val pokemon: Pokemon) // TODO: fazer isso funcioinar propriamente sem gambiarra
+object PokemonOverviewDestination
