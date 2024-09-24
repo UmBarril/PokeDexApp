@@ -8,7 +8,7 @@ import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 import kotlinx.serialization.Serializable
 
-enum class AppDestinations(
+enum class AppBarDestinations(
     @StringRes val label: Int,
     val icon: ImageVector,
     @StringRes val contentDescription: Int,
@@ -34,12 +34,16 @@ enum class AppDestinations(
         SettingsDestination
     );
 
-    @Serializable
-    object HomeDestination
-
-    @Serializable
-    object FavoritesDestination
-
-    @Serializable
-    object SettingsDestination
 }
+
+@Serializable
+object HomeDestination
+
+@Serializable
+object FavoritesDestination
+
+@Serializable
+data class SearchDestination(val searchForFavorites: Boolean)
+
+@Serializable
+object SettingsDestination

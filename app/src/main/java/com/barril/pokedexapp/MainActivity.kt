@@ -21,19 +21,45 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import androidx.window.core.layout.WindowWidthSizeClass
+import com.barril.pokedexapp.domain.Pokemon
 import com.barril.pokedexapp.ui.screens.FavoritesScreen
 import com.barril.pokedexapp.ui.screens.HomeScreen
+import com.barril.pokedexapp.ui.screens.SearchScreen
 import com.barril.pokedexapp.ui.settings.SettingsView
 import com.barril.pokedexapp.ui.theme.PokeDexAppTheme
+import com.barril.pokedexapp.viewmodels.FavoritesViewModel
 import com.barril.pokedexapp.viewmodels.HomeViewModel
+import com.barril.pokedexapp.viewmodels.SearchViewModel
 import com.barril.pokedexapp.viewmodels.viewModelFactory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val viewModel by viewModels<HomeViewModel>(
+        val favoritesViewModel by viewModels<FavoritesViewModel>(
+            factoryProducer = {
+                viewModelFactory {
+                    FavoritesViewModel(
+                        PokeDexApplication.appModule.pokemonDatabase,
+                        PokeDexApplication.appModule.pokemonApi
+                    )
+                }
+            }
+        )
+
+        val searchViewModel by viewModels<SearchViewModel>(
+            factoryProducer = {
+                viewModelFactory {
+                    SearchViewModel(
+                        PokeDexApplication.appModule.pokemonDatabase
+                    )
+                }
+            }
+        )
+
+        val homeViewModel by viewModels<HomeViewModel>(
             factoryProducer = {
                 viewModelFactory {
                     HomeViewModel(
@@ -47,14 +73,23 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PokeDexAppTheme {
-                MainApp(viewModel = viewModel)
+                MainApp(
+                    favoritesViewModel = favoritesViewModel,
+                    searchViewModel = searchViewModel,
+                    homeViewModel = homeViewModel
+                )
             }
         }
     }
 }
 
 @Composable
-fun MainApp(viewModel: HomeViewModel, modifier: Modifier = Modifier) {
+fun MainApp(
+    homeViewModel: HomeViewModel,
+    favoritesViewModel: FavoritesViewModel,
+    searchViewModel: SearchViewModel,
+    modifier: Modifier = Modifier
+) {
     val navController = rememberNavController()
     val adaptiveInfo = currentWindowAdaptiveInfo()
 
@@ -72,9 +107,18 @@ fun MainApp(viewModel: HomeViewModel, modifier: Modifier = Modifier) {
         }
     }
 
+    val onPokemonCardClick = { pokemon: Pokemon ->
+        // TODO
+    }
+    val onFavoriteCardButtonClick = { pokemon: Pokemon ->
+        favoritesViewModel.updatePokemonAsFavorite(
+            pokemon = pokemon,
+            favorite = !pokemon.isFavorite
+        )
+    }
     NavigationSuiteScaffold(
         navigationSuiteItems = {
-            AppDestinations.entries.forEach {
+            AppBarDestinations.entries.forEach {
                 item(
                     icon = {
                         Icon(
@@ -87,10 +131,10 @@ fun MainApp(viewModel: HomeViewModel, modifier: Modifier = Modifier) {
                     onClick = { navController.navigate(it.destination) },
                     colors = myNavigationSuiteItemColors,
                     badge = {
-                        if (it.destination == AppDestinations.FavoritesDestination
-                            && viewModel.newFavorites > 0) {
+                        if (it.destination == FavoritesDestination
+                            && favoritesViewModel.newFavorites > 0) {
                             Badge {
-                                Text("${viewModel.newFavorites}")
+                                Text("${favoritesViewModel.newFavorites}")
                             }
                         }
                     }
@@ -101,15 +145,48 @@ fun MainApp(viewModel: HomeViewModel, modifier: Modifier = Modifier) {
     ) {
         NavHost(
             navController = navController,
-            startDestination = AppDestinations.HOME.destination,
+            startDestination = AppBarDestinations.HOME.destination,
         ) {
-            composable<AppDestinations.HomeDestination> {
-                HomeScreen(viewModel, modifier)
+            composable<HomeDestination> {
+                HomeScreen(
+                    viewModel = homeViewModel,
+                    onPokemonCardClick = onPokemonCardClick,
+                    onFavoriteCardButtonClick = onFavoriteCardButtonClick,
+                    onSearchButtonClick = {
+                        navController.navigate(
+                            SearchDestination(false)
+                        )
+                    },
+                    modifier = modifier
+                )
             }
-            composable<AppDestinations.FavoritesDestination> {
-                FavoritesScreen(viewModel, modifier)
+            composable<SearchDestination> { navBackStackEntry ->
+                val search: SearchDestination = navBackStackEntry.toRoute()
+                SearchScreen(
+                    viewModel = searchViewModel,
+                    searchForFavorites = search.searchForFavorites,
+                    onPokemonCardClick = onPokemonCardClick,
+                    onFavoriteCardButtonClick = onFavoriteCardButtonClick,
+                    onClose = {
+                        // nunca vai ser null numa situação comum...
+                        navController.navigate(navController.previousBackStackEntry?.destination?.id!!)
+                    }
+                )
             }
-            composable<AppDestinations.SettingsDestination> {
+            composable<FavoritesDestination> {
+                FavoritesScreen(
+                    viewModel = favoritesViewModel,
+                    onPokemonCardClick = onPokemonCardClick,
+                    onFavoriteCardButtonClick = onFavoriteCardButtonClick,
+                    onSearchButtonClick = {
+                        navController.navigate(
+                            SearchDestination(true)
+                        )
+                    },
+                    modifier = modifier
+                )
+            }
+            composable<SettingsDestination> {
                 SettingsView()
             }
         }

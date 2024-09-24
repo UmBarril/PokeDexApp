@@ -20,18 +20,14 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.barril.pokedexapp.domain.Pokemon
 
-data class PokemonColumnListDetails (
-    val pokemonPagingItems: @Composable () -> LazyPagingItems<Pokemon>,
-    val onCardClick: (Pokemon) -> Unit,
-    val onFavoriteCardButtonClick: (Pokemon) -> Unit
-)
-
 @Composable
 fun PokemonColumnList(
-    details: PokemonColumnListDetails,
+    pokemonPagingItems: @Composable () -> LazyPagingItems<Pokemon>,
+    onCardClick: (Pokemon) -> Unit,
+    onFavoriteCardButtonClick: (Pokemon) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val pokemons = details.pokemonPagingItems()
+    val pokemons = pokemonPagingItems()
     val context = LocalContext.current
     LaunchedEffect(key1 = pokemons.loadState) {
         if(pokemons.loadState.refresh is LoadState.Error) {
@@ -62,8 +58,8 @@ fun PokemonColumnList(
                     if (pokemon != null) {
                         PokemonCard(
                             pokemon = pokemon,
-                            onFavoriteButtonPressed = details.onFavoriteCardButtonClick,
-                            onCardClick = details.onCardClick
+                            onFavoriteButtonPressed = onFavoriteCardButtonClick,
+                            onCardClick = onCardClick
                         )
                     }
                 }

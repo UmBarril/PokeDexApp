@@ -17,4 +17,6 @@
     <string name="filter_by_gen">Filtrar por Gen</string>
     <string name="filter_by_type">Filtrar por Tipo</string>
     <string name="order">Ordenação</string>
+    <string name="favorites_title">Favoritos</string>
+    <string name="home_title">Principal</string>
 </resources>

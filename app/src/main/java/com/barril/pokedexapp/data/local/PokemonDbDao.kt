@@ -28,7 +28,6 @@ interface PokemonDbDao {
     /**
      * ATUALIZAÇÕES:
      */
-
     @Update(PokemonEntity::class)
     suspend fun updatePokemonFavoriteStatus(pokemonUpdate: PokemonEntityUpdateFavorite)
 
@@ -65,14 +64,12 @@ interface PokemonDbDao {
     @Query("SELECT * FROM pokemonentity WHERE " +
             "name LIKE :queryString AND " +
             "isFavorite = 1 ")
-//            "LIMIT :limit OFFSET :offset")
-    fun favoritePokemonsByName(queryString: String/*, limit: Int, offset: Int*/): PagingSource<Int, PokemonWithRelations>
+    fun favoritePokemonsByName(queryString: String): PagingSource<Int, PokemonWithRelations>
 
     @Transaction
     @Query("SELECT * FROM pokemonentity WHERE " +
             "name LIKE :queryString ")
-//            "LIMIT :limit OFFSET :offset")
-    fun getPokemonsByName(queryString: String/*, limit: Int, offset: Int*/): PagingSource<Int, PokemonWithRelations>
+    fun getPokemonsByName(queryString: String): PagingSource<Int, PokemonWithRelations>
 
     @Transaction
     @Query("SELECT * FROM pokemonentity ORDER BY " +
@@ -89,7 +86,6 @@ interface PokemonDbDao {
     /**
      * REMOÇÕES:
      */
-
     // FIXME: até o meu conhecimento isso aqui não faz muita coisa (falta limpar as outras tabelas e o cache de imagens do glide)
     // aparentemente tem que colocar ForeignKey em tudo para isso funcionar
     @Query("DELETE FROM pokemonentity WHERE isFavorite = NULL OR isFavorite = 0")
@@ -98,12 +94,11 @@ interface PokemonDbDao {
     /**
      * INSERÇÕES:
      */
-
     @Transaction
     suspend fun insertPokemonData(pokemonInsertData: List<PokemonInsertData>) {
         for (pokemon in pokemonInsertData) {
             // Se o pokemon é favorito e existe, não atualizar ele
-            // Caso não, pokémons favoritos podem ter o isFavorite sobescrito
+            // Caso não, pokémons favoritos podem ter o isFavorite sobrescrito
             if (isPokemonFavorite(pokemon.pokemonEntity.pokemonId)) {
                 continue
             }

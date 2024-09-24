@@ -18,57 +18,34 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.barril.pokedexapp.R
 
-data class PokemonTopBarDetails (
-    val title: @Composable () -> Unit,
-    val isSearchExpanded: Boolean = false,
-    val isMoreExpanded: Boolean = false,
-    val onSearchButtonClick: () -> Unit = {},
-    val onSearchCloseButtonClick: () -> Unit = {},
-    val onFilterButtonClick: () -> Unit = {},
-    val onMoreButtonClick: () -> Unit = {},
-    val onSearchValueChange: (String) -> Unit = {},
-    val onDismissMoreDropMenu: () -> Unit = {},
-    val dropdownMenuScope: @Composable ColumnScope.() -> Unit
-)
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PokemonTopBar(
-    details: PokemonTopBarDetails,
+fun HomeTopBar(
+    title: @Composable () -> Unit,
+    isMoreExpanded: Boolean = false,
+    onSearchButtonClick: () -> Unit = {},
+    onFilterButtonClick: () -> Unit = {},
+    onMoreButtonClick: () -> Unit = {},
+    onDismissMoreDropMenu: () -> Unit = {},
+    dropdownMenuScope: @Composable ColumnScope.() -> Unit,
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
         modifier = modifier,
         title = {
-            if (details.isSearchExpanded) {
-                Row {
-                    IconButton(onClick = details.onSearchCloseButtonClick) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = ""
-                        )
-                    }
-                    SearchBar(
-                        onValueChange = details.onSearchValueChange,
-                    )
-                }
-            } else {
-                details.title()
-            }
+            title()
         },
         actions = {
-            if (!details.isSearchExpanded) {
-                TextButton(
-                    onClick = details.onSearchButtonClick,
-                ) {
-                    Icon(
-                        Icons.Default.Search,
-                        contentDescription = stringResource(R.string.search_icon_description)
-                    )
-                }
+            TextButton(
+                onClick = onSearchButtonClick,
+            ) {
+                Icon(
+                    Icons.Default.Search,
+                    contentDescription = stringResource(R.string.search_icon_description)
+                )
             }
             TextButton(
-                onClick = details.onFilterButtonClick,
+                onClick = onFilterButtonClick,
             ) {
                 Icon(
                     painterResource(id = R.drawable.filter_icon),
@@ -76,18 +53,17 @@ fun PokemonTopBar(
                 )
             }
             TextButton(
-                onClick = details.onMoreButtonClick,
+                onClick = onMoreButtonClick,
             ) {
                 Icon(
                     Icons.Default.MoreVert,
                     contentDescription = stringResource(R.string.more_options_icon_description)
                 )
                 DropdownMenu(
-                    details.isMoreExpanded,
-                    onDismissRequest = details.onDismissMoreDropMenu
-                ) {
-                    details.dropdownMenuScope
-                }
+                    expanded = isMoreExpanded,
+                    onDismissRequest = onDismissMoreDropMenu,
+                    content = dropdownMenuScope
+                )
             }
         }
     )
