@@ -23,7 +23,6 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.barril.pokedexapp.domain.Pokemon
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PokemonColumnList(
     pokemonPagingItems: @Composable () -> LazyPagingItems<Pokemon>,
@@ -33,12 +32,14 @@ fun PokemonColumnList(
 ) {
     val pokemons = pokemonPagingItems()
     val context = LocalContext.current
+
+    // TODO: isso é melhor que nada acontecer, mas talvez uma outra solução seja melhor
     LaunchedEffect(key1 = pokemons.loadState) {
         if(pokemons.loadState.refresh is LoadState.Error) {
             Toast.makeText(
                 context,
                 "Error: " + (pokemons.loadState.refresh as LoadState.Error).error.message,
-                Toast.LENGTH_LONG
+                Toast.LENGTH_SHORT
             ).show()
         }
     }

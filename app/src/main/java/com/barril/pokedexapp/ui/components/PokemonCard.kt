@@ -1,6 +1,8 @@
 package com.barril.pokedexapp.ui.components
 
+import android.content.Context
 import android.graphics.Bitmap
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,11 +17,14 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,14 +40,18 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.paging.LoadState
+import com.barril.pokedexapp.PokeDexApplication
 import com.barril.pokedexapp.R
 import com.barril.pokedexapp.domain.Pokemon
 import com.barril.pokedexapp.domain.PokemonGender
@@ -70,6 +79,18 @@ fun PokemonCard(
         pokemonName = pokemon.name,
         pokemonType = pokemon.types,
         pokemonArt = {
+            val context = LocalContext.current
+            LaunchedEffect(key1 = gender) {
+                if(gender == PokemonGender.FEMALE &&
+                    pokemon.sprites.frontFemaleUrl == null) {
+                    Toast.makeText(
+                        context,
+                        "Esse pokémon não tem sprites femininos",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+
             GlideImageWithShadow(
                 model = if (gender == PokemonGender.FEMALE) {
                     pokemon.sprites.frontFemaleUrl ?: pokemon.sprites.frontDefaultUrl
@@ -89,7 +110,7 @@ fun PokemonCard(
             }
         },
         onFavoriteButtonPressed = { onFavoriteButtonPressed(pokemon) },
-        onCardClick = { onCardClick(pokemon) } ,
+        onCardClick = { onCardClick(pokemon) },
         isFavorite = pokemon.isFavorite,
         modifier = modifier
     )
@@ -167,34 +188,41 @@ private fun PokemonCard(
 
             Spacer(Modifier.weight(1f))
 
-            // TODO: fazer isso clicavel para trocar a aparencia do pokemon
-//            var isMale by remember { mutableStateOf(false) }
-            Box(Modifier.clickable { onGenderButtonPressed() }) {
-                if(pokemonGender == PokemonGender.MALE) {
+            IconButton(onClick = onGenderButtonPressed) {
+                if (pokemonGender == PokemonGender.MALE) {
                     MaleIcon(null)
                 } else {
                     FemaleIcon(null)
                 }
             }
 
-            // usar IconButton faz o icone desaparecer por alguma razão
-//            TextButton(onClick = onFavoriteButtonPressed) {
+            IconButton(
+                onClick = onFavoriteButtonPressed,
+                modifier = Modifier.padding(end = 10.dp)
+            ) {
                 Icon(
                     if (isFavorite)
                         Icons.Default.Favorite
                     else
                         Icons.Default.FavoriteBorder,
-                    tint = MaterialTheme.colorScheme.onSurface,
                     contentDescription = stringResource(R.string.favorites_button_description),
-                    modifier = Modifier
-                        .padding(20.dp, 0.dp)
-                        .size(20.dp)
-                        .clickable { onFavoriteButtonPressed() }
                 )
-//            }
+            }
         }
     }
 }
+
+@Preview
+@Composable
+fun IconButtonSample() {
+    IconButton(onClick = { /* doSomething() */ }) {
+        Icon(
+            Icons.Default.Favorite,
+            contentDescription = stringResource(R.string.favorites_button_description),
+        )
+    }
+}
+
 
 @Composable
 fun MaleIcon(contentDescription: String?, modifier: Modifier = Modifier) {
@@ -236,7 +264,7 @@ fun GlideImageWithShadow(
             colorFilter = ColorFilter.tint(Color.Black),
             alpha = 0.4f,
             modifier = modifier
-                .offset(x =  shadowOffset.x, y = shadowOffset.y)
+                .offset(x = shadowOffset.x, y = shadowOffset.y)
                 .blur(radius = 1.dp)
         )
         // imagem
@@ -255,7 +283,8 @@ fun ImageBitmap.scaleImageBitMap(
     targetWidth: Int,
     targetHeight: Int
 ): ImageBitmap {
-    return Bitmap.createScaledBitmap(this.asAndroidBitmap(), targetWidth, targetHeight, false).asImageBitmap()
+    return Bitmap.createScaledBitmap(this.asAndroidBitmap(), targetWidth, targetHeight, false)
+        .asImageBitmap()
 }
 
 // FIXME: corrigir previews
