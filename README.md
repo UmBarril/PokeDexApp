@@ -1,14 +1,36 @@
 # PokeDex App
-Aplicativo que simula uma pokedex!
+Um aplicativo de PokéDex construído em Kotlin usando Jetpack Compose, consumindo a PokéApi para listar e exibir informações de Pokémons. Este projeto foi uma jornada para explorar as novas funcionalidades do Android, como navegação type-safe, arquitetura MVVM com Paging 3, e integração com Room para cache local.
 
-- svgs https://github.com/duiker101/pokemon-type-svg-icons
+![Tela Inicial](images/print.png)
 
-https://github.com/stevdza-san/Paging3JetpackComposeDemo/tree/master/app/src
-bottom navigation example https://github.com/philipplackner/M3-BottomNavigation/blob/master/app/src/main/java/com/plcoding/m3_bottomnavigation/MainActivity.kt
+# Funcionalidades
+- Listagem de Pokémons paginada utilizando Paging 3
+- Exibição de detalhes do Pokémon, incluindo tipos e estatísticas
+- Armazenamento em cache utilizando Room para carregamento offline
+- Navegação entre telas com Type Safe Navigation
+- Interface construída inteiramente com Jetpack Compose
 
-alternativa para imagens https://unpkg.com/pokeapi-sprites@2.0.2/sprites/pokemon/other/dream-world/{pokemon id}.svg
-alternativa para imagens https://veekun.com/dex/media/pokemon/icons/
-    - aparentemente essas imagens sao realemente de uma pokedex, ent os tamanhos sao consistentes
-    - ex: https://img.pokemondb.net/sprites/x-y/montage-icon-1310b.png
-    - https://github.com/PokeAPI/sprites/issues/28
-    - https://github.com/PokeAPI/pokeapi/issues/346
+# Pré-requisitos
+- Android Studio Koala
+- JDK 11 ou superior
+- Conexão com a internet para consumir a PokéApi inicialmente
+
+# Como Rodar o Projeto
+1. Clone o repositório:
+```bash
+git clone https://github.com/seu-usuario/pokedex.git
+```
+
+2. Abra o projeto no Android Studio
+Abra o Android Studio, selecione File > Open, e navegue até o diretório do projeto clonado.
+
+3. Sincronize os pacote
+Vá na aba direita do Gradle e sincronize os pacotes
+
+4. Compilar o projeto
+No Android Studio, clique em Build > Make Project ou pressione Ctrl + F9.
+
+# Melhorias futuras
+- Permitir filtragem de multiplos tipos
+- Vários temas
+- Gráfico de stats de pokémon com um Radar Chart

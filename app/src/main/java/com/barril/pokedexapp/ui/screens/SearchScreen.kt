@@ -16,6 +16,9 @@ import com.barril.pokedexapp.ui.components.PokemonColumnList
 import com.barril.pokedexapp.ui.components.SearchTopBar
 import com.barril.pokedexapp.viewmodels.SearchViewModel
 
+/**
+ * Tela para procurar por pokémons por nome
+ */
 @Composable
 fun SearchScreen(
     viewModel: SearchViewModel,

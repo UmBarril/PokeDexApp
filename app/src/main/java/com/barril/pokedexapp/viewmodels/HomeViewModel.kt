@@ -26,6 +26,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel para HomeScreen
+ */
 class HomeViewModel(
     private val database: PokemonDatabase,
     private val api: PokemonApiDao

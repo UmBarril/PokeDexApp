@@ -25,6 +25,9 @@ import com.barril.pokedexapp.ui.components.PokemonColumnList
 import com.barril.pokedexapp.viewmodels.HomeViewModel
 import kotlinx.coroutines.launch
 
+/**
+ * Tela inicial, com uma lista de todos os pokémons
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(

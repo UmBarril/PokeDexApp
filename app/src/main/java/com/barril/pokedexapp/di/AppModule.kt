@@ -12,6 +12,9 @@ interface AppModule {
     val pokemonDatabase: PokemonDatabase
 }
 
+/**
+ * Injeção de depend6encia manual
+ */
 class AppModuleImpl(
     val context: Context
 ): AppModule {

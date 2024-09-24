@@ -21,6 +21,9 @@ import com.barril.pokedexapp.domain.Pokemon
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel para FavoritesScreen
+ */
 class FavoritesViewModel(
     private val database: PokemonDatabase,
     private val api: PokemonApiDao

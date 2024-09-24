@@ -19,6 +19,9 @@ import com.barril.pokedexapp.ui.components.FavoritesTopBar
 import com.barril.pokedexapp.ui.components.PokemonColumnList
 import com.barril.pokedexapp.viewmodels.FavoritesViewModel
 
+/**
+ * Tela com todos os favoritos escolhidos
+ */
 @Composable
 fun FavoritesScreen(
     viewModel: FavoritesViewModel,

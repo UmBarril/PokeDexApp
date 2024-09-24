@@ -12,6 +12,9 @@ import com.barril.pokedexapp.data.toPokemonInsertData
 import retrofit2.HttpException
 import java.io.IOException
 
+/**
+ * Classe que faz todo o trabalho de medição com a PokeAPI e a Database (ROOM)
+ */
 @OptIn(ExperimentalPagingApi::class)
 class PokemonPagingMediator(
     private val database: PokemonDatabase,
