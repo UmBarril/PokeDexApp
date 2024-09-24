@@ -38,10 +38,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.barril.pokedexapp.R
+import com.barril.pokedexapp.viewmodels.SettingsViewModel
 
-@Preview
 @Composable
-fun SettingsView(modifier: Modifier = Modifier) {
+fun SettingsView(viewModel: SettingsViewModel, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.background(MaterialTheme.colorScheme.background)
     ) {
@@ -67,7 +67,21 @@ fun SettingsView(modifier: Modifier = Modifier) {
                         contentDescription = null
                     )
                 },
-                onClick = { }
+                onClick = {
+
+                }
+            )
+            SettingsRowItem(
+                heading = "Limpar cache",
+                subHeading = null,
+                icon = {
+                    Icon(
+                        painter = painterResource(R.drawable.palette_24px),
+                        contentDescription = null
+                    )
+                },
+                onClick = {
+                }
             )
             SettingsRowItem(
                 heading = stringResource(R.string.app_name),
@@ -77,120 +91,3 @@ fun SettingsView(modifier: Modifier = Modifier) {
         }
     }
 }
-
-@Composable
-fun SettingsRowItem(
-    heading: String,
-    subHeading: String?,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    TextButton(
-        shape = RectangleShape,
-        onClick = onClick,
-        modifier = modifier
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.Start,
-            modifier = Modifier
-                .padding(horizontal = 10.dp, vertical = 15.dp)
-                .fillMaxWidth()
-        ) {
-            Column(
-                Modifier.padding(horizontal = 10.dp)
-            ) {
-                Text(
-                    heading,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp,
-                    modifier = Modifier
-                )
-                if (subHeading != null) {
-                    Text(
-                        subHeading,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 13.sp,
-                        modifier = Modifier
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun SettingsRowItem(
-    heading: String,
-    subHeading: String?,
-    icon: @Composable () -> Unit,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    TextButton(
-        shape = RectangleShape,
-        onClick = onClick,
-        modifier = modifier
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                    .padding(horizontal = 10.dp, vertical = 15.dp)
-                    .fillMaxWidth()
-        ) {
-            Box(Modifier.padding(horizontal = 10.dp)
-                .align(Alignment.CenterVertically)
-            ) {
-                icon()
-            }
-            Column(Modifier.padding(horizontal = 10.dp)) {
-                Text(
-                    heading,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 15.sp,
-                    modifier = Modifier
-                )
-                if (subHeading != null) {
-                    Text(
-                        subHeading,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 13.sp,
-                        modifier = Modifier
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun CoolEasterEgg(modifier: Modifier = Modifier) {
-    var rotate by remember { mutableStateOf(false) }
-    val alpha: Float by animateFloatAsState(
-        if (rotate) 360f else 0f,
-        label = "alpha",
-        animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
-    )
-    val interactionSource = remember { MutableInteractionSource() }
-
-    Image (
-        ImageBitmap.imageResource(R.drawable.balbasaur),
-        contentDescription = null,
-        filterQuality = FilterQuality.None,
-        modifier = modifier
-            .graphicsLayer {
-                rotationX = alpha
-            }
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null
-            ) {
-                rotate = !rotate
-            }
-    )
-}
-
