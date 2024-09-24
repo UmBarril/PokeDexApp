@@ -18,7 +18,7 @@ Um aplicativo de PokéDex construído em Kotlin usando Jetpack Compose, consumin
 # Como Rodar o Projeto
 1. Clone o repositório:
 ```bash
-git clone https://github.com/seu-usuario/pokedex.git
+git clone https://github.com/UmBarril/PokeDexApp.git
 ```
 
 2. Abra o projeto no Android Studio
