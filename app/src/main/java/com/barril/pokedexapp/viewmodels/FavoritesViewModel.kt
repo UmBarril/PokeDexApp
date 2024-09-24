@@ -2,6 +2,8 @@ package com.barril.pokedexapp.viewmodels
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -61,16 +63,18 @@ class FavoritesViewModel(
                 )
             )
         }
-        if (favorite) {
-            newFavorites++
+        newFavorites = if (favorite) {
+            newFavorites.toMutableSet().apply { add(pokemon.id) }
+        } else {
+            newFavorites.toMutableSet().apply { remove(pokemon.id) }
         }
     }
 
-    var newFavorites by mutableIntStateOf(0)
+    var newFavorites by mutableStateOf(setOf<Int>())
         private set
 
     fun flushNewFavorites() {
-        newFavorites = 0
+        newFavorites = newFavorites.toMutableSet().apply { clear() }
     }
 
 }

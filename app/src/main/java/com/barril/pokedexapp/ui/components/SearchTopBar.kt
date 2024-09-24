@@ -8,6 +8,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -20,7 +21,9 @@ fun SearchTopBar(
     TopAppBar(
         modifier = modifier,
         title = {
-            Row {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 IconButton(onClick = onSearchCloseButtonClick) {
                     Icon(
                         Icons.AutoMirrored.Filled.ArrowBack,

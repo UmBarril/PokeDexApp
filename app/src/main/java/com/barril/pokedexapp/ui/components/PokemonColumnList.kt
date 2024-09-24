@@ -1,11 +1,14 @@
 package com.barril.pokedexapp.ui.components
 
 import android.widget.Toast
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
@@ -20,6 +23,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.barril.pokedexapp.domain.Pokemon
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PokemonColumnList(
     pokemonPagingItems: @Composable () -> LazyPagingItems<Pokemon>,
@@ -53,23 +57,40 @@ fun PokemonColumnList(
                     space = 4.dp
                 )
             ) {
-                items(count = pokemons.itemCount) { index ->
+                items(count = pokemons.itemCount, key = { it }) { index ->
                     val pokemon = pokemons[index]
                     if (pokemon != null) {
                         PokemonCard(
                             pokemon = pokemon,
                             onFavoriteButtonPressed = onFavoriteCardButtonClick,
-                            onCardClick = onCardClick
+                            onCardClick = onCardClick,
+                            modifier = Modifier.
+                                animateItem(
+                                    fadeInSpec = null,
+                                    fadeOutSpec = null
+                                )
                         )
                     }
                 }
-                item {
+                item(key = -1) {
                     if(pokemons.loadState.append is LoadState.Loading) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.width(64.dp).align(Alignment.Center),
-                            color = MaterialTheme.colorScheme.secondary,
-                            trackColor = MaterialTheme.colorScheme.surfaceVariant,
-                        )
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(64.dp)
+                        ) {
+                            CircularProgressIndicator(
+                                modifier = Modifier
+                                    .width(64.dp)
+                                    .animateItem(
+                                        fadeInSpec = null,
+                                        fadeOutSpec = null
+                                    ),
+                                color = MaterialTheme.colorScheme.secondary,
+                                trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                            )
+                        }
                     }
                 }
             }

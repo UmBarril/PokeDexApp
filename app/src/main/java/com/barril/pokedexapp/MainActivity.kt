@@ -131,10 +131,11 @@ fun MainApp(
                     onClick = { navController.navigate(it.destination) },
                     colors = myNavigationSuiteItemColors,
                     badge = {
-                        if (it.destination == FavoritesDestination
-                            && favoritesViewModel.newFavorites > 0) {
+                        if (it.destination == FavoritesDestination &&
+                            favoritesViewModel.newFavorites.isNotEmpty()
+                        ) {
                             Badge {
-                                Text("${favoritesViewModel.newFavorites}")
+                                Text("${favoritesViewModel.newFavorites.size}")
                             }
                         }
                     }
@@ -174,6 +175,7 @@ fun MainApp(
                 )
             }
             composable<FavoritesDestination> {
+                favoritesViewModel.flushNewFavorites()
                 FavoritesScreen(
                     viewModel = favoritesViewModel,
                     onPokemonCardClick = onPokemonCardClick,
