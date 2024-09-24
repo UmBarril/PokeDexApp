@@ -11,11 +11,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
@@ -25,10 +25,8 @@ import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,8 +40,8 @@ import com.barril.pokedexapp.domain.PokemonOrderingColumn
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilterBottomSheet(
-    selectedFilters: SnapshotStateList<PokemonType>,
+fun FilterAndOrderBottomSheet(
+    selectedFilter: PokemonType?,
     onFilterClicked: (PokemonType) -> Unit,
     currentOrderingDirection: Index.Order,
     currentOrderingColumn: PokemonOrderingColumn,
@@ -80,12 +78,9 @@ fun FilterBottomSheet(
         modifier = modifier
     ) {
         when(state) {
-//            0 -> {
-//                PokemonGenFilterTab()
-//            }
             0 -> {
                 PokemonTypeFilterTab(
-                    selectedFilters = selectedFilters,
+                    selectedFilter = selectedFilter,
                     onFilterClicked = onFilterClicked
                 )
             }
@@ -145,21 +140,21 @@ fun PokemonOrderingTab(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PokemonTypeFilterTab(
-    selectedFilters: SnapshotStateList<PokemonType>,
+    selectedFilter: PokemonType?,
     onFilterClicked: (PokemonType) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val pokemonTypes = PokemonType.entries.toTypedArray()
 
-    val checkBoxes = remember { mutableStateListOf<Boolean>() }
+    var selected by remember { mutableIntStateOf(-1) }
     FlowRow(
         modifier = modifier.padding(10.dp, 0.dp)
     ) {
         pokemonTypes.forEachIndexed { i, pokemonType ->
-            checkBoxes.add(
-                selectedFilters.contains(pokemonType)
-            )
-
+            val isThisRadioSelected = selectedFilter == pokemonType
+            if (isThisRadioSelected) {
+                selected = i
+            }
             Surface(
                 color = MaterialTheme.colorScheme.surfaceColorAtElevation(20.dp),
                 shape = RoundedCornerShape(20.dp),
@@ -167,12 +162,16 @@ fun PokemonTypeFilterTab(
                     .padding(8.dp)
             ) {
                 Row {
-                    Checkbox(
-                        checked = checkBoxes[i],
-                        onCheckedChange = {
-                            checkBoxes[i] = it
+                    RadioButton(
+                        selected = isThisRadioSelected,
+                        onClick = {
+                            selected = if (isThisRadioSelected) {
+                                -1
+                            } else {
+                                i
+                            }
                             onFilterClicked(pokemonType)
-                        }
+                        },
                     )
                     PokemonTypeIcon(
                         pokemonType,
@@ -187,27 +186,28 @@ fun PokemonTypeFilterTab(
     }
 }
 
-@Composable
-fun PokemonGenFilterTab(modifier: Modifier = Modifier) {
-    val amountOfGenerations = 9
-    val checkBoxesTitles = List(amountOfGenerations) { i -> "Gen ${i + 1}"}
-
-    val checkBoxes = remember { mutableStateListOf<Boolean>() }
-
-    for (i in checkBoxesTitles.indices) {
-        checkBoxes.add(false)
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = modifier.padding(10.dp, 5.dp)
-        ) {
-            Checkbox(
-                checked = checkBoxes[i],
-                onCheckedChange = { checkBoxes[i] = it }
-            )
-            Text(
-                checkBoxesTitles[i]
-            )
-        }
-    }
-}
+//
+//@Composable
+//fun PokemonGenFilterTab(modifier: Modifier = Modifier) {
+//    val amountOfGenerations = 9
+//    val checkBoxesTitles = List(amountOfGenerations) { i -> "Gen ${i + 1}"}
+//
+//    val checkBoxes = remember { mutableStateListOf<Boolean>() }
+//
+//    for (i in checkBoxesTitles.indices) {
+//        checkBoxes.add(false)
+//
+//        Row(
+//            verticalAlignment = Alignment.CenterVertically,
+//            modifier = modifier.padding(10.dp, 5.dp)
+//        ) {
+//            Checkbox(
+//                checked = checkBoxes[i],
+//                onCheckedChange = { checkBoxes[i] = it }
+//            )
+//            Text(
+//                checkBoxesTitles[i]
+//            )
+//        }
+//    }
+//}

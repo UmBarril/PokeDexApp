@@ -18,7 +18,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.room.Index
 import com.barril.pokedexapp.R
 import com.barril.pokedexapp.domain.Pokemon
-import com.barril.pokedexapp.ui.components.FilterBottomSheet
+import com.barril.pokedexapp.ui.components.FilterAndOrderBottomSheet
 import com.barril.pokedexapp.ui.components.HomeTopBar
 import com.barril.pokedexapp.ui.components.PokemonColumnList
 import com.barril.pokedexapp.viewmodels.HomeViewModel
@@ -67,22 +67,25 @@ fun HomeScreen(
 
         PokemonColumnList(
             pokemonPagingItems = {
-                viewModel.pokemonPagingFlow.collectAsLazyPagingItems()
+                viewModel.getPokemonPagingFlow().collectAsLazyPagingItems()
             },
             onCardClick = onPokemonCardClick,
             onFavoriteCardButtonClick = onFavoriteCardButtonClick
         )
 
         if (isFilterExpanded) {
-            FilterBottomSheet(
-                onDismissRequest = { isFilterExpanded = false },
+            FilterAndOrderBottomSheet(
+                onDismissRequest = {
+                    isFilterExpanded = false
+                    viewModel.refreshLazyColumn()
+                },
                 sheetState = sheetState,
-                selectedFilters = viewModel.selectedFilterTypes,
+                selectedFilter = viewModel.selectedFilterType,
                 onFilterClicked = { pokemonType ->
-                    if (viewModel.selectedFilterTypes.contains(pokemonType)) {
-                        viewModel.selectedFilterTypes.remove(pokemonType)
+                    if (viewModel.selectedFilterType == pokemonType) {
+                        viewModel.selectedFilterType = null
                     } else {
-                        viewModel.selectedFilterTypes.add(pokemonType)
+                        viewModel.selectedFilterType = pokemonType
                     }
                 },
                 currentOrderingDirection = viewModel.currentPokemonOrderingDirection,
@@ -95,6 +98,9 @@ fun HomeScreen(
                             } else {
                                 Index.Order.ASC
                             }
+                    } else {
+                        viewModel.orderingBy = column
+                        viewModel.currentPokemonOrderingDirection = Index.Order.ASC
                     }
                 },
             )

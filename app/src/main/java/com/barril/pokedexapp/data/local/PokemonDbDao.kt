@@ -79,6 +79,15 @@ interface PokemonDbDao {
             "ORDER BY " +
             "CASE WHEN :isAsc = 1 THEN pte.typeName END ASC," +
             "CASE WHEN :isAsc = 0 THEN pte.typeName END DESC")
+    fun getPokemonsByType(isAsc: Boolean = true, ): PagingSource<Int, PokemonWithRelations>
+
+    @Transaction
+    @Query("SELECT * FROM pokemonentity pe " +
+            "INNER JOIN pokemonwithtypecrossref ptcr ON ptcr.pokemonId = pe.pokemonId " +
+            "INNER JOIN pokemontypeentity pte ON pte.typeName = ptcr.typeName " +
+            "ORDER BY " +
+            "CASE WHEN :isAsc = 1 THEN pte.typeName END ASC," +
+            "CASE WHEN :isAsc = 0 THEN pte.typeName END DESC")
     fun getAllPokemonsByType(isAsc: Boolean = true): PagingSource<Int, PokemonWithRelations>
 
     @Transaction

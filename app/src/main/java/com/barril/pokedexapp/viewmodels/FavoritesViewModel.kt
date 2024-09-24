@@ -1,8 +1,6 @@
 package com.barril.pokedexapp.viewmodels
 
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -38,9 +36,7 @@ class FavoritesViewModel(
                 api = api
             ),
             pagingSourceFactory = {
-                runBlocking { // TODO: ver solução para não usar runBlocking
-                    database.pokemonDbDao().getAllFavoritePokemons()
-                }
+                database.pokemonDbDao().getAllFavoritePokemons()
             }
         )
     }
