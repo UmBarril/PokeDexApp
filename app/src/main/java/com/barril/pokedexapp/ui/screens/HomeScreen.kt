@@ -3,6 +3,7 @@ package com.barril.pokedexapp.ui.screens
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -43,6 +44,12 @@ fun HomeScreen(
     Column(modifier = modifier) {
         HomeTopBar(
             title = { Text(stringResource(R.string.home_title)) },
+            filterIconColor = if(viewModel.selectedFilterType == null) {
+                MaterialTheme.colorScheme.onSurface
+            } else {
+                // todo: ver cor melhor
+                MaterialTheme.colorScheme.inversePrimary
+            },
             isMoreExpanded = isMoreExpanded,
             onSearchButtonClick = onSearchButtonClick,
             onFilterButtonClick = {

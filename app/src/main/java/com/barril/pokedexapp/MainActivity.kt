@@ -16,10 +16,15 @@ import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import androidx.window.core.layout.WindowWidthSizeClass
@@ -116,19 +121,30 @@ fun MainApp(
             favorite = !pokemon.isFavorite
         )
     }
+
+    var currentRoute by remember { mutableStateOf<Any?>(null) }
     NavigationSuiteScaffold(
         navigationSuiteItems = {
             AppBarDestinations.entries.forEach {
+                val isSelected = it.destination.javaClass.canonicalName == currentRoute
                 item(
                     icon = {
                         Icon(
-                            it.icon,
+                            if (isSelected) {
+                                it.selectedicon
+                            } else {
+                                it.unselectedIcon
+                            },
                             contentDescription = stringResource(it.contentDescription)
                         )
                     },
+                    onClick = {
+                        if (currentRoute != it.destination) {
+                            navController.navigate(it.destination)
+                        }
+                    },
                     label = { Text(stringResource(it.label)) },
-                    selected = it.destination == navController.currentDestination,
-                    onClick = { navController.navigate(it.destination) },
+                    selected = isSelected,
                     colors = myNavigationSuiteItemColors,
                     badge = {
                         if (it.destination == FavoritesDestination &&
@@ -149,6 +165,9 @@ fun MainApp(
             startDestination = AppBarDestinations.HOME.destination,
         ) {
             composable<HomeDestination> {
+                // ativa uma nova recomposição dos navitems para mostrar a atual posição
+                currentRoute = navController.currentBackStackEntry?.destination?.route
+
                 HomeScreen(
                     viewModel = homeViewModel,
                     onPokemonCardClick = onPokemonCardClick,
@@ -162,6 +181,9 @@ fun MainApp(
                 )
             }
             composable<SearchDestination> { navBackStackEntry ->
+                // ativa uma nova recomposição dos navitems para mostrar a atual posição
+                currentRoute = navController.currentBackStackEntry?.destination?.route
+
                 val search: SearchDestination = navBackStackEntry.toRoute()
                 SearchScreen(
                     viewModel = searchViewModel,
@@ -175,6 +197,9 @@ fun MainApp(
                 )
             }
             composable<FavoritesDestination> {
+                // ativa uma nova recomposição dos navitems para mostrar a atual posição
+                currentRoute = navController.currentBackStackEntry?.destination?.route
+
                 favoritesViewModel.flushNewFavorites()
                 FavoritesScreen(
                     viewModel = favoritesViewModel,
@@ -189,6 +214,9 @@ fun MainApp(
                 )
             }
             composable<SettingsDestination> {
+                // ativa uma nova recomposição dos navitems para mostrar a atual posição
+                currentRoute = navController.currentBackStackEntry?.destination?.route
+
                 SettingsView()
             }
         }

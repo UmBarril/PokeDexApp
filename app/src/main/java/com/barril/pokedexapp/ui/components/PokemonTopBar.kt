@@ -11,6 +11,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.barril.pokedexapp.R
@@ -19,13 +20,14 @@ import com.barril.pokedexapp.R
 @Composable
 fun HomeTopBar(
     title: @Composable () -> Unit,
+    filterIconColor: Color,
     isMoreExpanded: Boolean = false,
     onSearchButtonClick: () -> Unit = {},
     onFilterButtonClick: () -> Unit = {},
     onMoreButtonClick: () -> Unit = {},
     onDismissMoreDropMenu: () -> Unit = {},
-    dropdownMenuScope: @Composable ColumnScope.() -> Unit,
-    modifier: Modifier = Modifier
+    dropdownMenuScope: @Composable() (ColumnScope.() -> Unit),
+    modifier: Modifier = Modifier,
 ) {
     TopAppBar(
         modifier = modifier,
@@ -47,7 +49,8 @@ fun HomeTopBar(
             ) {
                 Icon(
                     painterResource(id = R.drawable.filter_icon),
-                    contentDescription = stringResource(R.string.filter_icon_description)
+                    contentDescription = stringResource(R.string.filter_icon_description),
+                    tint = filterIconColor
                 )
             }
             TextButton(
