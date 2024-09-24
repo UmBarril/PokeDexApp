@@ -34,13 +34,13 @@ interface PokemonDbDao {
     /**
      * CONSULTAS:
      */
-    @Query("SELECT EXISTS(SELECT * FROM pokemonentity WHERE pokemonId = :pokemonId)")
-    suspend fun isPokemonFavorite(pokemonId: Int): Boolean
-
     @Query("SELECT * FROM databasemetadataentity WHERE " +
             "`key` = :key " +
             "LIMIT 1")
     suspend fun getMetadataByKey(key: String): DatabaseMetadataEntity?
+
+    @Query("SELECT EXISTS(SELECT * FROM pokemonentity WHERE pokemonId = :pokemonId)")
+    suspend fun isPokemonFavorite(pokemonId: Int): Boolean
 
     @Transaction
     @Query("SELECT * FROM pokemonentity WHERE " +
@@ -48,34 +48,49 @@ interface PokemonDbDao {
     fun getPokemonById(id: Int): PagingSource<Int, PokemonWithRelations>
 
     @Transaction
-    @Query("SELECT * FROM pokemonwithtypecrossref WHERE " +
-            "typeName LIKE :queryString " +
-            "ORDER BY typeName ASC")
-    fun getPokemonsByType(queryString: String): PagingSource<Int, PokemonWithTypeCrossRef>
+    @Query("SELECT * FROM pokemonentity ORDER BY " +
+            "CASE WHEN :isAsc = 1 THEN pokemonId END ASC," +
+            "CASE WHEN :isAsc = 0 THEN pokemonId END DESC")
+    fun getAllPokemonsByPokemonId(isAsc: Boolean = true)
+    : PagingSource<Int, PokemonWithRelations>
 
-    // TODO
+    @Transaction
+    @Query("SELECT * FROM pokemonentity ORDER BY " +
+            "CASE WHEN :isAsc = 1 THEN name END ASC," +
+            "CASE WHEN :isAsc = 0 THEN name END DESC")
+    fun getAllPokemonsByName(isAsc: Boolean = true)
+            : PagingSource<Int, PokemonWithRelations>
+
+    // futuro
 //    @Transaction
-//    @Query("SELECT * FROM pokemonentity WHERE " +
-//            " LIKE :queryString " +
-//            "ORDER BY typeName ASC")
-//    fun pokemonsByGen(queryString: String): PagingSource<Int, PokemonWithTypes>
+//    @Query("SELECT * FROM pokemonentity pe " +
+//            "INNER JOIN pokemonwithtypecrossref ptcr ON ptcr.pokemonId = pe.pokemonId " +
+//            "INNER JOIN pokemontypeentity pte ON pte.typeName = ptcr.typeName " +
+//            "WHERE typeName LIKE :queryString " +
+//            "ORDER BY " +
+//            "CASE WHEN :isAsc = 1 THEN pte.typeName END ASC," +
+//            "CASE WHEN :isAsc = 0 THEN pte.typeName END DESC")
+//    fun getPokemonsByType(isAsc: Boolean = true, queryString: String): PagingSource<Int, PokemonWithTypeCrossRef>
+
+    @Transaction
+    @Query("SELECT * FROM pokemonentity pe " +
+            "INNER JOIN pokemonwithtypecrossref ptcr ON ptcr.pokemonId = pe.pokemonId " +
+            "INNER JOIN pokemontypeentity pte ON pte.typeName = ptcr.typeName " +
+            "ORDER BY " +
+            "CASE WHEN :isAsc = 1 THEN pte.typeName END ASC," +
+            "CASE WHEN :isAsc = 0 THEN pte.typeName END DESC")
+    fun getAllPokemonsByType(isAsc: Boolean = true): PagingSource<Int, PokemonWithRelations>
 
     @Transaction
     @Query("SELECT * FROM pokemonentity WHERE " +
             "name LIKE :queryString AND " +
             "isFavorite = 1 ")
-    fun favoritePokemonsByName(queryString: String): PagingSource<Int, PokemonWithRelations>
+    fun getFavoritePokemonsByName(queryString: String): PagingSource<Int, PokemonWithRelations>
 
     @Transaction
     @Query("SELECT * FROM pokemonentity WHERE " +
-            "name LIKE :queryString ")
+            "name LIKE :queryString")
     fun getPokemonsByName(queryString: String): PagingSource<Int, PokemonWithRelations>
-
-    @Transaction
-    @Query("SELECT * FROM pokemonentity ORDER BY " +
-            "CASE WHEN :isAsc = 1 THEN pokemonId END ASC," +
-            "CASE WHEN :isAsc = 0 THEN pokemonId END DESC")
-    fun getAllPokemons(isAsc: Boolean = true): PagingSource<Int, PokemonWithRelations>
 
     @Transaction
     @Query("SELECT * FROM pokemonentity " +

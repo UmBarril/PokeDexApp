@@ -16,68 +16,52 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 
+/**
+ * SearchViewModel para ser usado na SearchScreen.
+ */
 class SearchViewModel(
     val database: PokemonDatabase
 ): ViewModel() {
 
     private var lastQuery = ""
 
-    private var searchPager: Pager<Int, PokemonWithRelations>? = null
+    private lateinit var searchPager: Pager<Int, PokemonWithRelations>
 
-    var searchResultFlow: Flow<PagingData<Pokemon>>? = null
+    var searchResultFlow: Flow<PagingData<Pokemon>> = searchPokemonPager("", false)
+                                                        .flow
+                                                        .map { pagingData ->
+                                                            pagingData.map { it.toPokemon() }
+                                                        }
+                                                        .cachedIn(viewModelScope)
         private set
 
-//    if (!viewModel.hasLoadedAllPokemons) {
-//        BasicAlertDialog(
-//            onDismissRequest = { isSearchExpanded = false },
-//        ) {
-//            Text(
-//                text = "Para pesquisar, é necessário carregar todos os pokemóns. Você deseja fazer isso?",
-//                modifier = Modifier.padding(16.dp),
-//            )
-//            Row(
-//                modifier = Modifier
-//                    .fillMaxWidth(),
-//                horizontalArrangement = Arrangement.Center,
-//            ) {
-//                TextButton(
-//                    onClick = { isMoreExpanded = false },
-//                    modifier = Modifier.padding(8.dp),
-//                ) {
-//                    Text("Não agora.")
-//                }
-//                TextButton(
-//                    onClick = {
-//                        viewModel.loadAllPokemons()
-//                    },
-//                    modifier = Modifier.padding(8.dp),
-//                ) {
-//                    Text("Prossiga.")
-//                }
-//            }
-//        }
-//    }
-    fun updateSearchResultsFlow(query: String) {
-        searchResultFlow = searchPokemonPager(query)
-            ?.flow
-            ?.map { pagingData ->
+    fun updateSearchResultsFlow(query: String, onlyFavorites: Boolean = false) {
+        searchResultFlow = searchPokemonPager(query, onlyFavorites)
+            .flow
+            .map { pagingData ->
                 pagingData.map { it.toPokemon() }
             }
-            ?.cachedIn(viewModelScope)
+            .cachedIn(viewModelScope)
     }
 
-    private fun searchPokemonPager(query: String): Pager<Int, PokemonWithRelations>? {
-        if (query == lastQuery) {
+    private fun searchPokemonPager(
+        query: String,
+        onlyFavorites: Boolean
+    ): Pager<Int, PokemonWithRelations> {
+        if (query == lastQuery && ::searchPager.isInitialized) {
             return searchPager
         }
         lastQuery = query
-        return Pager(
+        searchPager = Pager(
             config = PagingConfig(pageSize = POKEAPI_PAGE_SIZE),
             pagingSourceFactory = {
-                runBlocking { // TODO: ver solução para não usar runblocking
-                    database.pokemonDbDao().getPokemonsByName(query)
+                if (onlyFavorites) {
+                    database.pokemonDbDao().getFavoritePokemonsByName("%$query%")
+                } else {
+                    database.pokemonDbDao().getPokemonsByName("%$query%")
                 }
             }
         )
+        return searchPager
     }
 }
