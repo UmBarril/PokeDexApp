@@ -32,16 +32,27 @@ import com.barril.pokedexapp.ui.screens.FavoritesScreen
 import com.barril.pokedexapp.ui.screens.HomeScreen
 import com.barril.pokedexapp.ui.screens.PokemonOverviewScreen
 import com.barril.pokedexapp.ui.screens.SearchScreen
-import com.barril.pokedexapp.ui.settings.SettingsView
+import com.barril.pokedexapp.ui.settings.SettingsScreen
 import com.barril.pokedexapp.ui.theme.PokeDexAppTheme
 import com.barril.pokedexapp.viewmodels.FavoritesViewModel
 import com.barril.pokedexapp.viewmodels.HomeViewModel
 import com.barril.pokedexapp.viewmodels.SearchViewModel
+import com.barril.pokedexapp.viewmodels.SettingsViewModel
 import com.barril.pokedexapp.viewmodels.viewModelFactory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val settingsViewModel by viewModels<SettingsViewModel>(
+            factoryProducer = {
+                viewModelFactory {
+                    SettingsViewModel(
+                        PokeDexApplication.appModule.pokemonDatabase
+                    )
+                }
+            }
+        )
 
         val favoritesViewModel by viewModels<FavoritesViewModel>(
             factoryProducer = {
@@ -82,6 +93,7 @@ class MainActivity : ComponentActivity() {
                     favoritesViewModel = favoritesViewModel,
                     searchViewModel = searchViewModel,
                     homeViewModel = homeViewModel,
+                    settingsViewModel = settingsViewModel
                 )
             }
         }
@@ -93,6 +105,7 @@ fun MainApp(
     homeViewModel: HomeViewModel,
     favoritesViewModel: FavoritesViewModel,
     searchViewModel: SearchViewModel,
+    settingsViewModel: SettingsViewModel,
     modifier: Modifier = Modifier
 ) {
     val navController = rememberNavController()
@@ -229,7 +242,7 @@ fun MainApp(
                 // ativa uma nova recomposição dos navitems para mostrar a atual posição
                 currentRoute = navController.currentBackStackEntry?.destination?.route
 
-                SettingsView()
+                SettingsScreen(settingsViewModel)
             }
         }
     }
