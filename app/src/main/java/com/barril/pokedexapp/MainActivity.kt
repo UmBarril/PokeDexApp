@@ -32,7 +32,7 @@ import com.barril.pokedexapp.ui.screens.FavoritesScreen
 import com.barril.pokedexapp.ui.screens.HomeScreen
 import com.barril.pokedexapp.ui.screens.PokemonOverviewScreen
 import com.barril.pokedexapp.ui.screens.SearchScreen
-import com.barril.pokedexapp.ui.settings.SettingsScreen
+import com.barril.pokedexapp.ui.settings.SettingsView
 import com.barril.pokedexapp.ui.theme.PokeDexAppTheme
 import com.barril.pokedexapp.viewmodels.FavoritesViewModel
 import com.barril.pokedexapp.viewmodels.HomeViewModel
@@ -242,7 +242,7 @@ fun MainApp(
                 // ativa uma nova recomposição dos navitems para mostrar a atual posição
                 currentRoute = navController.currentBackStackEntry?.destination?.route
 
-                SettingsScreen(settingsViewModel)
+                SettingsView(settingsViewModel)
             }
         }
     }
