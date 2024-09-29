@@ -34,6 +34,10 @@ interface PokemonDbDao {
     /**
      * CONSULTAS:
      */
+
+    @Query("SELECT EXISTS(SELECT * FROM pokemonentity)")
+    suspend fun isAnyPokemonStored(): Boolean
+
     @Query("SELECT * FROM databasemetadataentity WHERE " +
             "`key` = :key " +
             "LIMIT 1")

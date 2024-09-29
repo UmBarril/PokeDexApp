@@ -43,16 +43,15 @@ class HomeViewModel(
 
     private fun getPokemonPager(): Pager<Int, PokemonWithRelations> {
         if (!::_pokemonPager.isInitialized) {
-            refreshLazyColumn()
+            updatePokemonPager()
         }
         return _pokemonPager
     }
 
     fun getPokemonPagingFlow(): Flow<PagingData<Pokemon>> {
-        if (::pokemonPagingFlow.isInitialized) {
-            return pokemonPagingFlow
+        if (!::pokemonPagingFlow.isInitialized) {
+            updatePagingFlow()
         }
-        updatePagingFlow()
         return pokemonPagingFlow
     }
 
@@ -113,6 +112,5 @@ class HomeViewModel(
                 }
             }
         )
-
     }
 }

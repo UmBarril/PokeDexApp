@@ -21,8 +21,12 @@ class PokemonPagingMediator(
     private val api: PokemonApiDao
 ): RemoteMediator<Int, PokemonWithRelations>() {
     override suspend fun initialize(): InitializeAction {
-        // não é necessário fazer refresh pela rede toda vez que iniciar
-        return InitializeAction.SKIP_INITIAL_REFRESH;
+        // Não é necessário fazer refresh pela rede toda vez que iniciar
+        // SE já tem pokémons na cache.
+        if (!database.pokemonDbDao().isAnyPokemonStored()) {
+            return InitializeAction.SKIP_INITIAL_REFRESH
+        }
+        return InitializeAction.LAUNCH_INITIAL_REFRESH
     }
 
     override suspend fun load(
