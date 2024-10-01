@@ -1,8 +1,14 @@
 package com.barril.pokedexapp.viewmodels
 
 import androidx.lifecycle.ViewModel
+import com.barril.pokedexapp.data.local.PokemonDatabase
 
-class SettingsViewModel : ViewModel() {
+class SettingsViewModel(
+    val database: PokemonDatabase
+) : ViewModel() {
+
+
+
 
 //    init {
 //        viewModelScope.launch {
