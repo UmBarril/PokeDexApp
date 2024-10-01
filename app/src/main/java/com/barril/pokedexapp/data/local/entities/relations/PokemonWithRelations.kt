@@ -10,7 +10,7 @@ import com.barril.pokedexapp.data.local.entities.PokemonStatEntity
 import com.barril.pokedexapp.data.local.entities.PokemonTypeEntity
 
 /**
- * Pokémon com todas as Relations EXCETO pelo favorito.
+ * Pokémon com todas as Relations.
  */
 data class PokemonWithRelations (
     @Embedded val pokemonEntity: PokemonEntity,
