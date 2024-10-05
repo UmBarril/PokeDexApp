@@ -1,5 +1,10 @@
 # PokeDex App
-Um aplicativo de PokéDex construído em Kotlin usando Jetpack Compose, consumindo a PokéApi para listar e exibir informações de Pokémons. Este projeto foi uma jornada para explorar as novas funcionalidades do Android, como navegação type-safe, arquitetura MVVM com Paging 3, e integração com Room para cache local.
+
+Aplicativo de PokéDex construído em Kotlin usando Jetpack Compose e [PokéAPI](https://github.com/PokeAPI/pokeapi)!
+
+Feito com o objetivo de estudar desenvovimento Android, arquitetura MVVM, Paging 3, e integração com Room para cache local.
+
+# Imagens
 
 ![Tela Inicial](images/print.png)
 
