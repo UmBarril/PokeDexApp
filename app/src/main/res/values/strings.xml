@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">PokeDexApp</string>
+    <string name="home_destination">Principal</string>
+    <string name="favorites_destination">Favoritos</string>
+    <string name="settings_destination">Configurações</string>
+    <string name="settings_description">Configurações</string>
+    <string name="favorites_description">Favoritos</string>
+    <string name="home_description">Principal</string>
+    <string name="search_placeholder">Pesquisar</string>
+    <string name="filter_icon_description">Filtros</string>
+    <string name="favorites_button_description">Favoritos</string>
+    <string name="more_options_icon_description">Mais opções</string>
+    <string name="order_by_ids">Ordenar por numeração</string>
+    <string name="order_by_gen">Ordenar por geração</string>
+    <string name="order_by_type">Ordenar por Tipo</string>
+    <string name="order_by_name">Ordenar por nome</string>
+    <string name="filter_by_gen">Filtrar por Gen</string>
+    <string name="filter_by_type">Filtrar por Tipo</string>
+    <string name="order">Ordenação</string>
+    <string name="favorites_title">Favoritos</string>
+    <string name="home_title">Principal</string>
+    <string name="search_favorites_placeholder">Pesquisar favoritos</string>
+    <string name="pokemon_overview_weight_label">Peso</string>
+    <string name="pokemon_overview_sound_label">Som</string>
+    <string name="pokemon_overview_play_label">Tocar som do Pokémon</string>
 </resources>
